@@ -1,5 +1,627 @@
-
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon-Inspired Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --amazon-blue: #131921;
+            --amazon-orange: #ff9900;
+            --amazon-yellow: #f7ca00;
+            --link-blue: #007185;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FCE4EC; /* Updated to pink */
+            color: var(--amazon-blue);
+        }
+
+        .header-bg {
+            background-color: var(--amazon-blue);
+        }
+        
+        .search-bar {
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            width: 100%;
+            border: none;
+            padding: 8px 12px;
+            outline: none;
+        }
+        
+        .search-btn {
+            background-color: var(--amazon-yellow);
+            color: var(--amazon-blue);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-btn:hover {
+            background-color: #f7c040;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease-in-out;
+            border: 1px solid #ddd;
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1.5rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .message-user {
+            background-color: #e3f2fd;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .message-bot {
+            background-color: #fafafa;
+            align-self: flex-start;
+        }
+
+        .loading-dot {
+            animation: bounce 0.8s infinite;
+        }
+
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .game-icon {
+            font-size: 3rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .game-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .cell-hover:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="header-bg w-full py-3 px-6 text-white flex flex-col md:flex-row items-center justify-between shadow-lg rounded-t-lg">
+        <div class="flex items-center space-x-4 mb-4 md:mb-0 w-full md:w-auto">
+            <h1 class="text-3xl font-bold">
+                <span class="text-white">Rose</span><span class="text-link-blue">gold</span>
+            </h1>
+            <div class="hidden md:flex text-sm items-center space-x-2">
+                <p>Deliver to</p>
+                <p class="font-bold">New York 10001</p>
+            </div>
+        </div>
+        <div class="flex items-center w-full md:w-2/5 search-bar">
+            <!-- Search functionality is for a front-end demo only and requires a back-end to work. -->
+            <input type="text" id="search-input" placeholder="Search" class="search-input">
+            <button id="search-btn" class="search-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+        <nav class="flex items-center space-x-4 mt-4 md:mt-0 w-full md:w-auto justify-center md:justify-end text-sm">
+            <a href="#" class="hover:text-gray-300">Returns & Orders</a>
+            <a href="#" class="hover:text-gray-300">Cart</a>
+            <button onclick="showPage('games-page')" class="bg-link-blue text-white font-bold py-2 px-4 rounded-md hover:bg-opacity-80 transition transform hover:scale-105 cursor-pointer">
+                Play Games! 🎮
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-7xl mx-auto mt-8 flex-grow">
+        <!-- Shop & Chat Page -->
+        <div id="shop-page" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Product Grid Section -->
+            <section class="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-link-blue mb-6">
+                    Featured Products
+                </h2>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Product 1 -->
+                    <div class="product-card p-4" data-title="Custom Photo Resin Coaster" data-description="A beautiful, personalized coaster with your uploaded photo.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Your+Photo+Coaster" alt="Custom Photo Resin Coaster" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Custom Photo Resin Coaster</h3>
+                        <p class="text-gray-600">A beautiful, personalized coaster with your uploaded photo.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$49.99</p>
+                        <button onclick="buyItem('Custom Photo Resin Coaster')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card p-4" data-title="Agate Style Resin Coaster Set" data-description="A beautiful set of four geode-inspired coasters.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Agate+Coasters" alt="Agate Style Resin Coaster Set" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Agate Style Resin Coaster Set</h3>
+                        <p class="text-gray-600">A beautiful set of four geode-inspired coasters.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$19.50</p>
+                        <button onclick="buyItem('Agate Style Resin Coaster Set')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card p-4" data-title="Marble Effect Resin Coaster" data-description="Stunning single coaster with a unique marble effect.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Marble+Coaster" alt="Marble Effect Resin Coaster" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Marble Effect Resin Coaster</h3>
+                        <p class="text-gray-600">Stunning single coaster with a unique marble effect.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$12.99</p>
+                        <button onclick="buyItem('Marble Effect Resin Coaster')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- New Product 4 -->
+                    <div class="product-card p-4" data-title="Epoxy River Table" data-description="A beautiful, handcrafted table with a blue epoxy river inlay.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Epoxy+Table" alt="Epoxy River Table" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Epoxy River Table</h3>
+                        <p class="text-gray-600">A handcrafted wooden table with a stunning blue river effect.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$899.99</p>
+                        <button onclick="buyItem('Epoxy River Table')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- New Product 5 -->
+                    <div class="product-card p-4" data-title="Geode Resin Art" data-description="A large wall art piece inspired by natural geodes.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Geode+Art" alt="Geode Resin Art" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Geode Resin Art</h3>
+                        <p class="text-gray-600">Stunning wall art with crystal-like details and gold leaf accents.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$249.99</p>
+                        <button onclick="buyItem('Geode Resin Art')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- New Product 6 -->
+                    <div class="product-card p-4" data-title="Resin Keychain" data-description="A small, custom resin keychain with embedded dried flowers.">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Resin+Keychain" alt="Resin Keychain" class="w-full h-auto rounded-md mb-3">
+                        <h3 class="font-bold text-lg text-amazon-blue">Resin Keychain</h3>
+                        <p class="text-gray-600">A personalized keychain with a floral design.</p>
+                        <p class="text-xl font-bold text-amazon-blue mt-2">$9.99</p>
+                        <button onclick="buyItem('Resin Keychain')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chatbot Section -->
+            <section class="bg-white p-6 rounded-lg shadow-lg h-full flex flex-col">
+                <h2 class="text-2xl font-bold text-link-blue mb-4 text-center">
+                    🤖 Ask Rosie! 🤖
+                </h2>
+                <div id="chat-box" class="flex-grow scrollable bg-[#f9f9f9] p-4 rounded-md border border-gray-200 flex flex-col space-y-3 mb-4">
+                    <div class="chat-message message-bot">Hi there! I'm Rosie! What can I help you with today? Or, you know, just ask me a silly question!</div>
+                </div>
+
+                <!-- Input and Send Button -->
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="chat-input" placeholder="Ask me something funny!" class="flex-grow p-3 rounded-md border border-gray-300 outline-none focus:border-link-blue">
+                    <button id="send-btn" onclick="sendMessage()" class="bg-amazon-orange text-black font-bold py-3 px-6 rounded-md hover:bg-amazon-yellow transition cursor-pointer">
+                        Send!
+                    </button>
+                </div>
+                <!-- Loading indicator -->
+                <div id="loading-indicator" class="mt-4 text-center text-gray-500 hidden">
+                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
+                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
+                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
+                </div>
+            </section>
+        </div>
+
+        <!-- Games Page -->
+        <div id="games-page" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <section class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
+                    🌈 Guess the Color! 🎨
+                </h2>
+                <div class="text-center mb-4">
+                    <p class="text-sm text-gray-600">Try to guess the color I'm thinking of!</p>
+                    <div id="game-color-box" class="w-24 h-24 mx-auto my-4 rounded-md shadow-md border-2 border-link-blue bg-gray-300"></div>
+                </div>
+                <div class="flex flex-col items-center space-y-2">
+                    <input type="text" id="game-input" placeholder="Type your guess here (e.g., pink)" class="p-3 w-full rounded-md border border-gray-300 outline-none focus:border-link-blue">
+                    <button id="game-btn" onclick="checkGuess()" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-md hover:bg-amazon-yellow transition cursor-pointer">
+                        Guess!
+                    </button>
+                </div>
+                <p id="game-message" class="text-center mt-4 text-sm font-bold text-link-blue"></p>
+            </section>
+            
+            <section class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
+                    🪨 Rock, Paper, Scissors ✂️
+                </h2>
+                <div class="text-center mb-4">
+                    <p id="rps-message" class="text-sm text-gray-600">Choose your move!</p>
+                    <p id="rps-result" class="text-lg font-bold text-amazon-blue mt-2"></p>
+                </div>
+                <div class="flex items-center justify-center space-x-6">
+                    <div onclick="playRPS('rock')" class="game-icon">🪨</div>
+                    <div onclick="playRPS('paper')" class="game-icon">📄</div>
+                    <div onclick="playRPS('scissors')" class="game-icon">✂️</div>
+                </div>
+                <div class="text-center mt-6">
+                    <p id="rps-score" class="text-sm font-bold text-amazon-blue"></p>
+                </div>
+            </section>
+
+            <!-- New Tic-Tac-Toe Game -->
+            <section class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
+                    ❌ Tic-Tac-Toe ⭕
+                </h2>
+                <div class="flex flex-col items-center">
+                    <p id="tictactoe-status" class="text-lg font-bold text-amazon-blue mb-4">Player X's turn</p>
+                    <div id="tictactoe-board" class="grid grid-cols-3 gap-2">
+                        <!-- Board cells will be generated here -->
+                    </div>
+                    <button onclick="resetTicTacToe()" class="bg-link-blue text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-80 transition mt-4 cursor-pointer">
+                        Reset Game
+                    </button>
+                </div>
+            </section>
+
+            <button onclick="showPage('shop-page')" class="bg-link-blue text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-80 transition mt-6 mx-auto col-span-1 md:col-span-2 lg:col-span-3 cursor-pointer">
+                Back to Shop 🛍️
+            </button>
+        </div>
+    </main>
+
+    <!-- Custom Modal for Alerts (replacing alert()) -->
+    <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg p-8 max-w-sm w-full text-center border-2 border-link-blue shadow-xl relative">
+            <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-400 hover:text-gray-600 transition cursor-pointer">&times;</button>
+            <p id="modal-text" class="text-lg font-bold text-amazon-blue mb-4"></p>
+            <button onclick="closeModal()" class="bg-link-blue text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-80 transition cursor-pointer">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // API key is not required for this model in this environment.
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        const shopPage = document.getElementById('shop-page');
+        const gamesPage = document.getElementById('games-page');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const customModal = document.getElementById('custom-modal');
+        const modalText = document.getElementById('modal-text');
+        
+        let chatHistory = [];
+
+        // Game variables
+        const gameColorBox = document.getElementById('game-color-box');
+        const gameInput = document.getElementById('game-input');
+        const gameMessage = document.getElementById('game-message');
+        const colors = {
+            "pink": "#FFC0CB",
+            "blue": "#ADD8E6",
+            "purple": "#E6E6FA",
+            "yellow": "#FFFFE0",
+            "green": "#90EE90",
+            "orange": "#FFDAB9"
+        };
+        let targetColorName = '';
+
+        // RPS Game Variables
+        const rpsMessage = document.getElementById('rps-message');
+        const rpsResult = document.getElementById('rps-result');
+        const rpsScoreDisplay = document.getElementById('rps-score');
+        let rpsScore = { player: 0, bot: 0 };
+
+        // Tic-Tac-Toe Game Variables
+        const tictactoeBoard = document.getElementById('tictactoe-board');
+        const tictactoeStatus = document.getElementById('tictactoe-status');
+        let tictactoeCells = Array(9).fill('');
+        let tictactoeCurrentPlayer = 'X';
+        let tictactoeGameActive = true;
+
+        // Function to switch between pages
+        function showPage(pageId) {
+            console.log(`Switching to page: ${pageId}`);
+            shopPage.classList.add('hidden');
+            gamesPage.classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // Function to show a custom modal instead of alert()
+        function showModal(message) {
+            console.log(`Showing modal with message: ${message}`);
+            modalText.textContent = message;
+            customModal.classList.remove('hidden');
+        }
+
+        // Function to close the custom modal
+        function closeModal() {
+            console.log('Closing modal.');
+            customModal.classList.add('hidden');
+        }
+
+        // Function for the 'Buy Now!' button
+        // Note: Payment processing is a complex feature that requires a secure back-end system and a payment gateway.
+        // This button currently only shows a front-end pop-up and does not process any real payments.
+        function buyItem(itemName) {
+            console.log(`Attempting to add "${itemName}" to cart.`);
+            showModal(`Added "${itemName}" to your cart!`);
+        }
+
+        // Helper function to create and append a chat message
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', `message-${sender}`);
+            messageDiv.textContent = text;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Function to make the API call to the chatbot
+        async function getChatbotResponse(userMessage) {
+            const systemPrompt = "You are a funny and friendly 10-year-old girl named Rosie. You love telling jokes and making people laugh. Sometimes you tell a short story or give a more detailed explanation. You should respond to questions with a cheerful and playful tone, and feel free to add emojis. If someone asks for a joke, tell them a silly, kid-friendly joke!";
+
+            try {
+                loadingIndicator.classList.remove('hidden');
+                
+                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+                const payload = {
+                    contents: chatHistory,
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                };
+                
+                // Add a simple visual feedback to the send button
+                sendBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => { sendBtn.style.transform = 'scale(1)'; }, 100);
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    console.error('API response not OK:', response.status, response.statusText);
+                    throw new Error('API response was not successful.');
+                }
+
+                const result = await response.json();
+                const botMessage = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (!botMessage) {
+                    throw new Error('No bot message received in the response.');
+                }
+
+                chatHistory.push({ role: "model", parts: [{ text: botMessage }] });
+
+                loadingIndicator.classList.add('hidden');
+
+                appendMessage('bot', botMessage);
+
+            } catch (error) {
+                console.error("Error fetching chatbot response:", error);
+                loadingIndicator.classList.add('hidden');
+                appendMessage('bot', "Oops! My robot brain got a little fuzzy. Can you ask me that again? 🤪 It might be a bad internet connection or something!");
+            }
+        }
+
+        // Function to handle the send button click
+        async function sendMessage() {
+            console.log('Send button clicked.');
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return;
+
+            chatInput.value = '';
+            appendMessage('user', userMessage);
+
+            await getChatbotResponse(userMessage);
+        }
+
+        // New function to filter products based on search input
+        function filterProducts() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput.value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+
+            products.forEach(product => {
+                const title = product.getAttribute('data-title').toLowerCase();
+                const description = product.getAttribute('data-description').toLowerCase();
+                if (title.includes(query) || description.includes(query)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // --- Guess the Color Game Functions ---
+        function startGame() {
+            const colorNames = Object.keys(colors);
+            targetColorName = colorNames[Math.floor(Math.random() * colorNames.length)];
+            gameColorBox.style.backgroundColor = colors[targetColorName];
+            gameMessage.textContent = "What color am I? 🤔";
+        }
+
+        function checkGuess() {
+            console.log('Guess button clicked.');
+            const guess = gameInput.value.trim().toLowerCase();
+            if (guess === '') {
+                gameMessage.textContent = "You didn't guess anything! Silly! 😜";
+                return;
+            }
+            if (guess === targetColorName) {
+                gameMessage.textContent = `Yay! You got it right! The color was ${targetColorName}! 🎉`;
+            } else {
+                gameMessage.textContent = `Nope, that's not it! The color was ${targetColorName}. Let's play again! 😊`;
+            }
+            gameInput.value = '';
+            setTimeout(startGame, 3000); // Start a new round after 3 seconds
+        }
+
+        // --- Rock, Paper, Scissors Game Functions ---
+        function playRPS(playerChoice) {
+            console.log(`RPS played: ${playerChoice}`);
+            const choices = ['rock', 'paper', 'scissors'];
+            const botChoice = choices[Math.floor(Math.random() * choices.length)];
+            
+            let result = '';
+            if (playerChoice === botChoice) {
+                result = "It's a tie! 😅";
+            } else if (
+                (playerChoice === 'rock' && botChoice === 'scissors') ||
+                (playerChoice === 'paper' && botChoice === 'rock') ||
+                (playerChoice === 'scissors' && botChoice === 'paper')
+            ) {
+                result = "You win! Yay! 🎉";
+                rpsScore.player++;
+            } else {
+                result = "I win! Hehe! 😂";
+                rpsScore.bot++;
+            }
+            
+            rpsMessage.textContent = `You chose ${playerChoice} and I chose ${botChoice}.`;
+            rpsResult.textContent = result;
+            updateRPSScore();
+        }
+
+        function updateRPSScore() {
+            rpsScoreDisplay.textContent = `Player: ${rpsScore.player} | Rosie: ${rpsScore.bot}`;
+        }
+        
+        // --- Tic-Tac-Toe Game Functions ---
+        function createBoard() {
+            tictactoeBoard.innerHTML = '';
+            tictactoeCells.forEach((cell, index) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('w-24', 'h-24', 'flex', 'items-center', 'justify-center', 'text-4xl', 'font-bold', 'cursor-pointer', 'bg-gray-100', 'rounded-md', 'border-2', 'border-gray-300', 'cell-hover');
+                cellElement.dataset.index = index;
+                cellElement.addEventListener('click', handleCellClick);
+                tictactoeBoard.appendChild(cellElement);
+            });
+        }
+
+        function handleCellClick(e) {
+            console.log('Tic-Tac-Toe cell clicked.');
+            const cell = e.target;
+            const index = cell.dataset.index;
+            
+            if (tictactoeCells[index] !== '' || !tictactoeGameActive) {
+                return;
+            }
+            
+            tictactoeCells[index] = tictactoeCurrentPlayer;
+            cell.textContent = tictactoeCurrentPlayer;
+            cell.style.color = tictactoeCurrentPlayer === 'X' ? '#007185' : '#ff9900';
+            
+            if (checkWinner()) {
+                tictactoeStatus.textContent = `Player ${tictactoeCurrentPlayer} wins! 🎉`;
+                tictactoeGameActive = false;
+            } else if (tictactoeCells.every(cell => cell !== '')) {
+                tictactoeStatus.textContent = "It's a tie! 🤝";
+                tictactoeGameActive = false;
+            } else {
+                tictactoeCurrentPlayer = tictactoeCurrentPlayer === 'X' ? 'O' : 'X';
+                tictactoeStatus.textContent = `Player ${tictactoeCurrentPlayer}'s turn`;
+            }
+        }
+
+        function checkWinner() {
+            const winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6] // Diagonals
+            ];
+
+            for (let i = 0; i < winConditions.length; i++) {
+                const [a, b, c] = winConditions[i];
+                if (tictactoeCells[a] && tictactoeCells[a] === tictactoeCells[b] && tictactoeCells[a] === tictactoeCells[c]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function resetTicTacToe() {
+            console.log('Resetting Tic-Tac-Toe game.');
+            tictactoeCells = Array(9).fill('');
+            tictactoeCurrentPlayer = 'X';
+            tictactoeGameActive = true;
+            tictactoeStatus.textContent = "Player X's turn";
+            createBoard();
+        }
+
+        // Handle the Enter key to send message or guess
+        chatInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        gameInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        // Add event listeners for the search bar
+        document.getElementById('search-input').addEventListener('keyup', filterProducts);
+        document.getElementById('search-btn').addEventListener('click', filterProducts);
+
+        // Start the games when the page loads
+        window.onload = () => {
+            console.log('Page loaded and games started.');
+            startGame();
+            updateRPSScore();
+            createBoard();
+        };
+    </script>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
