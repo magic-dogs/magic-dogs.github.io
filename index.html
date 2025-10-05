@@ -1,1325 +1,1108 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon-Inspired Shop</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Magic Dogs Adventure Hub</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --amazon-blue: #131921;
-            --amazon-orange: #ff9900;
-            --amazon-yellow: #f7ca00;
-            --link-blue: #007185;
+    <!-- Load Phosphor Icons for fun visuals -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/dist/assets/index.js"></script>
+    
+    <!-- Configure Tailwind for Inter font and magical, bright colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'magic-purple': '#8B5CF6', // Violet-500
+                        'sparkle-pink': '#EC4899', // Pink-500
+                        'leaf-green': '#10B981',   // Emerald-500
+                        'sky-blue': '#3B82F6',     // Blue-500
+                        'bg-light': '#F3F4F6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
         }
-
+    </script>
+    <style>
+        /* Base styling */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FCE4EC; /* Updated to pink */
-            color: var(--amazon-blue);
+            min-height: 10vh;
+            background-color: #F3F4F6;
+            padding: 0;
+            margin: 0;
         }
 
-        .header-bg {
-            background-color: var(--amazon-blue);
+        /* Updated Magical Leaf Background Pattern (Big Leaves) */
+        .leaf-bg {
+            background-color: #e6ffe6; /* Very light green base */
+            opacity: 1;
+            /* Large, repeating leaf-like pattern (using big dots/radial gradients) */
+            background-image: radial-gradient(rgba(16, 185, 129, 0.3) 8px, transparent 8px), /* Leaf-green with high opacity */
+                              radial-gradient(rgba(16, 185, 129, 0.3) 8px, #e6ffe6 8px);
+            background-size: 100px 100px; /* Big leaves/dots */
+            background-position: 0 0, 50px 50px;
+        }
+
+        /* Card and Header Shadows */
+        .card-shadow {
+            box-shadow: 0 15px 20px -5px rgba(139, 92, 246, 0.2), 0 5px 5px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Game specific styling for canvas */
+        #game-canvas {
+            border: 4px solid #8B5CF6;
+            border-radius: 12px;
+            touch-action: none; /* Prevents mobile scrolling when interacting with canvas */
         }
         
-        .search-bar {
-            background-color: #fff;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .search-input {
+        /* Camera/Video element styling */
+        #camera-feed {
             width: 100%;
-            border: none;
-            padding: 8px 12px;
-            outline: none;
+            max-width: 400px;
+            aspect-ratio: 4/3;
+            border-radius: 1rem;
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+            background-color: #4B5563; /* Gray-600 placeholder */
+        }
+
+        /* Chatbot message bubble styling */
+        .ai-message {
+            background-color: #E0F2F1; /* Teal-50 */
+            border-top-left-radius: 0;
+        }
+        .user-message {
+            background-color: #E0F7FA; /* Cyan-50 */
+            border-bottom-right-radius: 0;
+        }
+
+        /* Scrollbar styling for chat */
+        #chat-window::-webkit-scrollbar, #book-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-window::-webkit-scrollbar-thumb, #book-output::-webkit-scrollbar-thumb {
+            background: #8B5CF6;
+            border-radius: 10px;
         }
         
-        .search-btn {
-            background-color: var(--amazon-yellow);
-            color: var(--amazon-blue);
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .search-btn:hover {
-            background-color: #f7c040;
-        }
-
-        .product-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: box-shadow 0.2s ease-in-out;
-            border: 1px solid #ddd;
-        }
-        
-        .product-card:hover {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .chat-message {
-            max-width: 80%;
-            padding: 0.75rem 1rem;
-            border-radius: 1.5rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .message-user {
-            background-color: #e3f2fd;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-
-        .message-bot {
-            background-color: #fafafa;
-            align-self: flex-start;
-        }
-
-        .loading-dot {
-            animation: bounce 0.8s infinite;
-        }
-
-        .loading-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes bounce {
-            0%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-5px);
-            }
-        }
-        
-        .game-icon {
-            font-size: 3rem;
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-        }
-        .game-icon:hover {
-            transform: scale(1.1);
-        }
-        
-        .cell-hover:hover {
-            background-color: #e2e8f0;
+        /* Active button styling for navigation */
+        .nav-button.active {
+            box-shadow: 0 0 0 3px white, 0 0 0 6px #EC4899;
+            background-color: #EC4899; /* sparkle-pink */
+            color: white;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col p-4 md:p-8">
+<body class="leaf-bg">
 
-    <!-- Header -->
-    <header class="header-bg w-full py-3 px-6 text-white flex flex-col md:flex-row items-center justify-between shadow-lg rounded-t-lg">
-        <div class="flex items-center space-x-4 mb-4 md:mb-0 w-full md:w-auto">
-            <h1 class="text-3xl font-bold">
-                <span class="text-white">Rose</span><span class="text-link-blue">gold</span>
+    <div id="app" class="flex flex-col min-h-screen">
+        
+        <!-- Header and Navigation -->
+        <header class="bg-magic-purple p-4 shadow-lg sticky top-0 z-20">
+            <h1 class="text-3xl font-extrabold text-white text-center mb-4">
+                🐾 Magic Dogs Adventure 🐾
             </h1>
-            <div class="hidden md:flex text-sm items-center space-x-2">
-                <p>Deliver to</p>
-                <p class="font-bold">New York 10001</p>
-            </div>
-        </div>
-        <div class="flex items-center w-full md:w-2/5 search-bar">
-            <!-- Search functionality is for a front-end demo only and requires a back-end to work. -->
-            <input type="text" id="search-input" placeholder="Search" class="search-input">
-            <button id="search-btn" class="search-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                </svg>
-            </button>
-        </div>
-        <nav class="flex items-center space-x-4 mt-4 md:mt-0 w-full md:w-auto justify-center md:justify-end text-sm">
-            <a href="#" class="hover:text-gray-300">Returns & Orders</a>
-            <a href="#" class="hover:text-gray-300">Cart</a>
-            <button onclick="showPage('games-page')" class="bg-link-blue text-white font-bold py-2 px-4 rounded-md hover:bg-opacity-80 transition transform hover:scale-105 cursor-pointer">
-                Play Games! 🎮
-            </button>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main class="w-full max-w-7xl mx-auto mt-8 flex-grow">
-        <!-- Shop & Chat Page -->
-        <div id="shop-page" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Product Grid Section -->
-            <section class="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold text-link-blue mb-6">
-                    Featured Products
-                </h2>
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <!-- Product 1 -->
-                    <div class="product-card p-4" data-title="Custom Photo Resin Coaster" data-description="A beautiful, personalized coaster with your uploaded photo.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Your+Photo+Coaster" alt="Custom Photo Resin Coaster" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Custom Photo Resin Coaster</h3>
-                        <p class="text-gray-600">A beautiful, personalized coaster with your uploaded photo.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$49.99</p>
-                        <button onclick="buyItem('Custom Photo Resin Coaster')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-
-                    <!-- Product 2 -->
-                    <div class="product-card p-4" data-title="Agate Style Resin Coaster Set" data-description="A beautiful set of four geode-inspired coasters.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Agate+Coasters" alt="Agate Style Resin Coaster Set" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Agate Style Resin Coaster Set</h3>
-                        <p class="text-gray-600">A beautiful set of four geode-inspired coasters.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$19.50</p>
-                        <button onclick="buyItem('Agate Style Resin Coaster Set')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-
-                    <!-- Product 3 -->
-                    <div class="product-card p-4" data-title="Marble Effect Resin Coaster" data-description="Stunning single coaster with a unique marble effect.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Marble+Coaster" alt="Marble Effect Resin Coaster" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Marble Effect Resin Coaster</h3>
-                        <p class="text-gray-600">Stunning single coaster with a unique marble effect.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$12.99</p>
-                        <button onclick="buyItem('Marble Effect Resin Coaster')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-
-                    <!-- New Product 4 -->
-                    <div class="product-card p-4" data-title="Epoxy River Table" data-description="A beautiful, handcrafted table with a blue epoxy river inlay.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Epoxy+Table" alt="Epoxy River Table" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Epoxy River Table</h3>
-                        <p class="text-gray-600">A handcrafted wooden table with a stunning blue river effect.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$899.99</p>
-                        <button onclick="buyItem('Epoxy River Table')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-
-                    <!-- New Product 5 -->
-                    <div class="product-card p-4" data-title="Geode Resin Art" data-description="A large wall art piece inspired by natural geodes.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Geode+Art" alt="Geode Resin Art" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Geode Resin Art</h3>
-                        <p class="text-gray-600">Stunning wall art with crystal-like details and gold leaf accents.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$249.99</p>
-                        <button onclick="buyItem('Geode Resin Art')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-
-                    <!-- New Product 6 -->
-                    <div class="product-card p-4" data-title="Resin Keychain" data-description="A small, custom resin keychain with embedded dried flowers.">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Resin+Keychain" alt="Resin Keychain" class="w-full h-auto rounded-md mb-3">
-                        <h3 class="font-bold text-lg text-amazon-blue">Resin Keychain</h3>
-                        <p class="text-gray-600">A personalized keychain with a floral design.</p>
-                        <p class="text-xl font-bold text-amazon-blue mt-2">$9.99</p>
-                        <button onclick="buyItem('Resin Keychain')" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-lg mt-3 hover:bg-amazon-yellow transition cursor-pointer">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Chatbot Section -->
-            <section class="bg-white p-6 rounded-lg shadow-lg h-full flex flex-col">
-                <h2 class="text-2xl font-bold text-link-blue mb-4 text-center">
-                    🤖 Ask Rosie! 🤖
-                </h2>
-                <div id="chat-box" class="flex-grow scrollable bg-[#f9f9f9] p-4 rounded-md border border-gray-200 flex flex-col space-y-3 mb-4">
-                    <div class="chat-message message-bot">Hi there! I'm Rosie! What can I help you with today? Or, you know, just ask me a silly question!</div>
-                </div>
-
-                <!-- Input and Send Button -->
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="chat-input" placeholder="Ask me something funny!" class="flex-grow p-3 rounded-md border border-gray-300 outline-none focus:border-link-blue">
-                    <button id="send-btn" onclick="sendMessage()" class="bg-amazon-orange text-black font-bold py-3 px-6 rounded-md hover:bg-amazon-yellow transition cursor-pointer">
-                        Send!
-                    </button>
-                </div>
-                <!-- Loading indicator -->
-                <div id="loading-indicator" class="mt-4 text-center text-gray-500 hidden">
-                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
-                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
-                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full loading-dot mx-1"></span>
-                </div>
-            </section>
-        </div>
-
-        <!-- Games Page -->
-        <div id="games-page" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <section class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
-                    🌈 Guess the Color! 🎨
-                </h2>
-                <div class="text-center mb-4">
-                    <p class="text-sm text-gray-600">Try to guess the color I'm thinking of!</p>
-                    <div id="game-color-box" class="w-24 h-24 mx-auto my-4 rounded-md shadow-md border-2 border-link-blue bg-gray-300"></div>
-                </div>
-                <div class="flex flex-col items-center space-y-2">
-                    <input type="text" id="game-input" placeholder="Type your guess here (e.g., pink)" class="p-3 w-full rounded-md border border-gray-300 outline-none focus:border-link-blue">
-                    <button id="game-btn" onclick="checkGuess()" class="w-full bg-amazon-orange text-black font-bold py-2 rounded-md hover:bg-amazon-yellow transition cursor-pointer">
-                        Guess!
-                    </button>
-                </div>
-                <p id="game-message" class="text-center mt-4 text-sm font-bold text-link-blue"></p>
-            </section>
             
-            <section class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
-                    🪨 Rock, Paper, Scissors ✂️
-                </h2>
-                <div class="text-center mb-4">
-                    <p id="rps-message" class="text-sm text-gray-600">Choose your move!</p>
-                    <p id="rps-result" class="text-lg font-bold text-amazon-blue mt-2"></p>
-                </div>
-                <div class="flex items-center justify-center space-x-6">
-                    <div onclick="playRPS('rock')" class="game-icon">🪨</div>
-                    <div onclick="playRPS('paper')" class="game-icon">📄</div>
-                    <div onclick="playRPS('scissors')" class="game-icon">✂️</div>
-                </div>
-                <div class="text-center mt-6">
-                    <p id="rps-score" class="text-sm font-bold text-amazon-blue"></p>
-                </div>
-            </section>
+            <nav class="flex justify-center space-x-1 sm:space-x-4 flex-wrap">
+                <button onclick="navigate('facts')" id="nav-facts" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold active">
+                    Facts
+                </button>
+                <button onclick="navigate('games')" id="nav-games" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    Games
+                </button>
+                 <button onclick="navigate('search')" id="nav-search" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    Search
+                </button>
+                 <button onclick="navigate('sms')" id="nav-sms" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    SMS Draft
+                </button>
+                <button onclick="navigate('studio')" id="nav-studio" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    Studio
+                </button>
+                <button onclick="navigate('chat')" id="nav-chat" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    Assistant
+                </button>
+                <button onclick="navigate('videos')" id="nav-videos" class="nav-button bg-magic-purple text-white border-2 border-white transition rounded-full py-2 px-3 sm:px-4 text-sm sm:text-base font-semibold">
+                    Videos
+                </button>
+            </nav>
+        </header>
 
-            <!-- New Tic-Tac-Toe Game -->
-            <section class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold text-link-blue mb-6 text-center">
-                    ❌ Tic-Tac-Toe ⭕
-                </h2>
-                <div class="flex flex-col items-center">
-                    <p id="tictactoe-status" class="text-lg font-bold text-amazon-blue mb-4">Player X's turn</p>
-                    <div id="tictactoe-board" class="grid grid-cols-3 gap-2">
-                        <!-- Board cells will be generated here -->
+        <main class="flex-grow p-4 sm:p-6 flex justify-center items-start">
+            <div class="w-full max-w-5xl">
+                
+                <!-- 1. FUN FACTS SECTION -->
+                <section id="section-facts" class="page-section">
+                    <div class="bg-white p-6 md:p-10 rounded-3xl card-shadow text-center">
+                        <h2 class="text-3xl font-bold text-sky-blue mb-4">Discover Magic Dog Facts!</h2>
+                        <p class="text-gray-600 mb-8">
+                            Even the most magical dogs have secrets to share. Click the bone!
+                        </p>
+
+                        <!-- Fact Display Area -->
+                        <div class="p-6 md:p-8 bg-sparkle-pink text-white rounded-2xl shadow-inner mb-8 min-h-[150px] flex items-center justify-center">
+                            <p id="fact-display" class="text-xl md:text-2xl font-bold italic transition-opacity duration-300">
+                                Tap the button to get your first fun fact!
+                            </p>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button id="fact-button"
+                            class="w-full sm:w-2/3 py-4 px-6 bg-leaf-green text-white font-extrabold text-xl rounded-full transition-all duration-200 transform hover:scale-[1.03] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-leaf-green focus:ring-opacity-50 active:bg-green-600"
+                            role="button"
+                        >
+                            New Dog Fact! <i class="ph ph-bone text-2xl ml-2"></i>
+                        </button>
                     </div>
-                    <button onclick="resetTicTacToe()" class="bg-link-blue text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-80 transition mt-4 cursor-pointer">
-                        Reset Game
-                    </button>
-                </div>
-            </section>
+                </section>
 
-            <button onclick="showPage('shop-page')" class="bg-link-blue text-white font-bold py-3 px-6 rounded-md hover:bg-opacity-80 transition mt-6 mx-auto col-span-1 md:col-span-2 lg:col-span-3 cursor-pointer">
-                Back to Shop 🛍️
-            </button>
-        </div>
-    </main>
+                <!-- 2. GAMES SECTION -->
+                <section id="section-games" class="page-section hidden">
+                    
+                    <!-- Row 1: Block World & Number Guess -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        
+                        <!-- Game 1: Magic Block World -->
+                        <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow text-center">
+                            <h2 class="text-2xl font-bold text-sky-blue mb-4">Game 1: Magic Block World</h2>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                **Click/Tap** to **break** a block. Click the inventory to change block type, then click to **place**!
+                            </p>
+                            
+                            <!-- Game Canvas -->
+                            <canvas id="game-canvas" class="w-full max-w-full aspect-square mx-auto"></canvas>
 
-    <!-- Custom Modal for Alerts (replacing alert()) -->
-    <div id="custom-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-lg p-8 max-w-sm w-full text-center border-2 border-link-blue shadow-xl relative">
-            <button onclick="closeModal()" class="absolute top-2 right-4 text-2xl font-bold text-gray-400 hover:text-gray-600 transition cursor-pointer">&times;</button>
-            <p id="modal-text" class="text-lg font-bold text-amazon-blue mb-4"></p>
-            <button onclick="closeModal()" class="bg-link-blue text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-80 transition cursor-pointer">OK</button>
-        </div>
+                            <!-- Inventory and Instructions -->
+                            <div class="mt-4 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                                <div class="flex items-center space-x-2 p-2 bg-bg-light rounded-full shadow-inner">
+                                    <span class="font-bold text-md text-magic-purple">Current:</span>
+                                    <canvas id="inventory-canvas" width="40" height="40" class="border-4 border-sparkle-pink rounded-lg cursor-pointer"></canvas>
+                                </div>
+                                <button id="reset-game-button" class="bg-sparkle-pink text-white font-bold py-2 px-6 rounded-full hover:bg-pink-600 transition shadow-md text-sm">
+                                    Reset World <i class="ph ph-arrow-counter-clockwise ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Game 2: Magic Number Guess -->
+                        <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow text-center flex flex-col justify-between">
+                            <h2 class="text-2xl font-bold text-sky-blue mb-4">Game 2: Magic Number Guess</h2>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                I'm thinking of a magic number between 1 and 100. Guess it!
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <input type="number" id="guess-input" placeholder="Enter your guess (1-100)"
+                                    class="w-full p-3 border-2 border-leaf-green rounded-xl focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-center font-semibold"
+                                >
+                                <button id="guess-button"
+                                    class="w-full py-3 bg-leaf-green text-white font-extrabold text-lg rounded-full transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg active:bg-green-600"
+                                >
+                                    Guess <i class="ph ph-magic-wand text-xl ml-1"></i>
+                                </button>
+                                <p id="guess-result" class="text-xl font-bold min-h-[50px] flex items-center justify-center text-magic-purple">
+                                    Start guessing!
+                                </p>
+                                <button id="new-game-button"
+                                    class="w-full py-2 bg-gray-300 text-gray-700 font-bold rounded-full hover:bg-gray-400 transition shadow-md text-sm"
+                                >
+                                    New Magic Number
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Flappy Dog Adventure -->
+                    <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow text-center">
+                        <h2 class="text-2xl font-bold text-sparkle-pink mb-4">Game 3: Flappy Dog Adventure</h2>
+                        <p class="text-gray-600 mb-4 text-sm">
+                            **Click/Tap** to make the dog fly! Avoid the magical bone pillars!
+                        </p>
+                        <!-- Flappy Dog Canvas -->
+                        <canvas id="flappy-dog-canvas" class="w-full max-w-xl aspect-[4/3] mx-auto" style="border: 4px solid #EC4899; border-radius: 12px; touch-action: none; background-color: #79CCFF;"></canvas>
+                        <div class="mt-4 flex justify-center space-x-4 flex-wrap">
+                            <p id="flappy-score-display" class="font-bold text-xl text-magic-purple p-2">Score: 0</p>
+                            <button id="flappy-start-button" class="bg-sparkle-pink text-white font-bold py-2 px-6 rounded-full hover:bg-pink-600 transition shadow-md text-sm">
+                                Start/Restart <i class="ph ph-paw-print ml-1"></i>
+                            </button>
+                        </div>
+                        <p id="flappy-status" class="text-sm mt-2 text-red-500 font-semibold"></p>
+                    </div>
+
+                </section>
+                
+                <!-- 3. MAGIC STUDIO SECTION (Camera Snap + AI Book) -->
+                <section id="section-studio" class="page-section hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <!-- Left Panel: Camera Snap -->
+                        <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow text-center">
+                            <h2 class="text-2xl font-bold text-sparkle-pink mb-4">Camera Snap Tool</h2>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                Take a picture of yourself or your pet! (Requires camera permission).
+                            </p>
+                            
+                            <!-- Camera Feed -->
+                            <video id="camera-feed" autoplay playsinline></video>
+                            <canvas id="camera-canvas" class="hidden"></canvas>
+                            
+                            <!-- Snap Button and Error Message -->
+                            <div class="mt-4 space-y-2">
+                                <button id="snap-button"
+                                    class="w-full py-3 bg-magic-purple text-white font-extrabold text-lg rounded-full transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg active:bg-violet-600 disabled:opacity-50"
+                                    disabled
+                                >
+                                    Take Magic Snap! <i class="ph ph-camera text-xl ml-1"></i>
+                                </button>
+                                <p id="camera-error" class="text-red-500 text-sm hidden">
+                                    Camera access denied or device not found.
+                                </p>
+                            </div>
+
+                            <!-- Captured Image Display -->
+                            <div class="mt-6 border-4 border-dashed border-gray-300 rounded-xl p-2 min-h-[100px] flex items-center justify-center">
+                                <img id="captured-image" class="w-full max-w-xs rounded-lg hidden shadow-xl" alt="Captured Image">
+                                <p id="snap-placeholder" class="text-gray-400 font-semibold">
+                                    Your magic snap will appear here!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Anthro AI Book Generator 2000 -->
+                        <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow flex flex-col">
+                            <h2 class="text-2xl font-bold text-leaf-green mb-4">Anthro AI Book Generator 2000</h2>
+                            <p class="text-gray-600 mb-4 text-sm">
+                                Write a short story about a magical dog!
+                            </p>
+
+                            <div class="space-y-3 mb-4">
+                                <input type="text" id="anthro-name-input" placeholder="Anthro Dog's Name (e.g., Captain Fluff)"
+                                    class="w-full p-3 border-2 border-leaf-green rounded-xl focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-gray-700"
+                                >
+                                <textarea id="anthro-theme-input" rows="2" placeholder="Describe the dog's theme/adventure (e.g., flying to the moon to collect star-bones)"
+                                    class="w-full p-3 border-2 border-leaf-green rounded-xl focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-gray-700 resize-none"
+                                ></textarea>
+                                
+                                <button id="generate-book-button"
+                                    class="w-full py-3 bg-sparkle-pink text-white font-extrabold text-lg rounded-full transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg active:bg-pink-600"
+                                >
+                                    Generate Book! <i class="ph ph-book-open text-xl ml-1"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Book Output Area -->
+                            <div class="flex-grow p-4 bg-bg-light rounded-xl shadow-inner overflow-y-auto max-h-[400px]">
+                                <p id="book-output" class="text-gray-700 text-left whitespace-pre-wrap">
+                                    Enter a name and theme above to start writing your magical story!
+                                </p>
+                                <div id="book-loading" class="hidden text-center">
+                                    <i class="ph ph-spinner-gap text-3xl animate-spin text-sparkle-pink"></i>
+                                    <p class="text-gray-500 mt-2">Writing your adventure...</p>
+                                </div>
+                            </div>
+                            <p id="book-error" class="text-red-500 text-sm mt-2 hidden"></p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 4. SIMULATED SEARCH SECTION -->
+                <section id="section-search" class="page-section hidden">
+                    <div class="bg-white p-6 md:p-10 rounded-3xl card-shadow text-center">
+                        <h2 class="text-3xl font-bold text-sparkle-pink mb-4">Magic Link Search!</h2>
+                        <p class="text-gray-600 mb-8">
+                            Since I can't talk to a live server, I'll open your query in Google Search in a new tab!
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                             <input type="text" id="search-input" placeholder="What do you want to find? (e.g., 'best dog parks')"
+                                class="flex-grow p-3 border-2 border-sparkle-pink rounded-full focus:outline-none focus:ring-2 focus:ring-magic-purple text-gray-700"
+                                onkeydown="if(event.key === 'Enter') document.getElementById('search-button').click()"
+                            >
+                            <button id="search-button" onclick="performGoogleSearch()"
+                                class="bg-magic-purple text-white py-3 px-6 rounded-full font-bold transition-all hover:bg-sky-blue focus:outline-none focus:ring-4 focus:ring-magic-purple focus:ring-opacity-50"
+                            >
+                                Search <i class="ph ph-magnifying-glass text-xl ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 5. PRIVATE SMS DRAFT SECTION -->
+                <section id="section-sms" class="page-section hidden">
+                    <div class="bg-white p-6 md:p-10 rounded-3xl card-shadow text-center">
+                        <h2 class="text-3xl font-bold text-leaf-green mb-4">Private SMS Draft Tool</h2>
+                        <p class="text-gray-600 mb-6">
+                            Enter the number and message, then click the button to **open your phone's native texting app** with the draft ready.
+                        </p>
+
+                        <div class="space-y-4 max-w-lg mx-auto">
+                            <input type="tel" id="sms-number-input" placeholder="Enter recipient phone number (e.g., 5551234567)"
+                                class="w-full p-3 border-2 border-leaf-green rounded-xl focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-gray-700"
+                            >
+                            <textarea id="sms-message-input" rows="3" placeholder="Enter your magic message here..."
+                                class="w-full p-3 border-2 border-leaf-green rounded-xl focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-gray-700 resize-none"
+                            ></textarea>
+                            
+                            <a id="sms-link-button" href="#" 
+                                onclick="generateSmsDraft(event)"
+                                class="block w-full py-3 bg-magic-purple text-white font-extrabold text-lg rounded-full transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg active:bg-violet-600"
+                            >
+                                Draft Message <i class="ph ph-chat-text text-xl ml-1"></i>
+                            </a>
+                        </div>
+                        <p id="sms-error" class="text-red-500 text-sm mt-4 hidden">Please fill out both fields!</p>
+                        <p class="text-gray-500 text-xs mt-4 italic">
+                            (Note: This requires a mobile phone or a device with SMS capabilities to function.)
+                        </p>
+                    </div>
+                </section>
+
+
+                <!-- 6. RULE-BASED ASSISTANT SECTION -->
+                <section id="section-chat" class="page-section hidden">
+                    <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow flex flex-col h-[70vh] max-h-[700px]">
+                        <h2 class="text-3xl font-bold text-magic-purple mb-4 text-center">Ask The Magic Dog Assistant!</h2>
+                        
+                        <!-- Chat Window -->
+                        <div id="chat-window" class="flex-grow overflow-y-auto p-3 bg-bg-light rounded-xl mb-4 space-y-4">
+                            <!-- Initial Greeting -->
+                            <div class="flex justify-start">
+                                <div class="ai-message max-w-[80%] p-3 rounded-xl shadow-md text-gray-700">
+                                    <span class="font-extrabold text-white">Woof! I'm Sparkle, your rule-based Dog Assistant! I know facts, games, and my own name! What's up? 🐾</span>
+                                </div>
+                            </div>
+                            <!-- Messages will be added here -->
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="flex space-x-2">
+                            <input type="text" id="chat-input" placeholder="Type your question here..."
+                                class="flex-grow p-3 border-2 border-magic-purple rounded-full focus:outline-none focus:ring-2 focus:ring-sparkle-pink text-gray-700"
+                                onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-button').click()"
+                            >
+                            <button id="chat-send-button" onclick="handleChatSend()"
+                                class="bg-magic-purple text-white w-12 h-12 rounded-full flex items-center justify-center transition-all hover:bg-sparkle-pink focus:outline-none focus:ring-4 focus:ring-magic-purple focus:ring-opacity-50"
+                            >
+                                <i id="chat-icon" class="ph ph-paper-plane-tilt text-2xl"></i>
+                                <i id="loading-spinner" class="ph ph-spinner-gap text-2xl animate-spin hidden"></i>
+                            </button>
+                        </div>
+                        <div id="chat-error" class="text-red-500 text-sm mt-2 hidden"></div>
+                    </div>
+                </section>
+
+                <!-- 7. VIDEO SECTION -->
+                <section id="section-videos" class="page-section hidden">
+                    <div class="bg-white p-6 md:p-8 rounded-3xl card-shadow text-center">
+                        <h2 class="text-3xl font-bold text-sky-blue mb-6">Pawsome Dog Videos!</h2>
+                        <p class="text-gray-600 mb-8">
+                            Watch these fun, kid-friendly dog adventures!
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Video 1: Cute Puppies -->
+                            <div class="rounded-xl overflow-hidden shadow-lg bg-bg-light">
+                                <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/FwFjH9G65i4?si=k-F_oXl2mF5r4y0u" title="Cute Puppies" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-lg text-magic-purple">The Cutest Dog Compilation!</h4>
+                                </div>
+                            </div>
+
+                            <!-- Video 2: Dog Tricks -->
+                            <div class="rounded-xl overflow-hidden shadow-lg bg-bg-light">
+                                <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/fD3IinJg_9U?si=2T9Zk_Q9O-y1fK_c" title="Dog Training" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-lg text-magic-purple">Amazing Doggy Tricks!</h4>
+                                </div>
+                            </div>
+                            
+                            <!-- Video 3: Dog Adventures -->
+                            <div class="rounded-xl overflow-hidden shadow-lg bg-bg-light">
+                                <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/K9552I3J6hA?si=lqR5hY6N8NlE-K7v" title="Funny Dogs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-lg text-magic-purple">Silly Puppy Playtime!</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+        
+        <!-- Simple Footer -->
+        <footer class="text-center p-4 text-sm text-gray-500 bg-white shadow-inner mt-auto">
+            &copy; 2025 Magic Dogs Adventure Hub | All rights reserved.
+        </footer>
     </div>
 
     <script>
-        // API key is not required for this model in this environment.
+        // Global constant for API Key (Canvas environment handles this)
         const apiKey = "";
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-        const shopPage = document.getElementById('shop-page');
-        const gamesPage = document.getElementById('games-page');
-        const chatBox = document.getElementById('chat-box');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const loadingIndicator = document.getElementById('loading-indicator');
-        const customModal = document.getElementById('custom-modal');
-        const modalText = document.getElementById('modal-text');
+        // =========================================================================
+        // 1. NAVIGATION LOGIC
+        // =========================================================================
+        let currentPage = 'facts';
         
-        let chatHistory = [];
+        /**
+         * Switches the active section based on the provided section ID.
+         * @param {string} pageId - The ID of the page section to show (e.g., 'facts', 'games', 'search').
+         */
+        function navigate(pageId) {
+            currentPage = pageId;
+            const sections = document.querySelectorAll('.page-section');
+            const navButtons = document.querySelectorAll('.nav-button');
 
-        // Game variables
-        const gameColorBox = document.getElementById('game-color-box');
-        const gameInput = document.getElementById('game-input');
-        const gameMessage = document.getElementById('game-message');
-        const colors = {
-            "pink": "#FFC0CB",
-            "blue": "#ADD8E6",
-            "purple": "#E6E6FA",
-            "yellow": "#FFFFE0",
-            "green": "#90EE90",
-            "orange": "#FFDAB9"
-        };
-        let targetColorName = '';
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+            });
 
-        // RPS Game Variables
-        const rpsMessage = document.getElementById('rps-message');
-        const rpsResult = document.getElementById('rps-result');
-        const rpsScoreDisplay = document.getElementById('rps-score');
-        let rpsScore = { player: 0, bot: 0 };
-
-        // Tic-Tac-Toe Game Variables
-        const tictactoeBoard = document.getElementById('tictactoe-board');
-        const tictactoeStatus = document.getElementById('tictactoe-status');
-        let tictactoeCells = Array(9).fill('');
-        let tictactoeCurrentPlayer = 'X';
-        let tictactoeGameActive = true;
-
-        // Function to switch between pages
-        function showPage(pageId) {
-            console.log(`Switching to page: ${pageId}`);
-            shopPage.classList.add('hidden');
-            gamesPage.classList.add('hidden');
-            document.getElementById(pageId).classList.remove('hidden');
+            const activeSection = document.getElementById(`section-${pageId}`);
+            const activeButton = document.getElementById(`nav-${pageId}`);
+            
+            if (activeSection) {
+                activeSection.classList.remove('hidden');
+            }
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+            
+            // Special initialization for sections
+            if (pageId === 'games') {
+                initGames();
+            } else if (pageId === 'studio') {
+                startCameraFeed();
+            } else {
+                stopCameraFeed(); // Turn off camera when navigating away
+            }
         }
+        
+        // =========================================================================
+        // 2. CAMERA SNAP TOOL LOGIC (Studio Feature)
+        // =========================================================================
+        const video = document.getElementById('camera-feed');
+        const canvas = document.getElementById('camera-canvas');
+        const snapButton = document.getElementById('snap-button');
+        const capturedImage = document.getElementById('captured-image');
+        const snapPlaceholder = document.getElementById('snap-placeholder');
+        const cameraError = document.getElementById('camera-error');
+        let stream = null;
 
-        // Function to show a custom modal instead of alert()
-        function showModal(message) {
-            console.log(`Showing modal with message: ${message}`);
-            modalText.textContent = message;
-            customModal.classList.remove('hidden');
-        }
+        /** Starts the camera feed and enables the snap button. */
+        function startCameraFeed() {
+            cameraError.classList.add('hidden');
+            if (stream) return; // Already running
 
-        // Function to close the custom modal
-        function closeModal() {
-            console.log('Closing modal.');
-            customModal.classList.add('hidden');
-        }
-
-        // Function for the 'Buy Now!' button
-        // Note: Payment processing is a complex feature that requires a secure back-end system and a payment gateway.
-        // This button currently only shows a front-end pop-up and does not process any real payments.
-        function buyItem(itemName) {
-            console.log(`Attempting to add "${itemName}" to cart.`);
-            showModal(`Added "${itemName}" to your cart!`);
-        }
-
-        // Helper function to create and append a chat message
-        function appendMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('chat-message', `message-${sender}`);
-            messageDiv.textContent = text;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // Function to make the API call to the chatbot
-        async function getChatbotResponse(userMessage) {
-            const systemPrompt = "You are a funny and friendly 10-year-old girl named Rosie. You love telling jokes and making people laugh. Sometimes you tell a short story or give a more detailed explanation. You should respond to questions with a cheerful and playful tone, and feel free to add emojis. If someone asks for a joke, tell them a silly, kid-friendly joke!";
-
-            try {
-                loadingIndicator.classList.remove('hidden');
-                
-                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-
-                const payload = {
-                    contents: chatHistory,
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                };
-                
-                // Add a simple visual feedback to the send button
-                sendBtn.style.transform = 'scale(0.95)';
-                setTimeout(() => { sendBtn.style.transform = 'scale(1)'; }, 100);
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+                .then(mediaStream => {
+                    stream = mediaStream;
+                    video.srcObject = mediaStream;
+                    video.play();
+                    snapButton.disabled = false;
+                })
+                .catch(err => {
+                    console.error("Error accessing camera: ", err);
+                    cameraError.classList.remove('hidden');
+                    snapButton.disabled = true;
                 });
-                
-                if (!response.ok) {
-                    console.error('API response not OK:', response.status, response.statusText);
-                    throw new Error('API response was not successful.');
-                }
-
-                const result = await response.json();
-                const botMessage = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                
-                if (!botMessage) {
-                    throw new Error('No bot message received in the response.');
-                }
-
-                chatHistory.push({ role: "model", parts: [{ text: botMessage }] });
-
-                loadingIndicator.classList.add('hidden');
-
-                appendMessage('bot', botMessage);
-
-            } catch (error) {
-                console.error("Error fetching chatbot response:", error);
-                loadingIndicator.classList.add('hidden');
-                appendMessage('bot', "Oops! My robot brain got a little fuzzy. Can you ask me that again? 🤪 It might be a bad internet connection or something!");
+        }
+        
+        /** Stops the camera feed by stopping all tracks. */
+        function stopCameraFeed() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                video.srcObject = null;
+                snapButton.disabled = true;
             }
         }
 
-        // Function to handle the send button click
-        async function sendMessage() {
-            console.log('Send button clicked.');
-            const userMessage = chatInput.value.trim();
-            if (userMessage === '') return;
+        /** Captures a frame from the video stream to the canvas and displays it. */
+        function takePicture() {
+            if (!stream) return;
 
-            chatInput.value = '';
-            appendMessage('user', userMessage);
-
-            await getChatbotResponse(userMessage);
+            // Set canvas dimensions to match video stream
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw the video frame onto the canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas content to image data URL
+            const imageDataURL = canvas.toDataURL('image/png');
+            
+            // Display the captured image
+            capturedImage.src = imageDataURL;
+            capturedImage.classList.remove('hidden');
+            snapPlaceholder.classList.add('hidden');
         }
+        
+        snapButton.addEventListener('click', takePicture);
 
-        // New function to filter products based on search input
-        function filterProducts() {
-            const searchInput = document.getElementById('search-input');
-            const query = searchInput.value.toLowerCase();
-            const products = document.querySelectorAll('.product-card');
+        // =========================================================================
+        // 3. AI BOOK GENERATOR LOGIC (Studio Feature)
+        // =========================================================================
+        const nameInput = document.getElementById('anthro-name-input');
+        const themeInput = document.getElementById('anthro-theme-input');
+        const generateButton = document.getElementById('generate-book-button');
+        const bookOutput = document.getElementById('book-output');
+        const bookLoading = document.getElementById('book-loading');
+        const bookError = document.getElementById('book-error');
 
-            products.forEach(product => {
-                const title = product.getAttribute('data-title').toLowerCase();
-                const description = product.getAttribute('data-description').toLowerCase();
-                if (title.includes(query) || description.includes(query)) {
-                    product.style.display = 'block';
-                } else {
-                    product.style.display = 'none';
-                }
-            });
-        }
+        async function generateAIBook() {
+            const name = nameInput.value.trim();
+            const theme = themeInput.value.trim();
 
-        // --- Guess the Color Game Functions ---
-        function startGame() {
-            const colorNames = Object.keys(colors);
-            targetColorName = colorNames[Math.floor(Math.random() * colorNames.length)];
-            gameColorBox.style.backgroundColor = colors[targetColorName];
-            gameMessage.textContent = "What color am I? 🤔";
-        }
-
-        function checkGuess() {
-            console.log('Guess button clicked.');
-            const guess = gameInput.value.trim().toLowerCase();
-            if (guess === '') {
-                gameMessage.textContent = "You didn't guess anything! Silly! 😜";
+            if (!name || !theme) {
+                bookError.textContent = "Please provide both a name and a theme!";
+                bookError.classList.remove('hidden');
+                setTimeout(() => bookError.classList.add('hidden'), 3000);
                 return;
             }
-            if (guess === targetColorName) {
-                gameMessage.textContent = `Yay! You got it right! The color was ${targetColorName}! 🎉`;
-            } else {
-                gameMessage.textContent = `Nope, that's not it! The color was ${targetColorName}. Let's play again! 😊`;
-            }
-            gameInput.value = '';
-            setTimeout(startGame, 3000); // Start a new round after 3 seconds
-        }
 
-        // --- Rock, Paper, Scissors Game Functions ---
-        function playRPS(playerChoice) {
-            console.log(`RPS played: ${playerChoice}`);
-            const choices = ['rock', 'paper', 'scissors'];
-            const botChoice = choices[Math.floor(Math.random() * choices.length)];
+            // Set loading state
+            generateButton.disabled = true;
+            bookOutput.classList.add('hidden');
+            bookLoading.classList.remove('hidden');
+            bookError.classList.add('hidden');
             
-            let result = '';
-            if (playerChoice === botChoice) {
-                result = "It's a tie! 😅";
-            } else if (
-                (playerChoice === 'rock' && botChoice === 'scissors') ||
-                (playerChoice === 'paper' && botChoice === 'rock') ||
-                (playerChoice === 'scissors' && botChoice === 'paper')
-            ) {
-                result = "You win! Yay! 🎉";
-                rpsScore.player++;
-            } else {
-                result = "I win! Hehe! 😂";
-                rpsScore.bot++;
-            }
-            
-            rpsMessage.textContent = `You chose ${playerChoice} and I chose ${botChoice}.`;
-            rpsResult.textContent = result;
-            updateRPSScore();
-        }
-
-        function updateRPSScore() {
-            rpsScoreDisplay.textContent = `Player: ${rpsScore.player} | Rosie: ${rpsScore.bot}`;
-        }
-        
-        // --- Tic-Tac-Toe Game Functions ---
-        function createBoard() {
-            tictactoeBoard.innerHTML = '';
-            tictactoeCells.forEach((cell, index) => {
-                const cellElement = document.createElement('div');
-                cellElement.classList.add('w-24', 'h-24', 'flex', 'items-center', 'justify-center', 'text-4xl', 'font-bold', 'cursor-pointer', 'bg-gray-100', 'rounded-md', 'border-2', 'border-gray-300', 'cell-hover');
-                cellElement.dataset.index = index;
-                cellElement.addEventListener('click', handleCellClick);
-                tictactoeBoard.appendChild(cellElement);
-            });
-        }
-
-        function handleCellClick(e) {
-            console.log('Tic-Tac-Toe cell clicked.');
-            const cell = e.target;
-            const index = cell.dataset.index;
-            
-            if (tictactoeCells[index] !== '' || !tictactoeGameActive) {
-                return;
-            }
-            
-            tictactoeCells[index] = tictactoeCurrentPlayer;
-            cell.textContent = tictactoeCurrentPlayer;
-            cell.style.color = tictactoeCurrentPlayer === 'X' ? '#007185' : '#ff9900';
-            
-            if (checkWinner()) {
-                tictactoeStatus.textContent = `Player ${tictactoeCurrentPlayer} wins! 🎉`;
-                tictactoeGameActive = false;
-            } else if (tictactoeCells.every(cell => cell !== '')) {
-                tictactoeStatus.textContent = "It's a tie! 🤝";
-                tictactoeGameActive = false;
-            } else {
-                tictactoeCurrentPlayer = tictactoeCurrentPlayer === 'X' ? 'O' : 'X';
-                tictactoeStatus.textContent = `Player ${tictactoeCurrentPlayer}'s turn`;
-            }
-        }
-
-        function checkWinner() {
-            const winConditions = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                [0, 4, 8], [2, 4, 6] // Diagonals
-            ];
-
-            for (let i = 0; i < winConditions.length; i++) {
-                const [a, b, c] = winConditions[i];
-                if (tictactoeCells[a] && tictactoeCells[a] === tictactoeCells[b] && tictactoeCells[a] === tictactoeCells[c]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function resetTicTacToe() {
-            console.log('Resetting Tic-Tac-Toe game.');
-            tictactoeCells = Array(9).fill('');
-            tictactoeCurrentPlayer = 'X';
-            tictactoeGameActive = true;
-            tictactoeStatus.textContent = "Player X's turn";
-            createBoard();
-        }
-
-        // Handle the Enter key to send message or guess
-        chatInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        gameInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                checkGuess();
-            }
-        });
-
-        // Add event listeners for the search bar
-        document.getElementById('search-input').addEventListener('keyup', filterProducts);
-        document.getElementById('search-btn').addEventListener('click', filterProducts);
-
-        // Start the games when the page loads
-        window.onload = () => {
-            console.log('Page loaded and games started.');
-            startGame();
-            updateRPSScore();
-            createBoard();
-        };
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Super Duper Smoothie Shop!</title>
- <!-- gygybyfvuyvuigvuycfuyffcyf -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
-        body {
-            font-family: 'Comic Neue', sans-serif;
-            /* Make the background super colorful and happy! */
-            background-image: linear-gradient(45deg, #FFC0CB, #FFD700, #98FB98, #ADD8E6, #FF69B4);
-            background-size: 400% 400%;
-            animation: gradient-animation 15s ease infinite;
-        }
-        @keyframes gradient-animation {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        /* Style for our custom pop-up message */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 5px solid #888;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* Styles for the new sections */
-        .wobbly-border {
-            border-width: 5px;
-            border-style: dashed;
-            border-color: #FF00FF #FFFF00 #00FF00 #0000FF;
-            transform: rotate(-2deg);
-        }
-        .chat-container {
-            height: 250px;
-            overflow-y: auto;
-        }
-        .chat-message {
-            background-color: #f0f0f0;
-            border-radius: 15px;
-            padding: 10px;
-            margin-bottom: 8px;
-            max-width: 80%;
-        }
-        /* Game specific styles */
-        #game-container {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #ffffff;
-            background-opacity: 0.8;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            text-align: center;
-        }
-        .game-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff69b4;
-            margin-bottom: 1.5rem;
-        }
-        .game-controls {
-            margin-top: 1rem;
-            display: flex;
-            gap: 1rem;
-        }
-        .game-button {
-            background-color: #a78bfa;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 9999px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            transition-property: all;
-            transition-duration: 300ms;
-            transform: scale(1);
-            cursor: pointer;
-        }
-        .game-button:hover {
-            transform: scale(1.1);
-            background-color: #8b5cf6;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-        .card {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            background-color: #ADD8E6;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            transform-style: preserve-3d;
-        }
-        .card.is-flipped {
-            transform: rotateY(180deg);
-        }
-        .card-inner {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-        }
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-        .card-back {
-            background-color: #FFC0CB;
-            border: 2px solid #FF69B4;
-        }
-        .card-front {
-            background-color: #98FB98;
-            border: 2px solid #00FF00;
-            transform: rotateY(180deg);
-        }
-        #rps-result, #rps-choices {
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            color: #333;
-        }
-        #rps-choices button {
-            background-color: #FFD700;
-            font-size: 2rem;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-        }
-        #catch-canvas {
-            border: 5px dashed #FF69B4;
-            background-color: #e0f7fa;
-        }
-    </style>
-</head>
-<body class="flex flex-col items-center p-4 min-h-screen">
-    <!-- This is the main title of the smoothie shop! -->
-    <header class="text-center bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg mt-8 mb-12">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-pink-600 drop-shadow-xl animate-bounce">
-            🍓 EASYFLOW 17 Smoothie Shop! 🥭
-        </h1>
-        <p class="text-xl md:text-2xl text-purple-600 mt-4">
-            Made with love, sparkles, and a little bit of magic! ✨
-        </p>
-    </header>
-    
-    <!-- This is the container for all the main content pages -->
-    <div id="main-content" class="w-full max-w-4xl p-4 md:p-8 bg-white bg-opacity-80 rounded-3xl shadow-lg">
-        <h2 class="text-4xl text-center font-bold text-green-700 mb-8">My Yummy Smoothies!</h2>
-        
-        <!-- A grid to show off all the smoothies, it's responsive too! -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Strawberry Smoothie Card -->
-            <div class="bg-pink-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-red-700 mb-2">The Strawberry Sparkle! 💖</h3>
-                <img src="https://placehold.co/150x150/f08080/FFFFFF?text=🍓" alt="Strawberry Smoothie" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-red-900">
-                    Made with fresh strawberries from my garden! It's super sweet and makes you feel like royalty!
-                </p>
-            </div>
-
-            <!-- Mango Smoothie Card -->
-            <div class="bg-yellow-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-orange-700 mb-2">The Mango Sunshine! ☀️</h3>
-                <img src="https://placehold.co/150x150/FFD700/FFFFFF?text=🥭" alt="Mango Smoothie" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-orange-900">
-                    A tropical treat that tastes like a sunny day at the beach! Don't forget your tiny umbrella.
-                </p>
-            </div>
-
-            <!-- Blueberry Smoothie Card -->
-            <div class="bg-purple-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-indigo-700 mb-2">The Berry Blast! 🫐</h3>
-                <img src="https://placehold.co/150x150/6A5ACD/FFFFFF?text=🫐" alt="Blueberry Smoothie" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-indigo-900">
-                    So many berries! It's like a magical flavor explosion in your mouth. Best served with joy!
-                </p>
-            </div>
-
-            <!-- Chocolate Banana Smoothie Card -->
-            <div class="bg-brown-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-yellow-800 mb-2">The Choco-Monkey! 🍌</h3>
-                <img src="https://placehold.co/150x150/DEB887/FFFFFF?text=🍌" alt="Chocolate Banana Smoothie" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-yellow-900">
-                    Chocolate AND banana! It's my favorite combo ever. Perfect for when you're feeling silly.
-                </p>
-            </div>
-
-        </div>
-
-        <!-- Section about why these smoothies are so special! -->
-        <div class="text-center mt-12 bg-white bg-opacity-80 p-6 rounded-3xl shadow-lg">
-            <h3 class="text-3xl font-bold text-blue-700 mb-4">Why My Smoothies Are Awesome!</h3>
-            <p class="text-xl text-blue-900">
-                They're made with lots of yummy fruit and zero unhealty stuff they are super healthy, which is great! And they are made with my own special, secret recipe... Shhhh! 🤫
-            </p>
-        </div>
-
-        <!-- The order section -->
-        <section class="mt-12 text-center">
-            <h2 class="text-4xl font-bold text-red-700 mb-6">Want a Smoothie?!</h2>
-            <button id="orderButton" class="bg-yellow-400 text-yellow-900 font-bold py-4 px-8 rounded-full text-2xl shadow-xl transition-transform duration-300 transform hover:scale-110 active:scale-95">
-                Click Here to Order! ✨
-            </button>
-        </section>
-
-        <!-- The Games and Membership buttons -->
-        <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <button onclick="showPage('games')" class="game-button">Play Games! 🕹️</button>
-            <button onclick="showPage('membership')" class="game-button">Join the VIP Club! 👑</button>
-        </div>
-    </div>
-    
-    <!-- The games section (initially hidden) -->
-    <section id="games-content" class="hidden mt-12 w-full max-w-4xl p-4 md:p-8 bg-yellow-200 rounded-3xl shadow-lg">
-        <h2 class="text-4xl text-center font-bold text-pink-700 mb-6">Let's Play Games! 🎮</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Game Card 1 -->
-            <div class="bg-green-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-green-800 mb-2">Memory Match! 🧠</h3>
-                <img src="https://placehold.co/150x150/98FB98/FFFFFF?text=🍎" alt="Memory Match Game" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-green-900">
-                    Tap the cards to find matching fruit emojis! Can you find them all?
-                </p>
-                <button onclick="loadGame('memory')" class="mt-4 bg-purple-400 text-purple-900 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105">
-                    Play!
-                </button>
-            </div>
-            <!-- Game Card 2 -->
-            <div class="bg-blue-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-blue-800 mb-2">Rock, Paper, Scissors! ✂️</h3>
-                <img src="https://placehold.co/150x150/ADD8E6/FFFFFF?text=🪨" alt="Rock Paper Scissors Game" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-blue-900">
-                    A super fun guessing game against the computer!
-                </p>
-                <button onclick="loadGame('rps')" class="mt-4 bg-purple-400 text-purple-900 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105">
-                    Play!
-                </button>
-            </div>
-            <!-- Game Card 3 -->
-            <div class="bg-red-300 rounded-2xl shadow-md p-6 text-center transform transition-transform duration-300 hover:scale-105">
-                <h3 class="text-3xl font-bold text-red-800 mb-2">Catch the Fruit! 🍓</h3>
-                <img src="https://placehold.co/150x150/FF69B4/FFFFFF?text=🧺" alt="Catch the Fruit Game" class="rounded-full mx-auto my-4 w-32 h-32 border-4 border-white">
-                <p class="text-lg text-red-900">
-                    Move the basket to catch all the yummy smoothie ingredients!
-                </p>
-                <button onclick="loadGame('catch')" class="mt-4 bg-purple-400 text-purple-900 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105">
-                    Play!
-                </button>
-            </div>
-        </div>
-        <!-- The container for the games to be displayed -->
-        <div id="game-container"></div>
-        <button onclick="showPage('main')" class="game-button mt-8">Go Back</button>
-    </section>
-
-    <!-- The membership page (initially hidden) -->
-    <section id="membership-content" class="hidden mt-12 w-full max-w-4xl p-4 md:p-8 bg-pink-200 rounded-3xl shadow-lg text-center">
-        <h2 class="text-4xl font-bold text-purple-700 mb-6">👑 Super Duper Smoothie VIP Club! 👑</h2>
-        <p class="text-2xl text-pink-800 mb-4">
-            Join our special club and get awesome stuff!
-        </p>
-        <ul class="text-xl text-left inline-block list-disc list-inside space-y-2">
-            <li>A secret smoothie recipe every month!</li>
-            <li>you can get a free cookie,cake or muffin for your next order.</li>
-            <li>A fun certificate to hang on your wall!</li>
-            <li>A shiny VIP badge to show all your friends!</li>
-        </ul>
-        <button onclick="showModal('Welcome, VIP!', 'You are now an official member of the club!')" class="game-button mt-8">Join Now!</button>
-        <button onclick="showPage('main')" class="game-button mt-4">Go Back</button>
-    </section>
-
-    <!-- The chatbot section -->
-    <section class="mt-12 w-full max-w-lg p-6 bg-pink-100 rounded-2xl shadow-xl wobbly-border">
-        <h2 class="text-4xl text-center font-bold text-purple-700 mb-4 transform -rotate-1">
-            Chat with GiggleBot! 🤖
-        </h2>
-        <div id="chatBox" class="chat-container bg-white p-4 rounded-xl shadow-inner mb-4 flex flex-col justify-end">
-            <div class="chat-message bg-yellow-200 self-start">
-                <p>Hi! I'm GiggleBot! Ask me a silly question! 😜</p>
-            </div>
-        </div>
-        <div class="flex items-center">
-            <input type="text" id="chatInput" placeholder="What you wanna say?" class="flex-grow p-3 rounded-l-full border-2 border-green-500 focus:outline-none">
-            <button id="sendButton" class="bg-blue-400 text-white font-bold p-3 rounded-r-full hover:bg-blue-500 active:bg-blue-600">
-                Send!
-            </button>
-        </div>
-    </section>
-
-    <!-- The custom pop-up message box -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <p id="modalMessage" class="text-3xl font-bold text-pink-600 animate-pulse">✨ Yay! ✨</p>
-            <p id="modalSubMessage" class="text-xl mt-4 text-purple-700">
-                Your smoothie order is being made! I'll be right there!
-            </p>
-            <p class="text-lg mt-2 text-green-700">
-                (Maybe I'll put a little note on the bottom of the cup!)
-            </p>
-        </div>
-    </div>
-
-    <!-- The JavaScript part to make the buttons and chatbot work -->
-    <script>
-        // Get all the important things from the page
-        const orderButton = document.getElementById('orderButton');
-        const modal = document.getElementById('myModal');
-        const closeBtn = document.getElementsByClassName('close-btn')[0];
-        const modalMessage = document.getElementById('modalMessage');
-        const modalSubMessage = document.getElementById('modalSubMessage');
-        const gameContainer = document.getElementById('game-container');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-        const chatBox = document.getElementById('chatBox');
-        
-        // Page content sections
-        const mainContent = document.getElementById('main-content');
-        const gamesContent = document.getElementById('games-content');
-        const membershipContent = document.getElementById('membership-content');
-        const chatbotContent = document.querySelector('section.wobbly-border');
-
-        // This function shows our custom pop-up message
-        function showModal(message, subMessage = "") {
-            modalMessage.textContent = message;
-            modalSubMessage.textContent = subMessage;
-            modal.style.display = 'block';
-        }
-
-        // When the user clicks the order button, show the order modal
-        orderButton.onclick = function() {
-            showModal("✨ Yay! ✨", "Your smoothie order is being made! I'll be right there!");
-            // And also add a little message to GiggleBot's chat
-            addChatMessage('You just ordered a smoothie!', 'user');
-            setTimeout(() => {
-                addChatMessage("Wow! Smoothie yummy!", 'GiggleBot');
-            }, 1000);
-        }
-
-        // When the user clicks the "x" button, hide the modal
-        closeBtn.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        // When the user clicks anywhere outside the modal, hide it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        // Function to add a new message to the chat
-        function addChatMessage(message, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = message;
-            messageDiv.classList.add('chat-message');
-            if (sender === 'user') {
-                messageDiv.classList.add('self-end', 'bg-blue-200');
-            } else {
-                messageDiv.classList.add('self-start', 'bg-yellow-200');
-            }
-            chatBox.appendChild(messageDiv);
-            // Scroll to the bottom to see the newest message
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // Fun and friendly AI chatbot logic
-        async function getGiggleBotResponse(userMessage) {
-            const systemPrompt = "You are a very silly, very friendly AI for a kid's website. Your name is GiggleBot. You love smoothies and games. Your responses must be short, playful, and fun. You must tell silly jokes or riddles related to fruit, smoothies, or food. You can't answer complex questions, just silly ones.";
-            const apiKey = ""
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            const userQuery = `Write a short, engaging children's story about a magical anthropomorphic dog named ${name} who loves to ${theme}. The story should be 3 paragraphs long, with a clear beginning, middle, and end, suitable for reading aloud.`;
+            const systemPrompt = "You are a professional children's book author. Write a creative, positive, and simple story about an anthropomorphic dog character based on the user's input. Do not include a title or chapter headings. Just the story text.";
 
             const payload = {
-                contents: [{ parts: [{ text: userMessage }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
             };
             
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || "GiggleBot is having a nap right now!";
-                return text;
-            } catch (error) {
-                console.error("GiggleBot API error:", error);
-                return "Uh oh, my circuits are ticklish! Try again!";
+            const maxRetries = 3;
+            let attempt = 0;
+            let response = null;
+
+            while (attempt < maxRetries) {
+                try {
+                    const delay = Math.pow(2, attempt) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        break; // Success
+                    } else if (response.status === 429 && attempt < maxRetries - 1) {
+                        // Rate limit error, continue to retry
+                        attempt++;
+                    } else {
+                        throw new Error(`API returned status ${response.status}`);
+                    }
+                } catch (error) {
+                    if (attempt < maxRetries - 1) {
+                         attempt++;
+                    } else {
+                        // All retries failed
+                        console.error('Gemini API call failed after multiple retries:', error);
+                        bookError.textContent = 'Sorry, the magic ink ran out! Failed to connect to the story generator.';
+                        bookError.classList.remove('hidden');
+                        
+                        // Exit loop and stop execution
+                        attempt = maxRetries;
+                    }
+                }
             }
-        }
-        
-        // When the user clicks the "Send!" button
-        sendButton.onclick = async function() {
-            const userMessage = chatInput.value.trim();
-            if (userMessage) {
-                addChatMessage(userMessage, 'user');
-                chatInput.value = ''; // Clear the input field
+            
+            // Handle final response or error
+            generateButton.disabled = false;
+            bookLoading.classList.add('hidden');
+
+            if (response && response.ok) {
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
                 
-                // Show a "thinking" message from GiggleBot
-                const thinkingMessage = "GiggleBot is thinking...";
-                addChatMessage(thinkingMessage, 'GiggleBot');
-                
-                const aiResponse = await getGiggleBotResponse(userMessage);
-                
-                // Remove the "thinking" message and add the real response
-                const messages = chatBox.getElementsByClassName('chat-message');
-                messages[messages.length - 1].remove();
-                addChatMessage(aiResponse, 'GiggleBot');
+                if (text) {
+                    bookOutput.textContent = text;
+                    bookOutput.classList.remove('hidden');
+                } else {
+                    bookOutput.textContent = 'The AI generated an empty scroll. Try a different theme!';
+                    bookOutput.classList.remove('hidden');
+                }
+            } else if (attempt === maxRetries) {
+                 // Error already set in the catch block
+            } else {
+                 bookError.textContent = 'An unexpected error occurred while generating the book.';
+                 bookError.classList.remove('hidden');
             }
         }
 
-        // Also make the "Enter" key work for sending messages
-        chatInput.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                sendButton.click();
+        generateButton.addEventListener('click', generateAIBook);
+
+
+        // =========================================================================
+        // 4. GAMES LOGIC
+        // =========================================================================
+        
+        // --- Fun Facts Logic ---
+        const dogFacts = [
+            "A dog's nose print is unique, just like a human's fingerprint!",
+            "Dogs can be trained to detect cancer in humans.",
+            "The fastest dog, the Greyhound, can run up to 45 miles per hour.",
+            "Puppies are born blind and deaf.",
+            "Banjos, a type of puppy, are magical creatures with tiny wings, though they only fly at night.",
+            "The 'Magic Dog' breed can learn 100 words by the age of two.",
+            "A dog's sense of smell is 10,000 to 100,000 times better than ours.",
+            "The Basenji is the only dog that doesn't bark; it makes a yodel-like sound.",
+        ];
+        const factDisplay = document.getElementById('fact-display');
+        const factButton = document.getElementById('fact-button');
+        let lastFactIndex = -1;
+        function displayRandomFact() {
+            let newFactIndex;
+            do {
+                newFactIndex = Math.floor(Math.random() * dogFacts.length);
+            } while (newFactIndex === lastFactIndex && dogFacts.length > 1);
+            const fact = dogFacts[newFactIndex];
+            lastFactIndex = newFactIndex;
+            factDisplay.style.opacity = '0';
+            factButton.disabled = true;
+            setTimeout(() => {
+                factDisplay.textContent = fact;
+                factDisplay.style.opacity = '1';
+                factButton.disabled = false;
+            }, 300); 
+        }
+        factButton.addEventListener('click', displayRandomFact);
+
+        // --- Game 1: Block World ---
+        const gameCanvas = document.getElementById('game-canvas');
+        const inventoryCanvas = document.getElementById('inventory-canvas');
+        const resetGameButton = document.getElementById('reset-game-button');
+        const ctx = gameCanvas.getContext('2d');
+        const inventoryCtx = inventoryCanvas.getContext('2d');
+        let TILE_SIZE = 40; 
+        const BLOCK_TYPES = { AIR: 0, GRASS: 1, DIRT: 2, WOOD: 3, WATER: 4, STONE: 5, };
+        const BLOCK_COLORS = { 
+            [BLOCK_TYPES.AIR]: 'rgba(0,0,0,0)', [BLOCK_TYPES.GRASS]: '#38A169', 
+            [BLOCK_TYPES.DIRT]: '#8B4513', [BLOCK_TYPES.WOOD]: '#A0522D', 
+            [BLOCK_TYPES.WATER]: '#4FB4DE', [BLOCK_TYPES.STONE]: '#A9A9A9', 
+        };
+        let grid = [];
+        let rows = 10;
+        let cols = 10;
+        let selectedBlock = BLOCK_TYPES.GRASS;
+        function initializeGrid() {
+            cols = Math.floor(gameCanvas.width / TILE_SIZE);
+            rows = Math.floor(gameCanvas.height / TILE_SIZE);
+            if (cols === 0 || rows === 0) return;
+            grid = [];
+            for (let r = 0; r < rows; r++) {
+                grid[r] = [];
+                for (let c = 0; c < cols; c++) {
+                    if (r > rows - 2) {
+                        grid[r][c] = BLOCK_TYPES.DIRT;
+                    } else if (r === rows - 2) {
+                        grid[r][c] = BLOCK_TYPES.GRASS;
+                    } else {
+                        grid[r][c] = BLOCK_TYPES.AIR;
+                    }
+                }
             }
+            if (cols >= 4 && rows >= 4) {
+                grid[rows - 3][1] = BLOCK_TYPES.WOOD; 
+                grid[rows - 4][1] = BLOCK_TYPES.WOOD;
+                grid[rows - 5][0] = BLOCK_TYPES.GRASS; 
+                grid[rows - 5][1] = BLOCK_TYPES.GRASS; 
+                grid[rows - 5][2] = BLOCK_TYPES.GRASS;
+            }
+            drawGame();
+        }
+        function drawGame() {
+            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const blockType = grid[r][c];
+                    if (blockType !== BLOCK_TYPES.AIR) {
+                        ctx.fillStyle = BLOCK_COLORS[blockType];
+                        ctx.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+                        ctx.strokeRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
+                }
+            }
+        }
+        function drawInventory() {
+            inventoryCtx.clearRect(0, 0, 40, 40);
+            inventoryCtx.fillStyle = BLOCK_COLORS[selectedBlock];
+            inventoryCtx.fillRect(0, 0, 40, 40);
+            inventoryCtx.strokeStyle = 'black';
+            inventoryCtx.strokeRect(0, 0, 40, 40);
+        }
+        function handleGameClick(x, y) {
+            const col = Math.floor(x / TILE_SIZE);
+            const row = Math.floor(y / TILE_SIZE);
+            if (row >= 0 && row < rows && col >= 0 && col < cols) {
+                const currentBlock = grid[row][col];
+                if (currentBlock !== BLOCK_TYPES.AIR) {
+                    grid[row][col] = BLOCK_TYPES.AIR;
+                } else {
+                    grid[row][col] = selectedBlock;
+                }
+                drawGame();
+            }
+        }
+        function handleInventoryClick() {
+            const availableBlocks = [BLOCK_TYPES.GRASS, BLOCK_TYPES.DIRT, BLOCK_TYPES.WOOD, BLOCK_TYPES.STONE, BLOCK_TYPES.WATER];
+            let currentIndex = availableBlocks.indexOf(selectedBlock);
+            currentIndex = (currentIndex + 1) % availableBlocks.length;
+            selectedBlock = availableBlocks[currentIndex];
+            drawInventory();
+        }
+        function resizeCanvas() {
+            const containerWidth = gameCanvas.parentElement.offsetWidth;
+            const newSize = Math.min(containerWidth, 500); 
+            gameCanvas.width = newSize;
+            gameCanvas.height = newSize;
+            const newTileSize = Math.floor(newSize / 10);
+            if (newTileSize > 0) {
+                TILE_SIZE = newTileSize;
+                initializeGrid();
+            }
+        }
+        gameCanvas.addEventListener('click', (e) => {
+            const rect = gameCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            handleGameClick(x, y);
+        });
+        gameCanvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            const rect = gameCanvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            handleGameClick(x, y);
+        });
+        inventoryCanvas.addEventListener('click', handleInventoryClick);
+        resetGameButton.addEventListener('click', initializeGrid);
+
+        // --- Game 2: Number Guess ---
+        const guessInput = document.getElementById('guess-input');
+        const guessButton = document.getElementById('guess-button');
+        const guessResult = document.getElementById('guess-result');
+        const newGameButton = document.getElementById('new-game-button');
+        let secretNumber;
+        let attempts = 0;
+        function startNewGuessingGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1; // Number between 1 and 100
+            attempts = 0;
+            guessResult.textContent = "I've chosen a new number! Start guessing!";
+            guessResult.classList.remove('text-leaf-green', 'text-sparkle-pink');
+            guessResult.classList.add('text-magic-purple');
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessButton.disabled = false;
+        }
+        function handleGuess() {
+            const guess = parseInt(guessInput.value);
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                guessResult.textContent = "Woof! Please enter a valid number between 1 and 100.";
+                guessResult.classList.remove('text-leaf-green', 'text-sparkle-pink');
+                guessResult.classList.add('text-magic-purple');
+                return;
+            }
+            attempts++;
+            if (guess === secretNumber) {
+                guessResult.textContent = `Pawsome! You guessed the magic number ${secretNumber} in ${attempts} tries! ✨`;
+                guessResult.classList.remove('text-magic-purple', 'text-sparkle-pink');
+                guessResult.classList.add('text-leaf-green');
+                guessInput.disabled = true;
+                guessButton.disabled = true;
+            } else if (guess < secretNumber) {
+                guessResult.textContent = `Too low! Go higher, my friend. (Attempt: ${attempts})`;
+                guessResult.classList.remove('text-leaf-green');
+                guessResult.classList.add('text-sparkle-pink');
+            } else {
+                guessResult.textContent = `Too high! Try a bit lower. (Attempt: ${attempts})`;
+                guessResult.classList.remove('text-leaf-green');
+                guessResult.classList.add('text-sparkle-pink');
+            }
+            guessInput.value = '';
+            guessInput.focus();
+        }
+        guessButton.addEventListener('click', handleGuess);
+        newGameButton.addEventListener('click', startNewGuessingGame);
+        guessInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleGuess();
         });
 
-        // Function to show only one section at a time
-        function showPage(pageName) {
-            mainContent.classList.add('hidden');
-            gamesContent.classList.add('hidden');
-            membershipContent.classList.add('hidden');
-            chatbotContent.classList.add('hidden');
+        // --- Game 3: Flappy Dog Adventure ---
+        const flappyCanvas = document.getElementById('flappy-dog-canvas');
+        const flappyCtx = flappyCanvas.getContext('2d');
+        const flappyStartButton = document.getElementById('flappy-start-button');
+        const flappyScoreDisplay = document.getElementById('flappy-score-display');
+        const flappyStatus = document.getElementById('flappy-status');
 
-            if (pageName === 'main') {
-                mainContent.classList.remove('hidden');
-                chatbotContent.classList.remove('hidden');
-                gameContainer.innerHTML = '';
-            } else if (pageName === 'games') {
-                gamesContent.classList.remove('hidden');
-                chatbotContent.classList.remove('hidden');
-            } else if (pageName === 'membership') {
-                membershipContent.classList.remove('hidden');
-                chatbotContent.classList.remove('hidden');
-            }
+        // Game constants
+        const GRAVITY = 0.5;
+        const JUMP_LIFT = -10;
+        const PIPE_SPEED = 3;
+        const PIPE_GAP = 150;
+        const PIPE_WIDTH = 50;
+
+        // Game state
+        let flappyGameLoop;
+        let isFlappyGameOver = true;
+        let flappyScore = 0;
+        let dog = {};
+        let pipes = [];
+
+        // Dog representation
+        const DOG_SIZE = 30; // Font size for emoji
+        const DOG_Y_OFFSET = DOG_SIZE / 2; // Approximate center of the dog emoji
+
+        function resetFlappyDog() {
+            // Resize canvas to fit container width, maintaining a 4:3 aspect ratio
+            const containerWidth = flappyCanvas.parentElement.offsetWidth;
+            const maxWidth = Math.min(containerWidth, 600); 
+            flappyCanvas.width = maxWidth;
+            flappyCanvas.height = maxWidth * 0.75; 
+            
+            dog = {
+                x: 50,
+                y: flappyCanvas.height / 2,
+                velocity: 0,
+                width: DOG_SIZE * 0.8,
+                height: DOG_SIZE * 0.8,
+            };
+            
+            pipes = [];
+            flappyScore = 0;
+            isFlappyGameOver = false;
+            flappyScoreDisplay.textContent = `Score: 0`;
+            flappyStatus.textContent = "Click or tap the screen to fly!";
+            flappyStatus.classList.remove('text-red-500');
+            flappyStatus.classList.add('text-magic-purple');
+
+            // Clear any previous animation frame
+            if (flappyGameLoop) cancelAnimationFrame(flappyGameLoop);
+            
+            // Draw the initial state
+            drawFlappyDog();
         }
 
-        // This function will load and start a game when a button is clicked
-        function loadGame(gameName) {
-            gameContainer.innerHTML = ''; // Clear the game area first
-            if (gameName === 'memory') {
-                loadMemoryGame();
-            } else if (gameName === 'rps') {
-                loadRPSGame();
-            } else if (gameName === 'catch') {
-                loadCatchGame();
-            }
+        function addPipe() {
+            // Ensure pipe height leaves room for the gap and min/max boundaries
+            const minPipeHeight = 50;
+            const maxPipeHeight = flappyCanvas.height - PIPE_GAP - minPipeHeight;
+            const pipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1) + minPipeHeight);
+
+            pipes.push({
+                x: flappyCanvas.width,
+                y: 0, // Top pipe starts at top
+                width: PIPE_WIDTH,
+                height: pipeHeight, // Height of the top pipe
+                bottomY: pipeHeight + PIPE_GAP, // Y position where the bottom pipe starts
+                passed: false
+            });
         }
 
-        // --- Memory Match Game Logic ---
-        function loadMemoryGame() {
-            const fruits = ['🍓', '🍌', '🥭', '🫐', '🍍', '🍉', '🥝', '🍇'];
-            const gameEmojis = [...fruits, ...fruits].sort(() => Math.random() - 0.5);
-            let flippedCards = [];
-            let matchedPairs = 0;
-            let canFlip = true;
+        function drawDog() {
+            flappyCtx.font = `${DOG_SIZE}px sans-serif`;
+            flappyCtx.textAlign = 'center';
+            flappyCtx.textBaseline = 'middle';
+            flappyCtx.save();
             
-            const gameHtml = `
-                <h3 class="game-title">Memory Match!</h3>
-                <div class="grid-container max-w-sm">
-                    ${gameEmojis.map((emoji, index) => `
-                        <div class="card" data-index="${index}" data-emoji="${emoji}">
-                            <div class="card-inner">
-                                <div class="card-face card-back"></div>
-                                <div class="card-face card-front">${emoji}</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <button onclick="loadGame('memory')" class="game-button mt-4">Play Again!</button>
-            `;
-            gameContainer.innerHTML = gameHtml;
+            // Simple rotation for visual effect based on velocity
+            const maxAngle = Math.PI / 4;
+            const rotation = Math.min(Math.max(dog.velocity * 0.05, -maxAngle), maxAngle);
             
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => card.addEventListener('click', flipCard));
+            // Translate to the center of the dog for rotation
+            flappyCtx.translate(dog.x + dog.width / 2, dog.y + dog.height / 2);
+            flappyCtx.rotate(rotation);
+            flappyCtx.fillText('🐶', 0, 0); 
+            flappyCtx.restore();
+        }
+
+        function drawPipes() {
+            flappyCtx.fillStyle = '#10B981'; // Leaf-green for pipes
+            pipes.forEach(pipe => {
+                // Draw Top Pipe (Bone Pillar)
+                flappyCtx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+                
+                // Draw Bottom Pipe (Bone Pillar)
+                const bottomHeight = flappyCanvas.height - pipe.bottomY;
+                flappyCtx.fillRect(pipe.x, pipe.bottomY, pipe.width, bottomHeight);
+
+                // Simple bone tip effect (light gray rectangles)
+                flappyCtx.fillStyle = '#D1D5DB'; // Gray-300
+                flappyCtx.fillRect(pipe.x, pipe.height - 10, pipe.width, 10);
+                flappyCtx.fillRect(pipe.x, pipe.bottomY, pipe.width, 10);
+                flappyCtx.fillStyle = '#10B981'; // Reset color
+            });
+        }
+
+        function updateGame() {
+            // 1. Dog Physics (Apply Gravity and Update Position)
+            dog.velocity += GRAVITY;
+            dog.y += dog.velocity;
+
+            // 2. Pipe Movement and Generation
+            pipes.forEach(pipe => {
+                pipe.x -= PIPE_SPEED;
+                
+                // Check for passing a pipe and scoring
+                if (pipe.x + pipe.width < dog.x && !pipe.passed) {
+                    pipe.passed = true;
+                    flappyScore++;
+                    flappyScoreDisplay.textContent = `Score: ${flappyScore}`;
+                }
+            });
+
+            // Remove off-screen pipes
+            pipes = pipes.filter(pipe => pipe.x + PIPE_WIDTH > 0);
+
+            // Add new pipe periodically 
+            if (pipes.length === 0 || pipes[pipes.length - 1].x < flappyCanvas.width - 250) {
+                addPipe();
+            }
+
+            // 3. Collision Detection
             
-            function flipCard() {
-                if (!canFlip || flippedCards.length === 2 || this.classList.contains('is-flipped')) {
+            // Ground/Ceiling Collision
+            // Dog uses its approximate center point (y) for drawing, so we use offset for bounds
+            const dogTop = dog.y - DOG_Y_OFFSET;
+            const dogBottom = dog.y + DOG_Y_OFFSET;
+
+            if (dogBottom > flappyCanvas.height - 5 || dogTop < 0) { // -5 is for the ground line
+                endFlappyGame("Ouch! Hit the ground or the sky!");
+                return;
+            }
+            
+            // Pipe Collision
+            for (const pipe of pipes) {
+                const pipeTopCollision = dogTop < pipe.height;
+                const pipeBottomCollision = dogBottom > pipe.bottomY;
+
+                if (
+                    dog.x + dog.width > pipe.x && 
+                    dog.x < pipe.x + pipe.width &&
+                    (pipeTopCollision || pipeBottomCollision)
+                ) {
+                    endFlappyGame("Oh no! Hit a magical bone pillar!");
                     return;
                 }
-                
-                this.classList.add('is-flipped');
-                flippedCards.push(this);
-                
-                if (flippedCards.length === 2) {
-                    canFlip = false;
-                    setTimeout(checkForMatch, 1000);
-                }
-            }
-            
-            function checkForMatch() {
-                const [card1, card2] = flippedCards;
-                const isMatch = card1.dataset.emoji === card2.dataset.emoji;
-                
-                if (isMatch) {
-                    matchedPairs++;
-                    card1.removeEventListener('click', flipCard);
-                    card2.removeEventListener('click', flipCard);
-                } else {
-                    card1.classList.remove('is-flipped');
-                    card2.classList.remove('is-flipped');
-                }
-                
-                flippedCards = [];
-                canFlip = true;
-                
-                if (matchedPairs === fruits.length) {
-                    setTimeout(() => showModal('You Won!', 'You matched all the smoothie ingredients!'), 500);
-                }
             }
         }
 
-        // --- Rock, Paper, Scissors Game Logic ---
-        function loadRPSGame() {
-            const choices = ['🪨', '📄', '✂️'];
-            const gameHtml = `
-                <h3 class="game-title">Rock, Paper, Scissors!</h3>
-                <div class="text-center">
-                    <p id="rps-result" class="text-3xl font-bold">Choose your weapon!</p>
-                    <div id="rps-choices" class="mt-4 flex justify-center space-x-4">
-                        <button onclick="playRPS('🪨')">🪨</button>
-                        <button onclick="playRPS('📄')">📄</button>
-                        <button onclick="playRPS('✂️')">✂️</button>
-                    </div>
-                </div>
-                <button onclick="loadGame('rps')" class="game-button mt-4">Play Again!</button>
-            `;
-            gameContainer.innerHTML = gameHtml;
+        function endFlappyGame(message) {
+            isFlappyGameOver = true;
+            cancelAnimationFrame(flappyGameLoop);
+            flappyStatus.textContent = `${message} Final Score: ${flappyScore}. Tap Restart!`;
+            flappyStatus.classList.remove('text-magic-purple');
+            flappyStatus.classList.add('text-red-500');
+            // Draw final screen state
+            drawFlappyDog(); 
+        }
+
+        function flappyJump(e) {
+            if (isFlappyGameOver) return;
+            
+            // Prevent accidental scrolling on touch devices
+            if (e.type === 'touchstart') e.preventDefault();
+            
+            dog.velocity = JUMP_LIFT;
+        }
+
+        function drawFlappyDog() {
+            // Clear the canvas and set background (sky blue)
+            flappyCtx.clearRect(0, 0, flappyCanvas.width, flappyCanvas.height);
+            flappyCtx.fillStyle = flappyCanvas.style.backgroundColor; // Use the blue color from style
+            flappyCtx.fillRect(0, 0, flappyCanvas.width, flappyCanvas.height);
+            
+            // Draw pipes first
+            drawPipes();
+            
+            // Draw dog
+            drawDog();
+            
+            // Draw ground (a grass patch)
+            flappyCtx.fillStyle = '#38A169'; // Grass
+            flappyCtx.fillRect(0, flappyCanvas.height - 5, flappyCanvas.width, 5); 
+        }
+
+        function flappyLoop() {
+            if (!isFlappyGameOver) {
+                updateGame();
+                drawFlappyDog();
+                flappyGameLoop = requestAnimationFrame(flappyLoop);
+            }
+        }
+
+        function startGame() {
+            if (isFlappyGameOver) {
+                resetFlappyDog();
+                flappyLoop();
+            }
+        }
+
+        // Event Listeners for Flappy Dog
+        flappyStartButton.addEventListener('click', startGame);
+        flappyCanvas.addEventListener('click', flappyJump);
+        flappyCanvas.addEventListener('touchstart', flappyJump);
+
+
+        // =========================================================================
+        // 5. GLOBAL INITIALIZATION
+        // =========================================================================
+
+        /** Initializes all games in the games section. */
+        function initGames() {
+            // Game 1: Block World setup
+            resizeCanvas();
+            drawInventory();
+
+            // Game 2: Number Guess setup
+            startNewGuessingGame();
+
+            // Game 3: Flappy Dog setup
+            resetFlappyDog(); 
+        }
+
+        window.addEventListener('resize', () => {
+            // Only re-initialize games if we are on the games page for responsiveness
+            if (currentPage === 'games') {
+                // Cancel existing flappy loop before resizing and restarting
+                if (flappyGameLoop) cancelAnimationFrame(flappyGameLoop); 
+                initGames(); 
+            }
+        });
+        
+        window.onload = function() {
+            navigate('facts');
+            setTimeout(displayRandomFact, 500);
+            
+            // Set initial state for the AI Book output
+            bookOutput.classList.remove('hidden');
+            bookLoading.classList.add('hidden');
         }
         
-        function playRPS(playerChoice) {
-            const choices = ['🪨', '📄', '✂️'];
-            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
-            let result = '';
-
-            if (playerChoice === computerChoice) {
-                result = "It's a tie!";
-            } else if (
-                (playerChoice === '🪨' && computerChoice === '✂️') ||
-                (playerChoice === '📄' && computerChoice === '🪨') ||
-                (playerChoice === '✂️' && computerChoice === '📄')
-            ) {
-                result = "You win! Yay!";
-            } else {
-                result = "You lose! Awww.";
-            }
-
-            document.getElementById('rps-result').textContent = `You chose ${playerChoice}, I chose ${computerChoice}. ${result}`;
-        }
-
-        // --- Catch the Fruit Game Logic ---
-        function loadCatchGame() {
-            const gameHtml = `
-                <h3 class="game-title">Catch the Fruit!</h3>
-                <canvas id="catch-canvas" width="400" height="400"></canvas>
-                <div class="mt-4 text-2xl font-bold">
-                    Score: <span id="catch-score">0</span>
-                </div>
-                <button onclick="loadGame('catch')" class="game-button mt-4">Play Again!</button>
-            `;
-            gameContainer.innerHTML = gameHtml;
-
-            const canvas = document.getElementById('catch-canvas');
-            const ctx = canvas.getContext('2d');
-            const scoreDisplay = document.getElementById('catch-score');
-            
-            let basketX = canvas.width / 2 - 25;
-            const basketWidth = 50;
-            const basketHeight = 10;
-            let fruits = [];
-            let score = 0;
-
-            function update() {
-                // Clear the canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draw the basket
-                ctx.fillStyle = '#ff69b4';
-                ctx.fillRect(basketX, canvas.height - basketHeight - 10, basketWidth, basketHeight);
-
-                // Update and draw fruits
-                for (let i = 0; i < fruits.length; i++) {
-                    let fruit = fruits[i];
-                    fruit.y += fruit.speed;
-                    ctx.font = '24px Comic Neue';
-                    ctx.fillText(fruit.emoji, fruit.x, fruit.y);
-
-                    // Check for collision
-                    if (fruit.y + 24 >= canvas.height - basketHeight - 10 && fruit.x > basketX && fruit.x < basketX + basketWidth) {
-                        score++;
-                        scoreDisplay.textContent = score;
-                        fruits.splice(i, 1);
-                        i--;
-                    }
-                    
-                    // Remove if missed
-                    if (fruit.y > canvas.height) {
-                        fruits.splice(i, 1);
-                        i--;
-                    }
-                }
-                
-                // Add new fruit randomly
-                if (Math.random() < 0.02) {
-                    const fruitEmojis = ['🍓', '🍌', '🥭', '🫐', '🍍', '🍉', '🥝', '🍇'];
-                    fruits.push({
-                        x: Math.random() * (canvas.width - 24),
-                        y: 0,
-                        speed: Math.random() * 2 + 1,
-                        emoji: fruitEmojis[Math.floor(Math.random() * fruitEmojis.length)]
-                    });
-                }
-
-                requestAnimationFrame(update);
-            }
-
-            // Move the basket with mouse or touch
-            canvas.addEventListener('mousemove', (e) => {
-                basketX = e.offsetX - basketWidth / 2;
-            });
-            canvas.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                basketX = (touch.clientX - rect.left) * scaleX - basketWidth / 2;
-            });
-
-            requestAnimationFrame(update);
-        }
-
-        // Initial call to set up the window's event handler
-        window.onload = function() {
-            // Nothing to do on load right now, but good practice to keep!
-        }
     </script>
 </body>
 </html>
