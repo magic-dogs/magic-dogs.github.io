@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>GAMES</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+           
+             body {
+    background-image: url("https://64.media.tumblr.com/b1dd28a97311b4c31df782b57a5af9b0/37e7c5bff7697cc4-6b/s500x750/a9d62023a197cedd6345ec2c49db94f0c9679c70.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    /* This line makes the image fill the screen */
+    background-size: cover; 
+    font-family: sans-serif;
+     font-size: 16px;
+     
+   
+    
+}
+          
+            body {
+    background-image: url("https://64.media.tumblr.com/b1dd28a97311b4c31df782b57a5af9b0/37e7c5bff7697cc4-6b/s500x750/a9d62023a197cedd6345ec2c49db94f0c9679c70.gif");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    /* This line makes the image fill the screen */
+    background-size: cover; 
+    font-family: sans-serif;
+     font-size: 16px;
+     
+   
+    
+}
+
+h1{
+color: white;
+
+}
+h2 {
+color: white;
+}
+p{
+color: white; 
+}
+
+         
+         .container {
+         
+         /*Blue Background */
+          width: 960px;
+          margin: 0 auto;
+           background-image: url("https://static.vecteezy.com/system/resources/thumbnails/013/396/404/small/crumpled-paper-texture-realisric-crease-sheet-free-vector.jpg");
+          padding: 6px;
+             width: 90%; 
+    /* Add max-width to stop it from getting too wide on large screens */
+    max-width: 960px; 
+    margin: 0 auto;
+          
+          }
+          .container-text{
+          color: black;
+          }
+          
+          video {
+    /* Remove the fixed height attribute from the HTML and set max-width here */
+    max-width: 100%; 
+    height: auto; /* Maintain aspect ratio */
+}
+          
+          .larger-game-container {
+           
+           background-color: lightcyan;
+            text-align: center;
+        }
+        .game-container {
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        
+   
+        
+        }
+        .game {
+            height: 60vmin;
+            width: 60vmin;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5vmin;
+            justify-content: center;
+        }
+        .box {
+            height: 18vmin;
+            width: 18vmin;
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+            font-size: 8vmin;
+            color: red;
+            background-color: yellow;
+        }
+        #reset {
+            padding: 1rem;
+            font-size: 1.25rem;
+            background: #191913;
+            color: white;
+            border-radius: 1rem;
+            border: none;
+        }
+        .box:hover {
+            background-color: chocolate;
+        }
+        #new-btn {
+            padding: 1rem;
+            font-size: 1.25rem;
+            background: #191913;
+            color: white;
+            border-radius: 1rem;
+            border: none;
+        }
+        #msg {
+            font-size: 8vmin;
+        }
+        .msg-container {
+            height: 30vmin;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+ <h1 id="title">Games</h1>
+    <hr>
+    <h2>Tic Tac Toe</h2>
+   
+   
+   
+    <div class="msg-container hide">
+        <p id="msg">Winner</p>
+        <button id="new-btn">New Game</button>
+    </div>
+    <main>
+        
+        <div class="game-container">
+            <div class="game">
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+            </div>
+        </div>
+        <button id="reset">Reset Game</button>
+        
+       <p> &copy; Magic Dogs</p>
+       
+       <a href ="index.html"> Return to Homepage</a>
+        <script>
+        let boxes = [...document.querySelectorAll('.box')];
+let resetBtn = document.querySelector('#reset');
+let turnO = true; // Player O starts
+let newGameBtn = document.querySelector('#new-btn');
+let msgContainer = document.querySelector('.msg-container');
+let msg = document.querySelector('#msg');
+
+const winPatterns = [
+    [0, 1, 2],
+    [0, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+    [3, 4, 5],
+    [6, 7, 8]
+];
+
+boxes.forEach((box) => {
+    box.addEventListener('click', function () {
+        if (turnO) {
+            box.innerText = 'O';
+            box.style.color = 'green';
+            turnO = false;
+            box.disabled = true;
+            checkWinner();
+        } else {
+            box.innerText = 'X';
+            box.style.color = 'black';
+            turnO = true;
+            box.disabled = true;
+            checkWinner();
+        }
+    });
+});
+
+const enableBoxes = () => {
+    for (let box of boxes) {
+        box.disabled = false;
+        box.innerText = "";
+    }
+};
+
+const disableBoxes = () => {
+    for (let box of boxes) {
+        box.disabled = true;
+    }
+};
+
+const showWinner = (winner) => {
+    msg.innerText = `Congratulations, Winner is ${winner}`;
+    msgContainer.classList.remove('hide');
+    disableBoxes();
+};
+
+const checkWinner = () => {
+    let hasWin = false;
+    for (let pattern of winPatterns) {
+        let pos1Val = boxes[pattern[0]].innerText;
+        let pos2Val = boxes[pattern[1]].innerText;
+        let pos3Val = boxes[pattern[2]].innerText;
+
+        if (pos1Val !== "" && pos2Val!=="" && pos3Val!=="" 
+            && pos1Val === pos2Val && pos2Val === pos3Val) {
+            showWinner(pos1Val);
+            hasWin = true;
+            return;
+        }
+    }
+
+    if (!hasWin) {
+        const allBoxes = [...boxes].every((box) => box.innerText !== "");
+        if (allBoxes) {
+            msgContainer.classList.remove('hide');
+            msg.innerText = 'Match Drawn';
+        }
+    }
+};
+
+const resetGame = () => {
+    turnO = true;
+    enableBoxes();
+    msgContainer.classList.add('hide');
+};
+
+newGameBtn.addEventListener('click', resetGame);
+resetBtn.addEventListener('click', resetGame);
+        
+        </script>
+    </main>
+</body>
+</html>
