@@ -1,148 +1,527 @@
-
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Home Page | CHARACTER TUBE</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-        <style>
-            
-            body {
-                
-                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAABSlBMVEX/rZfgUUP3+v8AAAD+/++JXVH5///4/P/594j1l37+//HUTEDHRzz/sJr+//PFQzj/eGL/0l3036jOSj7y6enMXlbOZ2D9/OjxkHjogm3JUEfv397LWVH9qJH47r3FQDT58sf574H8+d5bST35oIj69dHUgXzDMSH55XD54HH+tZv38bn55Xn8/4zEOS729fXr09J5eXn9vaD54bT70qr70H/48K/59pL555n+tpLitrbedWXZlZLWiobRdnHBIglONydQST3nxcMSEhKioqKLi4tHR0f613z8xIn9vI773438xqT65Ib48qT65aP69Jv149PxxWjwr1Lfppzx17jcinPPZ0bZj1ndn2LVf1Lem3/UemTLVjrty7lvQzZeNCOQQTOyTUFyaWS0trVYXVfT09WISj3GoZ+pOCr/a1BASD3+iHc/IgApKSlnp/SIAAANgUlEQVR4nO2b/VvbRhLHDfFJRl5LBBkL/CLJMsIWMrLBxLiATXAMtMWQ5LjSNk25hpDcpb38/7/ezEq7ksG59J6TSO55POmTF8nufjwz+52ZlUmlZjazmc1sZjObsNx3X5rgnn1z2nAap998aYwJ+8ZxmtVq0/maqDYcJ4PWfPKlSdAq9L/Ut04141OdQmZVKvzGl7Dtjq53NhAqk3EeZ4CsChHc0fHq9s7Odu7hkSpnrmvqbif33ROAeowGVKc7rm6bcMc03c7Zw7pru9PZce10Om3p30OS+1DAVm3qOlzVLPzN1M8ekulMt2wTmdLCuIFha/pMmepY16S0b1Ja7zxkBHVLkjS6soZJXqXBq2bOu66rB9eBSbLc7Ydj2jAxQugR2XSC2IGndN20Td13lUUd+aBQOmYM5o1kI5QDRI8fX+g2uEfTTT92poZQD5jqOrrJj1OzieFrZppj15aRRgsCaFqyrZ89lKsqGzt6kMtpTbvARM8874JpsmlietuUypZsHVJsZ2M7l7y7Njq6qVuMytZ6EMBz3bQgta2lJcsClbBkWZYs3YUIWiBY+k6yRJVUpWNqsKBGQyVbtqx1naZuSxJcsJfAbBmodFBQHd0mUcHaSdJXWFhwd8G6tgaq0B33dMnqLkEayZRoif7VHEPbMHa1QK8gzZLTqxyWEBslypIs07XsXqNa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");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-attachment: fixed;
-                background-size: cover;
-                
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 MAGIC DOGS 🐶 - The BEST Christmas Site!</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Firebas Modules for Chat History -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, collection, onSnapshot, setDoc, query, orderBy, limit, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-                font-family: 'Dancing Script', cursive;
-                font-size: 16px;
-                color: white; 
-                margin: 0; /* Remove default body margin */
-                padding-top: 20px; /* Space above content */
+        // This is important for debugging Firestore!
+        // setLogLevel('Debug'); // Uncomment this line if you need debug logs
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth;
+        let userId = null;
+        let isAuthReady = false;
+        // Global storage for the latest messages
+        window.chatMessages = [];
+
+        if (firebaseConfig) {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            // 1. Handle Authentication
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    // Start listening to chat history once we have a user ID
+                    setupChatListener();
+                } else {
+                    // Sign in anonymously if no token is available or user is logged out
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (error) {
+                        console.error("Firebase Sign-in failed:", error);
+                    }
+                }
+                isAuthReady = true;
+                document.getElementById('user-id-display').textContent = `My ID is: ${userId || 'Loading...'}`;
+            });
+        }
+
+        // Global function to handle chat listening
+        window.setupChatListener = function() {
+            if (!db || !userId) return;
+
+            const chatCollectionPath = `/artifacts/${appId}/users/${userId}/magic_dogs_chat`;
+            const q = query(collection(db, chatCollectionPath), orderBy("timestamp", "asc"));
+
+            onSnapshot(q, (snapshot) => {
+                const messages = [];
+                snapshot.forEach((doc) => {
+                    messages.push(doc.data());
+                });
+                window.chatMessages = messages; // Update the global message list
+                window.renderChatHistory(messages); // Call the window function to update the UI
+            }, (error) => {
+                console.error("Error listening to chat history:", error);
+            });
+        }
+
+        // Global function to save a message
+        window.saveMessage = async function(role, text) {
+            if (!db || !userId) {
+                console.error("Firestore not ready or no user ID.");
+                return;
             }
+
+            const chatCollectionPath = `/artifacts/${appId}/users/${userId}/magic_dogs_chat`;
             
-            h1, h2, p {
-                /* Ensures text elements use the cursive font and are centered */
-                font-family: 'Dancing Script', cursive;
-                text-align: center; 
-            }
-            
-            hr {
-                max-width: 50%; 
-                margin: 20px auto;
-                border: 0;
-                height: 1px;
-                background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
-            }
+            // Create a new document with a unique ID
+            await setDoc(doc(collection(db, chatCollectionPath)), {
+                role: role,
+                text: text,
+                timestamp: serverTimestamp() // Use server timestamp for ordering
+            });
+        }
+        
+        // Expose DB for direct use in the send handler
+        window.db = db;
+        window.getUserId = () => userId;
+        window.getAppId = () => appId;
+    </script>
 
-            /* --- CONTENT CONTAINERS (Simple Look) --- */
-            .container {
-                /* Simplification: Used a semi-transparent black overlay for legibility */
-                background-color: rgba(0, 0, 0, 0.5); 
-                padding: 15px;
-                border-radius: 10px;
-                width: 90%; 
-                max-width: 960px; 
-                margin: 20px auto; 
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            }
-            
-            .container-text {
-                color: white; 
-                font-size: 1.2em;
-            }
+    <style>
+        /* A fun, handwriting-style font for the 'kid-made' feel */
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+        
+        .kid-font {
+            font-family: 'Permanent Marker', cursive, 'Comic Sans MS', sans-serif;
+            text-shadow: 2px 2px 0 #000;
+        }
 
-            video {
-                max-width: 100%;
-                height: auto;
-                display: block; 
-                margin: 0 auto;
-                border-radius: 8px; /* Slightly rounded edges for simplicity */
-            }
+        .chat-bubble-user {
+            @apply bg-blue-300 text-gray-800 self-end;
+            border-radius: 18px 18px 0 18px;
+        }
 
-            /* --- NAVIGATION MENU (CIRCULAR BUTTONS) --- */
-            .topnav {
-                overflow: hidden;
-                background-color: transparent; 
-                display: flex; 
-                justify-content: center;
-                flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
-                gap: 15px; 
-                padding: 15px 0 30px 0;
-            }
-
-            .topnav a {
-                /* CHANGE: Circular Button Styles */
-                float: none; 
-                width: 100px; 
-                height: 100px;
-                border-radius: 50%; /* KEY: Circular shape */
-                
-                background-color: rgba(255, 255, 255, 0.7); 
-                color: black;
-                text-align: center;
-                padding: 0; 
-                text-decoration: none;
-                font-size: 1.2em;
-                line-height: 100px; /* Vertically center text in the circle */
-                transition: background-color 0.3s, transform 0.3s;
-                display: block; 
-                box-sizing: border-box; 
-                font-weight: bold;
-            }
-
-            .topnav a:hover {
-                background-color: #ddd;
-                color: black;
-                transform: scale(1.05);
-            }
-
-            .topnav a.active {
-                background-color: #04AA6D; /* Simple highlight color */
-                color: white;
-            }
-            
-        </style>
-    </head>
-    <body>
-    <h1 id="title">CHARACTER TUBE</h1>
-    <hr>
+        .chat-bubble-ai {
+            @apply bg-red-400 text-white self-start;
+            border-radius: 18px 18px 18px 0;
+            text-shadow: 1px 1px 0 #000; /* Extra kid-friendly shadow */
+        }
+        
+        .chat-container {
+            /* Max height and overflow for the chat log */
+            max-height: 400px;
+            overflow-y: auto;
+            border: 4px dashed #009900; /* Green dashed border */
+            background-color: #F8F4E3; /* Light cream/paper background */
+        }
+    </style>
+</head>
+<body class="bg-pink-100 min-h-screen p-4 md:p-8 kid-font text-gray-800">
     
-    <div class="topnav">
-            <a class="active" href="#home">Home</a>
-            <a href="game.html">Games Hub</a>
-            <a href="game-match.html">Memory Match</a>
-            <a href="game-color.html">Color Clicker</a>
-            <a href="movies.html">Movies</a>
-        </div>
-        <hr>
+    <!-- Big Title Header -->
+    <header class="text-center mb-8 p-4 bg-red-500 rounded-2xl shadow-xl border-4 border-yellow-400 transform rotate-2">
+        <h1 class="text-4xl sm:text-6xl text-white tracking-widest leading-none">
+            ✨ MAGIC DOGS! ✨
+        </h1>
+        <p class="text-lg sm:text-2xl text-yellow-200 mt-2 transform -rotate-2">
+            By Lily P. - I am 10 and this is my website! 🐶🎄
+        </p>
+        <div id="user-id-display" class="text-xs text-green-700 mt-2 font-normal">Loading user info...</div>
+    </header>
 
-        <h2>Future Update Section</h2>
-        <div class="container">
-            <p class="container-text">
-                Welcome to **CHARACTER TUBE**! We're planning exciting new things for our content and games. Check back often!
-            </p>
-        </div> 
-
-        <h2>What's Coming Up</h2>
-        <div class="container">
-            <p class="container-text">
-            . New characters and fun interactive stories are always being developed. Get ready for some new experiences soon!
-            </p>
-        </div>
+    <!-- Main Content Grid -->
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <h2>What to Watch?</h2>
-        <div class="container">     
-            <video src="placeholder-video.mp4" height="300px" controls poster=""></video>
-            <p class="container-text">
+        <!-- Left Column: Videos & Games -->
+        <div class="lg:col-span-2 space-y-8">
+
+            <!-- Funny Dog Videos Section -->
+            <section class="p-6 bg-green-500 rounded-xl shadow-lg border-4 border-white">
+                <h2 class="text-3xl text-yellow-200 mb-4 text-center pb-2 border-b-4 border-yellow-400">
+                    🎬 Funny Puppy Videos! I can't stop laughing! 😂
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-3 bg-white rounded-lg shadow-md border-2 border-red-500">
+                        <h3 class="text-xl text-red-600 mb-2">Doggy Olympics!</h3>
+                        <p class="text-sm">They try to catch the steak and run super fast!</p>
+                        <a href="https://www.youtube.com/watch?v=mRHj9ZFXhK4" target="_blank" class="block mt-2 text-center py-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg text-lg text-gray-800 font-bold shadow-md">
+                            WATCH IT!
+                        </a>
+                    </div>
+                    <div class="p-3 bg-white rounded-lg shadow-md border-2 border-red-500">
+                        <h3 class="text-xl text-red-600 mb-2">Talking Corgi!</h3>
+                        <p class="text-sm">This dog is so smart, he can almost talk like a human!</p>
+                        <a href="https://www.youtube.com/watch?v=WSnnwIDgQyI" target="_blank" class="block mt-2 text-center py-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg text-lg text-gray-800 font-bold shadow-md">
+                            MUST SEE!
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Games Section -->
+            <section class="p-6 bg-red-500 rounded-xl shadow-lg border-4 border-white">
+                <h2 class="text-3xl text-yellow-200 mb-4 text-center pb-2 border-b-4 border-yellow-400">
+                    🎮 Fun Game Links! (No boring homework!) 🤪
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Game 1 -->
+                    <a href="https://www.abcya.com" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                        <span class="text-2xl">📚</span>
+                        <p class="text-sm font-bold text-gray-800">ABCya! Games</p>
+                    </a>
+                    <!-- Game 2 -->
+                    <a href="https://pbskids.org/games" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                        <span class="text-2xl">📺</span>
+                        <p class="text-sm font-bold text-gray-800">PBS Kids Fun!</p>
+                    </a>
+                    <!-- Game 3 -->
+                    <a href="https://www.funbrain.com/" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                        <span class="text-2xl">🧠</span>
+                        <p class="text-sm font-bold text-gray-800">Funbrain Puzzles</p>
+                    </a>
+                </div>
+            </section>
             
-            </p>
+            <!-- Christmas Doggy Facts -->
+            <section class="p-6 bg-yellow-300 rounded-xl shadow-lg border-4 border-red-500">
+                <h2 class="text-3xl text-red-600 mb-4 text-center pb-2 border-b-4 border-red-500">
+                    🐾 Christmas Doggy Safety Tips! 🎅
+                </h2>
+                <ul class="text-lg space-y-2 list-disc list-inside text-gray-800 px-4">
+                    <li>🚫 Don't let your dog eat chocolate! It makes their tummy hurt super bad.</li>
+                    <li>🦴 Turkey bones can get stuck, so only give them special doggy treats!</li>
+                    <li>🏡 Give your dog a quiet room to hide in if the Christmas party gets too loud!</li>
+                    <li>🎄 Keep tinsel and fake plants away from dogs because they might think it's food!</li>
+                </ul>
+            </section>
         </div>
 
-        <p style="margin-top: 50px; padding-bottom: 20px;">&copy; 2025 CHARACTER TUBE</p>
+        <!-- Right Column: Chatbot (Sparkle!) -->
+        <div class="lg:col-span-1">
+            <section class="p-6 bg-white rounded-xl shadow-2xl border-4 border-green-600">
+                <h2 class="text-3xl text-green-700 mb-4 text-center transform -rotate-1">
+                    ✨ Sparkle the Magic Dog! ✨
+                </h2>
+                <p class="text-sm text-center text-gray-600 mb-4 font-normal">Ask me anything about dogs, Christmas, or magic!</p>
+
+                <!-- Chat Log -->
+                <div id="chat-log" class="chat-container flex flex-col space-y-3 p-4 rounded-lg mb-4">
+                    <!-- Chat messages will go here -->
+                </div>
+
+                <!-- TTS Button and Loading -->
+                <div class="mb-4 flex flex-col space-y-2">
+                    <button id="read-aloud-btn" 
+                            class="p-3 bg-pink-500 text-white rounded-lg shadow-md hover:bg-pink-600 transition duration-300 active:bg-pink-700 font-bold text-lg transform -rotate-1">
+                        Read Sparkle's Last Message! ✨🔊
+                    </button>
+                    <div id="tts-loading" class="hidden text-center text-red-500">
+                        <span class="animate-pulse">Sparkle is barking the message... 🗣️</span>
+                    </div>
+                </div>
+
+                <!-- Loading Indicator for Chat -->
+                <div id="loading-indicator" class="hidden text-center text-red-500 mb-4">
+                    <span class="animate-pulse">Sparkle is thinking... 🐶🧠</span>
+                </div>
+
+                <!-- Input Field -->
+                <div class="flex space-x-2">
+                    <input type="text" id="user-input" placeholder="Ask Sparkle a question..." 
+                           class="flex-grow p-3 border-4 border-green-500 rounded-lg focus:outline-none focus:border-red-500 text-base">
+                    <button id="send-btn" 
+                            class="p-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300 active:bg-red-700 font-bold text-lg transform rotate-1">
+                        SEND!
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Hidden Audio Element for TTS -->
+    <audio id="tts-audio" class="hidden"></audio>
+
+    <script type="module">
+        // --- CHATBOT CONSTANTS ---
+        const API_KEY = ""; // API key will be provided by the runtime
+        const CHAT_MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
+        const TTS_MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
+        const CHATBOT_NAME = "Sparkle";
         
-        </body>
+        // The kid-friendly persona for the AI
+        const SYSTEM_PROMPT = `You are ${CHATBOT_NAME}, a friendly, very excited, and slightly chaotic magical Christmas puppy. You love dogs, glitter, and Christmas lights. You speak in a very enthusiastic, kid-friendly way, using lots of emojis like 🎄, ✨, and 🐶. Keep answers short and fun, maybe 1-2 sentences. Always sign off with a "Woof-woof!".`;
+
+        const chatLog = document.getElementById('chat-log');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const readAloudBtn = document.getElementById('read-aloud-btn');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const ttsLoadingIndicator = document.getElementById('tts-loading');
+        const ttsAudio = document.getElementById('tts-audio');
+
+        // Function to render a single message bubble
+        function appendMessage(role, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('max-w-[80%]', 'p-3', 'rounded-xl', 'shadow-md', 'text-sm');
+            messageDiv.style.wordBreak = 'break-word';
+
+            if (role === 'user') {
+                messageDiv.classList.add('chat-bubble-user');
+                messageDiv.textContent = text;
+            } else {
+                messageDiv.classList.add('chat-bubble-ai');
+                messageDiv.textContent = `${CHATBOT_NAME}: ${text}`;
+            }
+
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+        
+        // Global function to render all messages from Firestore
+        window.renderChatHistory = function(messages) {
+            chatLog.innerHTML = ''; // Clear existing messages
+            messages.forEach(msg => {
+                appendMessage(msg.role, msg.text);
+            });
+            // Auto-scroll to the bottom after loading history
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+        
+        // --- Gemini API Call with Exponential Backoff ---
+        async function fetchWithBackoff(url, payload) {
+            const maxRetries = 5;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        if (response.status === 429 && i < maxRetries - 1) {
+                            const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            continue;
+                        }
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+                    return response.json();
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    // Log to console if debugging needed, but suppress for user
+                }
+            }
+        }
+
+        // --- CHAT LOGIC ---
+        async function fetchGeminiResponse(userQuery, history) {
+            const contents = history.map(msg => ({ 
+                role: msg.role === 'user' ? 'user' : 'model', 
+                parts: [{ text: msg.text }] 
+            }));
+            
+            contents.push({ role: 'user', parts: [{ text: userQuery }] });
+
+            const payload = {
+                contents: contents,
+                tools: [{ "google_search": {} }],
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }]
+                },
+                generationConfig: {
+                    temperature: 0.8, 
+                    maxOutputTokens: 100 
+                }
+            };
+            
+            const result = await fetchWithBackoff(CHAT_MODEL_URL, payload);
+
+            const candidate = result.candidates?.[0];
+            if (candidate && candidate.content?.parts?.[0]?.text) {
+                return candidate.content.parts[0].text;
+            }
+            return "Uh oh! Sparkle can't find the magic words right now! Try again? 🥺";
+        }
+        
+        // --- Main Send Logic ---
+        async function handleSend() {
+            const query = userInput.value.trim();
+            if (!query || !window.saveMessage || !window.db) return;
+
+            // 1. Disable input and show loading
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+            loadingIndicator.classList.remove('hidden');
+
+            try {
+                // 2. Save user message to Firestore
+                await window.saveMessage('user', query);
+                userInput.value = '';
+
+                // 3. Get the AI response using the current history
+                const aiText = await fetchGeminiResponse(query, window.chatMessages);
+
+                // 4. Save AI response to Firestore
+                await window.saveMessage('model', aiText);
+
+            } catch (error) {
+                console.error("Chat sending failed:", error);
+            } finally {
+                // 5. Re-enable input and hide loading
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                loadingIndicator.classList.add('hidden');
+                userInput.focus();
+            }
+        }
+        
+   
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const numChannels = 1;
+            const bytesPerSample = 2; // 16-bit PCM
+
+            const buffer = new ArrayBuffer(44 + pcm16.length * bytesPerSample);
+            const view = new DataView(buffer);
+
+    
+            writeString(view, 0, 'RIFF'); // Chunk ID
+            view.setUint32(4, 36 + pcm16.length * bytesPerSample, true); // Chunk Size
+            writeString(view, 8, 'WAVE'); // Format
+
+      
+            writeString(view, 12, 'fmt '); // Sub-chunk 1 ID
+            view.setUint32(16, 16, true); // Sub-chunk 1 Size (16 for PCM)
+            view.setUint16(20, 1, true); // Audio Format (1 for PCM)
+            view.setUint16(22, numChannels, true); // Num Channels
+            view.setUint32(24, sampleRate, true); // Sample Rate
+            view.setUint32(28, sampleRate * numChannels * bytesPerSample, true); // Byte Rate
+            view.setUint16(32, numChannels * bytesPerSample, true); // Block Align
+            view.setUint16(34, 16, true); // Bits Per Sample (16-bit)
+
+            writeString(view, 36, 'data'); // Sub-chunk 2 ID
+            view.setUint32(40, pcm16.length * bytesPerSample, true); // Sub-chunk 2 Size
+
+     
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++) {
+                view.setInt16(offset, pcm16[i], true);
+                offset += 2;
+            }
+
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+     
+        async function handleReadAloud() {
+            readAloudBtn.disabled = true;
+            ttsLoadingIndicator.classList.remove('hidden');
+            
+       
+            const lastAiMessage = window.chatMessages.slice().reverse().find(msg => msg.role === 'model');
+            
+            if (!lastAiMessage) {
+                alert("Sparkle hasn't said anything yet! Ask a question first! 🐶");
+                readAloudBtn.disabled = false;
+                ttsLoadingIndicator.classList.add('hidden');
+                return;
+            }
+
+            const textToSpeak = lastAiMessage.text;
+
+          
+            const payload = {
+                contents: [{
+                    parts: [{ text: `Say in a cheerful, excited, puppy dog voice: ${textToSpeak}` }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Puck" } // Upbeat voice
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            try {
+          
+                const result = await fetchWithBackoff(TTS_MODEL_URL, payload);
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/L16")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                    
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+
+            
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    ttsAudio.src = audioUrl;
+                    ttsAudio.play();
+                } else {
+                    alert("Sparkle's voice magic didn't work! (No audio data received) 😞");
+                }
+
+            } catch (error) {
+                console.error("TTS Error:", error);
+                alert("Oh no! Sparkle got scared and couldn't talk! Try again? (Check console for error) 😱");
+            } finally {
+                readAloudBtn.disabled = false;
+                ttsLoadingIndicator.classList.add('hidden');
+            }
+        }
+
+    
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+        readAloudBtn.addEventListener('click', handleReadAloud);
+        
+       
+        window.onload = function() {
+            setTimeout(() => {
+               
+                if (window.chatMessages.length === 0) {
+                    appendMessage('model', "Hooray! I'm Sparkle, a super cool Christmas dog! Ask me what my favorite treat is or about a magic dog trick! Woof-woof! 🐶🎄");
+                }
+            }, 1500);
+        }
+    </script>
+</body>
 </html>
