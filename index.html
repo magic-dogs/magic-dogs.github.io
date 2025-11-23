@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 MAGIC DOGS 🐶 - The BEST Christmas Site!</title>
-    <!-- Load Tailwind CSS -->
+    <title>DIGITAL LEARNING RESOURCE CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Firebas Modules for Chat History -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -51,7 +49,7 @@
                     }
                 }
                 isAuthReady = true;
-                document.getElementById('user-id-display').textContent = `My ID is: ${userId || 'Loading...'}`;
+                document.getElementById('user-id-display').textContent = `User ID: ${userId || 'Loading...'}`;
             });
         }
 
@@ -98,156 +96,178 @@
     </script>
 
     <style>
-        /* A fun, handwriting-style font for the 'kid-made' feel */
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-        
+        /* Removing permanent marker font for professional look */
+        /* @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
         .kid-font {
             font-family: 'Permanent Marker', cursive, 'Comic Sans MS', sans-serif;
             text-shadow: 2px 2px 0 #000;
-        }
+        } */
+        
+        /* Using system font stack (Tailwind default) for professional look */
 
         .chat-bubble-user {
-            @apply bg-blue-300 text-gray-800 self-end;
-            border-radius: 18px 18px 0 18px;
+            /* Clean, light blue for professional contrast */
+            @apply bg-blue-100 text-gray-800 self-end font-normal;
+            border-radius: 18px 18px 4px 18px; 
         }
 
         .chat-bubble-ai {
-            @apply bg-red-400 text-white self-start;
-            border-radius: 18px 18px 18px 0;
-            text-shadow: 1px 1px 0 #000; /* Extra kid-friendly shadow */
+            /* Deep indigo/purple for AI, text shadow removed */
+            @apply bg-indigo-500 text-white self-start font-normal;
+            border-radius: 18px 18px 18px 4px; 
+            text-shadow: none; 
         }
         
         .chat-container {
-            /* Max height and overflow for the chat log */
+            /* Clean, subtle border and white background */
             max-height: 400px;
             overflow-y: auto;
-            border: 4px dashed #009900; /* Green dashed border */
-            background-color: #F8F4E3; /* Light cream/paper background */
+            border: 1px solid #E5E7EB; /* Light gray border */
+            background-color: #FFFFFF; 
         }
     </style>
 </head>
-<body class="bg-pink-100 min-h-screen p-4 md:p-8 kid-font text-gray-800">
+<body class="bg-gray-50 min-h-screen p-4 md:p-8 text-gray-800 font-sans">
     
-    <!-- Big Title Header -->
-    <header class="text-center mb-8 p-4 bg-red-500 rounded-2xl shadow-xl border-4 border-yellow-400 transform rotate-2">
-        <h1 class="text-4xl sm:text-6xl text-white tracking-widest leading-none">
-            ✨ MAGIC DOGS! ✨
+    <header class="text-center mb-10 p-6 bg-indigo-900 shadow-md border-b-4 border-teal-400">
+        <h1 class="text-4xl sm:text-6xl text-white tracking-wide leading-none font-bold">
+            DIGITAL LEARNING RESOURCE CENTER
         </h1>
-        <p class="text-lg sm:text-2xl text-yellow-200 mt-2 transform -rotate-2">
-            This is the best christmas site with other cool stuff to vist!!!🎄        </p>
-        <div id="user-id-display" class="text-xs text-green-700 mt-2 font-normal">Loading user info...</div>
+        <p class="text-lg sm:text-xl text-indigo-200 mt-1 font-light">
+            Curated Educational Content and Interactive Support
+        </p>
+        
+        <div id="user-id-display" class="text-xs text-indigo-300 mt-4 font-light">User ID: Loading user info...</div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         
-        <!-- Left Column: Videos & Games -->
         <div class="lg:col-span-2 space-y-8">
 
-            <!-- Funny Dog Videos Section -->
-            <section class="p-6 bg-green-500 rounded-xl shadow-lg border-4 border-white">
-                <h2 class="text-3xl text-yellow-200 mb-4 text-center pb-2 border-b-4 border-yellow-400">
-                    🎬 Funny Puppy Videos!
+            <section class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-3xl text-indigo-700 mb-4 text-center pb-2 border-b-2 border-teal-400 font-semibold">
+                    Video Learning Modules
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-3 bg-white rounded-lg shadow-md border-2 border-red-500">
-                        <h3 class="text-xl text-red-600 mb-2">Doggy Olympics!</h3>
-                        <p class="text-sm">They try to catch the steak and run super fast!</p>
-                        <a href="https://www.youtube.com/watch?v=mRHj9ZFXhK4" target="_blank" class="block mt-2 text-center py-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg text-lg text-gray-800 font-bold shadow-md">
-                            WATCH IT!
+                    <div class="p-4 bg-white rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl text-indigo-600 mb-2 font-medium">Dog Agility Training Basics</h3>
+                        <p class="text-sm text-gray-600">Introduction to fundamental dog training techniques and safety protocols.</p>
+                        <a href="https://www.youtube.com/watch?v=mRHj9ZFXhK4" target="_blank" class="block mt-3 text-center py-2 bg-teal-500 hover:bg-teal-600 rounded-md text-sm text-white font-semibold shadow-md transition duration-200">
+                            VIEW MODULE
                         </a>
                     </div>
-                    <div class="p-3 bg-white rounded-lg shadow-md border-2 border-red-500">
-                        <h3 class="text-xl text-red-600 mb-2">Talking Corgi!</h3>
-                        <p class="text-sm">This dog is so smart, he can almost talk like a human!</p>
-                        <a href="https://www.youtube.com/watch?v=WSnnwIDgQyI" target="_blank" class="block mt-2 text-center py-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg text-lg text-gray-800 font-bold shadow-md">
-                            MUST SEE!
+                    <div class="p-4 bg-white rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-xl text-indigo-600 mb-2 font-medium">Animal Communication and Behavior</h3>
+                        <p class="text-sm text-gray-600">An in-depth look at canine body language and non-verbal cues.</p>
+                        <a href="https://www.youtube.com/watch?v=WSnnwIDgQyI" target="_blank" class="block mt-3 text-center py-2 bg-teal-500 hover:bg-teal-600 rounded-md text-sm text-white font-semibold shadow-md transition duration-200">
+                            VIEW MODULE
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-3xl text-indigo-700 mb-4 text-center pb-2 border-b-2 border-teal-400 font-semibold">
+                    Original Children's Music Collection
+                </h2>
+                <p class="text-center text-lg text-gray-600 mb-4 font-light">
+                    A selection of professionally produced, age-appropriate audio tracks.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-lg shadow-md border border-gray-300">
+                        <h3 class="text-xl text-indigo-700 mb-2 font-medium">The Movement and Rhythm Track</h3>
+                        <p class="text-sm text-gray-600">Focuses on gross motor skills and rhythmic learning.</p>
+                        <audio controls class="w-full mt-3">
+                            <source src="placeholder_song_1.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <a href="#" class="block mt-3 text-center py-2 bg-teal-500 hover:bg-teal-600 rounded-md text-sm text-white font-semibold shadow-md transition duration-200">
+                            DOWNLOAD ASSET
+                        </a>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-md border border-gray-300">
+                        <h3 class="text-xl text-indigo-700 mb-2 font-medium">Mindfulness and Sleep Aid</h3>
+                        <p class="text-sm text-gray-600">A calming piece designed for quiet time and relaxation.</p>
+                        <audio controls class="w-full mt-3">
+                            <source src="placeholder_song_2.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <a href="#" class="block mt-3 text-center py-2 bg-teal-500 hover:bg-teal-600 rounded-md text-sm text-white font-semibold shadow-md transition duration-200">
+                            DOWNLOAD ASSET
                         </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Games Section -->
-            <section class="p-6 bg-red-500 rounded-xl shadow-lg border-4 border-white">
-                <h2 class="text-3xl text-yellow-200 mb-4 text-center pb-2 border-b-4 border-yellow-400">
-                    🎮 Fun Game Links! 
+            <section class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-3xl text-indigo-700 mb-4 text-center pb-2 border-b-2 border-teal-400 font-semibold">
+                    Educational & Interactive Games 
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- Game 1 -->
-                    <a href="https://www.abcya.com" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                    <a href="https://www.abcya.com" target="_blank" class="block text-center p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 border border-indigo-600">
                         <span class="text-2xl">📚</span>
-                        <p class="text-sm font-bold text-gray-800">ABCya! Games</p>
+                        <p class="text-sm font-medium text-gray-800 mt-1">Foundational Literacy</p>
                     </a>
-                    <!-- Game 2 -->
-                    <a href="https://pbskids.org/games" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                    <a href="https://pbskids.org/games" target="_blank" class="block text-center p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 border border-indigo-600">
                         <span class="text-2xl">📺</span>
-                        <p class="text-sm font-bold text-gray-800">PBS Kids Fun!</p>
+                        <p class="text-sm font-medium text-gray-800 mt-1">Character-Based Math</p>
                     </a>
-                    <!-- Game 3 -->
-                    <a href="https://www.funbrain.com/" target="_blank" class="block text-center p-3 bg-white rounded-lg shadow-lg hover:bg-red-200 transform hover:scale-105 transition duration-300 border-2 border-green-600">
+                    <a href="https://www.funbrain.com/" target="_blank" class="block text-center p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 border border-indigo-600">
                         <span class="text-2xl">🧠</span>
-                        <p class="text-sm font-bold text-gray-800">Funbrain Puzzles</p>
+                        <p class="text-sm font-medium text-gray-800 mt-1">Logic and Problem Solving</p>
                     </a>
                 </div>
             </section>
             
-            <!-- Christmas Doggy Facts -->
-            <section class="p-6 bg-yellow-300 rounded-xl shadow-lg border-4 border-red-500">
-                <h2 class="text-3xl text-red-600 mb-4 text-center pb-2 border-b-4 border-red-500">
-                    🐾 Christmas Doggy Safety Tips! 🎅
+            <section class="p-6 bg-gray-100 rounded-lg shadow-sm border-l-4 border-indigo-500">
+                <h2 class="text-2xl text-indigo-700 mb-4 pb-2 border-b-2 border-indigo-300 font-semibold">
+                    Holiday Safety Guidelines (Pet Focus)
                 </h2>
-                <ul class="text-lg space-y-2 list-disc list-inside text-gray-800 px-4">
-                    <li>🚫 Don't let your dog eat chocolate! It makes their tummy hurt super bad.</li>
-                    <li>🦴 Turkey bones can get stuck, so only give them special doggy treats!</li>
-                    <li>🏡 Give your dog a quiet room to hide in if the Christmas party gets too loud!</li>
-                    <li>🎄 Keep tinsel and fake plants away from dogs because they might think it's food!</li>
+                <ul class="text-base space-y-2 list-disc list-inside text-gray-700 px-4">
+                    <li>🚫 **Toxic Foods:** Prevent consumption of chocolate, grapes, and xylitol, which are toxic to canines.</li>
+                    <li>🦴 **Bone Hazards:** Avoid feeding cooked bones; offer only veterinarian-approved dental chews and treats.</li>
+                    <li>🏡 **Managing Stress:** Provide a quiet, low-traffic retreat area for pets during high-volume social gatherings.</li>
+                    <li>🎄 **Decor Dangers:** Ensure all holiday ornaments (e.g., tinsel, sharp glass, wire) and toxic seasonal plants are secured and inaccessible.</li>
                 </ul>
             </section>
         </div>
 
-        <!-- Right Column: Chatbot (Sparkle!) -->
         <div class="lg:col-span-1">
-            <section class="p-6 bg-white rounded-xl shadow-2xl border-4 border-green-600">
-                <h2 class="text-3xl text-green-700 mb-4 text-center transform -rotate-1">
-                    ✨ Sparkle the Magic Dog! ✨
+            <section class="p-6 bg-white rounded-lg shadow-xl border border-gray-200">
+                <h2 class="text-3xl text-indigo-700 mb-4 text-center font-bold">
+                    Support Q&A Assistant
                 </h2>
-                <p class="text-sm text-center text-gray-600 mb-4 font-normal">Ask me anything about dogs, Christmas, or magic!</p>
+                <p class="text-sm text-center text-gray-600 mb-4 font-light">Ask any question related to site resources or content safety.</p>
 
-                <!-- Chat Log -->
                 <div id="chat-log" class="chat-container flex flex-col space-y-3 p-4 rounded-lg mb-4">
-                    <!-- Chat messages will go here -->
-                </div>
+                    </div>
 
-                <!-- TTS Button and Loading -->
                 <div class="mb-4 flex flex-col space-y-2">
                     <button id="read-aloud-btn" 
-                            class="p-3 bg-pink-500 text-white rounded-lg shadow-md hover:bg-pink-600 transition duration-300 active:bg-pink-700 font-bold text-lg transform -rotate-1">
-                        Read Sparkle's Last Message! ✨🔊
+                            class="p-3 bg-teal-500 text-white rounded-md shadow-md hover:bg-teal-600 transition duration-300 active:bg-teal-700 font-semibold text-base">
+                        Read Last Message Aloud 🔊
                     </button>
-                    <div id="tts-loading" class="hidden text-center text-red-500">
-                        <span class="animate-pulse">Sparkle is barking the message... 🗣️</span>
+                    <div id="tts-loading" class="hidden text-center text-indigo-600">
+                        <span class="animate-pulse">Synthesizing response audio... 🗣️</span>
                     </div>
                 </div>
 
-                <!-- Loading Indicator for Chat -->
-                <div id="loading-indicator" class="hidden text-center text-red-500 mb-4">
-                    <span class="animate-pulse">Sparkle is thinking... 🐶🧠</span>
+                <div id="loading-indicator" class="hidden text-center text-indigo-600 mb-4">
+                    <span class="animate-pulse">Assistant is generating response... 🧠</span>
                 </div>
 
-                <!-- Input Field -->
                 <div class="flex space-x-2">
-                    <input type="text" id="user-input" placeholder="Ask Sparkle a question..." 
-                           class="flex-grow p-3 border-4 border-green-500 rounded-lg focus:outline-none focus:border-red-500 text-base">
+                    <input type="text" id="user-input" placeholder="Enter your query here..." 
+                           class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500 text-sm">
                     <button id="send-btn" 
-                            class="p-3 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300 active:bg-red-700 font-bold text-lg transform rotate-1">
-                        SEND!
+                            class="p-3 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 transition duration-300 active:bg-indigo-800 font-semibold text-sm">
+                        Send
                     </button>
                 </div>
             </section>
         </div>
     </main>
     
-    <!-- Hidden Audio Element for TTS -->
     <audio id="tts-audio" class="hidden"></audio>
 
     <script type="module">
@@ -255,10 +275,10 @@
         const API_KEY = ""; // API key will be provided by the runtime
         const CHAT_MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
         const TTS_MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
-        const CHATBOT_NAME = "Sparkle";
+        const CHATBOT_NAME = "Assistant";
         
-        // The kid-friendly persona for the AI
-        const SYSTEM_PROMPT = `You are ${CHATBOT_NAME}, a friendly, very excited, and slightly chaotic magical Christmas puppy. You love dogs, glitter, and Christmas lights. You speak in a very enthusiastic, kid-friendly way, using lots of emojis like 🎄, ✨, and 🐶. Keep answers short and fun, maybe 1-2 sentences. Always sign off with a "Woof-woof!".`;
+        // Revised professional system prompt
+        const SYSTEM_PROMPT = `You are the Support Assistant for a Digital Learning Resource Center. You are professional, concise, and helpful. Your primary goal is to provide accurate, factual information regarding the provided resources (videos, music, games) and safety guidelines. Speak in a formal, informative tone. Keep answers brief and focused.`;
 
         const chatLog = document.getElementById('chat-log');
         const userInput = document.getElementById('user-input');
@@ -271,7 +291,7 @@
         // Function to render a single message bubble
         function appendMessage(role, text) {
             const messageDiv = document.createElement('div');
-            messageDiv.classList.add('max-w-[80%]', 'p-3', 'rounded-xl', 'shadow-md', 'text-sm');
+            messageDiv.classList.add('max-w-[80%]', 'p-3', 'rounded-xl', 'shadow-sm', 'text-sm');
             messageDiv.style.wordBreak = 'break-word';
 
             if (role === 'user') {
@@ -339,8 +359,8 @@
                     parts: [{ text: SYSTEM_PROMPT }]
                 },
                 generationConfig: {
-                    temperature: 0.8, 
-                    maxOutputTokens: 100 
+                    temperature: 0.2, /* Lower temperature for professional, consistent output */
+                    maxOutputTokens: 150 
                 }
             };
             
@@ -350,7 +370,7 @@
             if (candidate && candidate.content?.parts?.[0]?.text) {
                 return candidate.content.parts[0].text;
             }
-            return "Uh oh! Sparkle can't find the magic words right now! Try again? 🥺";
+            return "Error: Unable to process the request at this time. Please try again later.";
         }
         
         // --- Main Send Logic ---
@@ -385,7 +405,7 @@
             }
         }
         
-   
+    
         function base64ToArrayBuffer(base64) {
             const binaryString = atob(base64);
             const len = binaryString.length;
@@ -408,7 +428,7 @@
             view.setUint32(4, 36 + pcm16.length * bytesPerSample, true); // Chunk Size
             writeString(view, 8, 'WAVE'); // Format
 
-      
+        
             writeString(view, 12, 'fmt '); // Sub-chunk 1 ID
             view.setUint32(16, 16, true); // Sub-chunk 1 Size (16 for PCM)
             view.setUint16(20, 1, true); // Audio Format (1 for PCM)
@@ -421,7 +441,7 @@
             writeString(view, 36, 'data'); // Sub-chunk 2 ID
             view.setUint32(40, pcm16.length * bytesPerSample, true); // Sub-chunk 2 Size
 
-     
+    
             let offset = 44;
             for (let i = 0; i < pcm16.length; i++) {
                 view.setInt16(offset, pcm16[i], true);
@@ -437,16 +457,16 @@
             }
         }
 
-     
+    
         async function handleReadAloud() {
             readAloudBtn.disabled = true;
             ttsLoadingIndicator.classList.remove('hidden');
             
-       
+        
             const lastAiMessage = window.chatMessages.slice().reverse().find(msg => msg.role === 'model');
             
             if (!lastAiMessage) {
-                alert("Sparkle hasn't said anything yet! Ask a question first! 🐶");
+                alert("The Assistant has not provided a response yet. Please submit a query first.");
                 readAloudBtn.disabled = false;
                 ttsLoadingIndicator.classList.add('hidden');
                 return;
@@ -454,16 +474,16 @@
 
             const textToSpeak = lastAiMessage.text;
 
-          
+            
             const payload = {
                 contents: [{
-                    parts: [{ text: `Say in a cheerful, excited, puppy dog voice: ${textToSpeak}` }]
+                    parts: [{ text: textToSpeak }] /* Removed the 'puppy dog voice' instruction for professionalism */
                 }],
                 generationConfig: {
                     responseModalities: ["AUDIO"],
                     speechConfig: {
                         voiceConfig: {
-                            prebuiltVoiceConfig: { voiceName: "Puck" } // Upbeat voice
+                            prebuiltVoiceConfig: { voiceName: "Sierra" } /* Using a professional voice */
                         }
                     }
                 },
@@ -471,7 +491,7 @@
             };
 
             try {
-          
+            
                 const result = await fetchWithBackoff(TTS_MODEL_URL, payload);
                 const part = result?.candidates?.[0]?.content?.parts?.[0];
                 const audioData = part?.inlineData?.data;
@@ -491,12 +511,12 @@
                     ttsAudio.src = audioUrl;
                     ttsAudio.play();
                 } else {
-                    alert("Sparkle's voice magic didn't work! (No audio data received) 😞");
+                    alert("Audio synthesis failed: No valid audio data was received.");
                 }
 
             } catch (error) {
                 console.error("TTS Error:", error);
-                alert("Oh no! Sparkle got scared and couldn't talk! Try again? (Check console for error) 😱");
+                alert("An error occurred during audio generation. Please check the console for details.");
             } finally {
                 readAloudBtn.disabled = false;
                 ttsLoadingIndicator.classList.add('hidden');
@@ -512,12 +532,12 @@
         });
         readAloudBtn.addEventListener('click', handleReadAloud);
         
-       
+        
         window.onload = function() {
             setTimeout(() => {
-               
+                
                 if (window.chatMessages.length === 0) {
-                    appendMessage('model', "Hooray! I'm Sparkle, a super cool Christmas dog! Ask me what my favorite treat is or about a magic dog trick! Woof-woof! 🐶🎄");
+                    appendMessage('model', "Welcome. I am your Support Assistant. Please submit your inquiry regarding our learning resources or guidelines.");
                 }
             }, 1500);
         }
