@@ -1,3 +1,6 @@
+
+HTML
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,9 +138,21 @@
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
+    left: 50%;
+    top: 50%;
   }
 
-  ul { list-style-type: '🌸 '; text-align: left; display: inline-block; }
+  .links-section {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .links-section a {
+    margin: 0 10px;
+    color: #ff85a1;
+    text-decoration: none;
+    font-weight: bold;
+  }
 </style>
 </head>
 <body>
@@ -165,9 +180,7 @@
     <h2 style="color: #ff85a1; text-align: center;">📽️ Preppy Mood Board</h2>
     <div class="card-grid">
       <div class="video-frame">
-        <video autoplay muted loop style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="https://www.youtube.com/watch?v=s4YPkml5Dow type="video/mp4">
-        </video>
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/s4YPkml5Dow?autoplay=1&mute=1&loop=1&playlist=s4YPkml5Dow" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class="video-frame">
         <video autoplay muted loop style="width: 100%; height: 100%; object-fit: cover;">
@@ -198,19 +211,20 @@
   <section class="box" style="margin-top: 25px;">
       <h2 style="color: #ff85a1;">🧊 Relaxing Zone</h2>
       <p>Need a break? Watch the aesthetic waves below.</p>
-      <div class="video-frame" style="height: 200px;">
-        <video autoplay muted loop style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="https://www.youtube.com/watch?v=KVpsXbWycek type="video/mp4">
-        </video>
+      <div class="video-frame" style="height: 350px;">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/KVpsXbWycek?autoplay=1&mute=1&loop=1&playlist=KVpsXbWycek" frameborder="0" allowfullscreen></iframe>
       </div>
   </section>
 
+  <div class="links-section">
+    <a href="https://flappybird.io" target="_blank">Flappy Bird</a>
+    <a href="https://youtubeeducation.com" target="_blank">YouTube Education</a>
+    <a href="https://tetris.com" target="_blank">Tetris</a>
+  </div>
+
 </div>
 
-  
-<a href="url">https://flappybird.io//a><script>
-<a href="url">https://youtubeeducation.com<script>
-<a href="url">https://tetris.com/script>
+<script>
   // --- Music Logic ---
   const music = document.getElementById('bg-music');
   const musicBtn = document.getElementById('music-btn');
@@ -260,12 +274,8 @@
   function startGame() {
     document.getElementById('start-game-btn').style.display = 'none';
     moveFlamingo();
-    // Move flamingo every 1.5 seconds if not caught
     gameInterval = setInterval(moveFlamingo, 1500);
   }
-<a href="url">https://flappybird.io//a><script>
-<a href="url">https://youtubeeducation.com<script>
-<a href="url">https://tetris.com/script>  
 </script>
 
 </body>
