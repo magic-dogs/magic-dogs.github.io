@@ -1,9 +1,165 @@
-<!DOCTYPE html>
-<html>
-  <head>
-     <link rel="icon" href="new-swc.png" type="image/png" /> 
-  </head>
-<body>
-  <h1>Hello World! THIS WESITE will come back but for now we are fixing things .</h1>
-</body>
-</html>    
+
+import pygame
+import sys
+import random
+
+# --- Constants ---
+WIDTH, HEIGHT = 900, 700
+FPS = 60
+
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("The 8 Islands vs The Wave")
+        self.clock = pygame.time.Clock()
+        self.font = pygame.font.SysFont("Arial", 24)
+        self.big_font = pygame.font.SysFont("Arial", 48)
+        
+        # 1. Custom Character Creation
+        self.player_color = self.character_creator()
+        
+        # Game State
+        self.player_pos = pygame.Vector2(WIDTH // 2, HEIGHT // 2)
+        self.gems = 0
+        self.current_spell = "None"
+        self.last_prize = "Nothing yet"
+        self.game_mode = "EXPLORE" # EXPLORE or BOSS
+        
+        # Island Data: (Rect, Name, Gem, Spell, Prize)
+        self.islands = [
+            {"rect": pygame.Rect(100, 100, 80, 80), "name": "Volcano", "gem": "Ruby", "spell": "Fireball", "prize": "Fire Cloak", "done": False},
+            {"rect": pygame.Rect(700, 100, 80, 80), "name": "Tundra", "gem": "Sapphire", "spell": "Ice Beam", "prize": "Ice Boots", "done": False},
+            {"rect": pygame.Rect(100, 500, 80, 80), "name": "Jungle", "gem": "Emerald", "spell": "Vine Trap", "prize": "Healing Fruit", "done": False},
+            {"rect": pygame.Rect(700, 500, 80, 80), "name": "Storm", "gem": "Topaz", "spell": "Lightning", "prize": "Storm Wing", "done": False},
+            {"rect": pygame.Rect(400, 100, 80, 80), "name": "Iron", "gem": "Steel", "spell": "Iron Wall", "prize": "Steel Shield", "done": False},
+            {"rect": pygame.Rect(400, 550, 80, 80), "name": "Shadow", "gem": "Obsidian", "spell": "Dark Void", "prize": "Invisible Cape", "done": False},
+            {"rect": pygame.Rect(50, 300, 80, 80), "name": "Sunken", "gem": "Pearl", "spell": "Bubble Bomb", "prize": "Diving Helmet", "done": False},
+            {"rect": pygame.Rect(750, 300, 80, 80), "name": "Sky", "gem": "Diamond", "spell": "Wind Gust", "prize": "Sky Glider", "done": False},
+        ]
+
+        # Boss Stats
+        self.wave_x = -300
+        self.wave_hp = 100
+        self.projectiles = []
+
+    def character_creator(self):
+        selecting = True
+        colors = {"Red": (255, 0, 0), "Green": (0, 255, 0), "Yellow": (255, 255, 0), "Purple": (200, 0, 255)}
+        keys = list(colors.keys())
+        idx = 0
+        
+        while selecting:
+            self.screen.fill((30, 30, 30))
+            text = self.big_font.render("CREATE YOUR CHARACTER", True, (255, 255, 255))
+            sub = self.font.render(f"Use Left/Right to choose color. Press ENTER to Start.", True, (200, 200, 200))
+            color_text = self.big_font.render(f"< {keys[idx]} >", True, colors[keys[idx]])
+            
+            self.screen.blit(text, (WIDTH//2 - 250, 100))
+            self.screen.blit(sub, (WIDTH//2 - 200, 180))
+            self.screen.blit(color_text, (WIDTH//2 - 100, 300))
+            
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT: idx = (idx + 1) % len(keys)
+                    if event.key == pygame.K_LEFT: idx = (idx - 1) % len(keys)
+                    if event.key == pygame.K_RETURN: return colors[keys[idx]]
+
+    def handle_spells(self):
+        if self.current_spell != "None":
+            # Create a projectile moving right
+            self.projectiles.append(pygame.Rect(self.player_pos.x + 20, self.player_pos.y, 15, 15))
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]: self.player_pos.x -= 5
+        if keys[pygame.K_RIGHT]: self.player_pos.x += 5
+        if keys[pygame.K_UP]: self.player_pos.y -= 5
+        if keys[pygame.K_DOWN]: self.player_pos.y += 5
+
+        player_rect = pygame.Rect(self.player_pos.x, self.player_pos.y, 30, 30)
+
+        # Explore Logic
+        if self.game_mode == "EXPLORE":
+            for island in self.islands:
+                if not island["done"] and player_rect.colliderect(island["rect"]):
+                    island["done"] = True
+                    self.gems += 1
+                    self.current_spell = island["spell"]
+                    self.last_prize = island["prize"]
+            
+            if self.gems == 8:
+                self.game_mode = "BOSS"
+
+        # Boss Logic
+        else:
+            self.wave_x += 0.5 # Wave slowly creeps in
+            wave_rect = pygame.Rect(self.wave_x - 400, 0, 500, HEIGHT)
+            
+            if player_rect.colliderect(wave_rect):
+                print("SWALLOWED BY THE WAVE!"); pygame.quit(); sys.exit()
+
+            # Move Projectiles
+            for p in self.projectiles[:]:
+                p.x += 10
+                if p.x > WIDTH: self.projectiles.remove(p)
+                # Check hit on wave
+                if p.colliderect(pygame.Rect(self.wave_x, 0, 100, HEIGHT)):
+                    self.wave_hp -= 2
+                    self.wave_x -= 10 # Push wave back
+                    if p in self.projectiles: self.projectiles.remove(p)
+
+            if self.wave_hp <= 0:
+                self.game_mode = "WIN"
+
+    def draw(self):
+        self.screen.fill((0, 105, 148)) # Ocean
+        
+        if self.game_mode == "WIN":
+            win_text = self.big_font.render("WAVE DEFEATED! YOU SAVED THE WORLD!", True, (255, 255, 255))
+            self.screen.blit(win_text, (50, HEIGHT//2))
+        else:
+            # Draw Islands
+            for island in self.islands:
+                color = (100, 100, 100) if island["done"] else (34, 139, 34)
+                pygame.draw.rect(self.screen, color, island["rect"], border_radius=10)
+                name = self.font.render(island["name"], True, (255, 255, 255))
+                self.screen.blit(name, (island["rect"].x, island["rect"].y - 25))
+
+            # Draw Player
+            pygame.draw.rect(self.screen, self.player_color, (self.player_pos.x, self.player_pos.y, 30, 30))
+
+            # Draw Projectiles
+            for p in self.projectiles:
+                pygame.draw.circle(self.screen, (255, 255, 255), (p.x, p.y), 8)
+
+            # Draw Boss
+            if self.game_mode == "BOSS":
+                pygame.draw.rect(self.screen, (0, 0, 50), (self.wave_x - 500, 0, 600, HEIGHT))
+                hp_bar = self.font.render(f"WAVE HP: {self.wave_hp}", True, (255, 0, 0))
+                self.screen.blit(hp_bar, (WIDTH - 200, 20))
+
+            # UI
+            ui_bg = pygame.Rect(0, 0, WIDTH, 40)
+            pygame.draw.rect(self.screen, (0, 0, 0), ui_bg)
+            stats = self.font.render(f"Gems: {self.gems}/8 | Spell: {self.current_spell} (SPACE) | Prize: {self.last_prize}", True, (255, 255, 255))
+            self.screen.blit(stats, (10, 5))
+
+        pygame.display.flip()
+
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: pygame.quit(); sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE: self.handle_spells()
+            
+            if self.game_mode != "WIN":
+                self.update()
+            self.draw()
+            self.clock.tick(FPS)
+
+if __name__ == "__main__":
+    Game().run()
