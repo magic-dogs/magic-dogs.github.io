@@ -1,48 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGC</title>
-    <style>
-        body { font-family: 'Comic Sans MS', cursive; background-color: #f0f8ff; text-align: center; }
-        .header { background: #ff69b4; color: white; padding: 20px; border-radius: 0 0 20px 20px; }
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .video-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .video-card:hover { transform: scale(1.05); border: 3px solid #ff69b4; }
-        .video-card iframe { width: 100%; height: 200px; border: none; }
-        h3 { padding: 10px; margin: 0; color: #333; }
-    </style>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #5d4a66;
+    overflow-x: hidden;
+  }
+
+  /* Background Video Container */
+  .video-bg {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    filter: brightness(0.8) opacity(0.6);
+  }
+
+  /* Header Styles */
+  header {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 5px solid #ffb7d5;
+  }
+
+  h1 { color: #ff69b4; font-size: 3em; margin: 0; text-shadow: 2px 2px #fff; }
+
+  /* Content Sections */
+  .container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .box {
+    background: #fff0f6;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px dashed #ffb7d5;
+  }
+
+  button {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover { background: #ff1493; }
+</style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>🌟 SGC🌟</h1>
-        <p>Only the best videos, picked by me!</p>
+<video autoplay muted loop class="video-bg">
+  <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-pink-flowers-in-the-wind-4143-large.mp4" type="video/mp4">
+</video>
+
+<header>
+  <h1>🌸 Bloom & Bright 🌸</h1>
+  <p>Your Daily Dose of Sunshine and Flowers!</p>
+</header>
+
+<div class="container">
+  
+  <section>
+    <h2>📽️ Fun Flower Clips</h2>
+    <div style="text-align: center;">
+      <p>Watch these flowers grow in 3, 2, 1...</p>
+      <div style="background: #ddd; height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+        <p><i>[Insert Flower Time-Lapse Video Here]</i></p>
+      </div>
     </div>
+  </section>
 
-    <div class="video-grid" id="gallery">
-        </div>
+  <hr>
 
-    <script>
-        // This is where you list your "Chosen" videos
-        const myVideos = [
-            { title: "Fun Science Experiment", id: "dQw4w9WgXcQ" }, // Replace with YouTube IDs
-            { title: "Cute Puppy Adventures", id: "tpiyEe_jqHU" },
-            { title: "Learn to Draw", id: "7JW33HreIog" }
-        ];
+  <div class="card-grid">
+    <section class="box">
+      <h2>✨ Flower Facts</h2>
+      <ul>
+        <li>Sunflowers move their heads to follow the sun!</li>
+        <li>Some flowers, like broccoli, are actually vegetables!</li>
+        <li>The world's smallest flower is the size of a grain of rice.</li>
+      </ul>
+    </section>
 
-        const gallery = document.getElementById('gallery');
+    <section class="box">
+      <h2>🎮 Mini Games</h2>
+      <p><b>Flower Matcher:</b> Can you find the matching petals?</p>
+      <button onclick="alert('Game Loading... Get ready!')">Play Now!</button>
+    </section>
+  </div>
 
-        myVideos.forEach(video => {
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${video.id}?rel=0&modestbranding=1" allowfullscreen></iframe>
-                <h3>${video.title}</h3>
-            `;
-            gallery.appendChild(card);
-        });
-    </script>
+</div>
+
 </body>
 </html>
