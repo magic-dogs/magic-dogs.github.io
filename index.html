@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>SGC</title>
+<title>✨ SGC | Preppy Life ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
   body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #5d4a66;
+    font-family: 'Gaegu', cursive; /* Much cuter font */
+    color: #8e7dbe;
     overflow-x: hidden;
+    background-color: #fff5f8;
   }
 
-  /* Background Video Container */
+  /* Background Video */
   .video-bg {
     position: fixed;
     right: 0;
@@ -18,94 +21,125 @@
     min-width: 100%;
     min-height: 100%;
     z-index: -1;
-    filter: brightness(0.8) opacity(0.6);
+    filter: brightness(0.9) saturate(1.2); /* Makes it look more aesthetic */
+    object-fit: cover;
   }
 
   /* Header Styles */
   header {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px); /* Trendy glass-morphism effect */
+    padding: 30px;
     text-align: center;
-    border-bottom: 5px solid #ffb7d5;
+    border-bottom: 8px dotted #ffb7d5;
   }
 
-  h1 { color: #ff69b4; font-size: 3em; margin: 0; text-shadow: 2px 2px #fff; }
+  h1 { 
+    color: #ff85a1; 
+    font-size: 4em; 
+    margin: 0; 
+    text-shadow: 3px 3px #fff;
+    letter-spacing: 2px;
+  }
 
   /* Content Sections */
   .container {
     max-width: 900px;
-    margin: 20px auto;
-    background: rgba(255, 255, 255, 0.9);
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.85);
     padding: 30px;
-    border-radius: 25px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-radius: 40px; /* Extra round for that preppy look */
+    box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
+    border: 3px solid #fff;
   }
 
   .card-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 25px;
+    margin-top: 20px;
   }
 
   .box {
-    background: #fff0f6;
-    padding: 15px;
-    border-radius: 15px;
-    border: 2px dashed #ffb7d5;
+    background: #fff;
+    padding: 20px;
+    border-radius: 25px;
+    border: 3px solid #ffe4e1;
+    transition: transform 0.3s ease;
+  }
+
+  .box:hover {
+    transform: translateY(-5px) scale(1.02); /* Cute pop-up effect */
+  }
+
+  /* Aesthetic Video Container */
+  .video-frame {
+    width: 100%;
+    height: 300px;
+    border-radius: 25px;
+    border: 5px solid #ffc2d1;
+    overflow: hidden;
   }
 
   button {
-    background: #ff69b4;
+    background: linear-gradient(45deg, #ff85a1, #ffb7d5);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 12px 25px;
+    border-radius: 30px;
     cursor: pointer;
-    font-weight: bold;
+    font-family: 'Gaegu', cursive;
+    font-size: 1.2em;
+    box-shadow: 0 4px 10px rgba(255, 133, 161, 0.3);
   }
 
-  button:hover { background: #ff1493; }
+  button:hover { 
+    background: #ff4d6d;
+    transform: scale(1.1);
+  }
+
+  ul { list-style-type: '🌸 '; } /* Flower bullet points! */
 </style>
 </head>
 <body>
 
 <video autoplay muted loop class="video-bg">
-  <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-pink-flowers-in-the-wind-4143-large.mp4" type="video/mp4">
+  <source src="https://assets.mixkit.co/videos/preview/mixkit-pink-and-blue-clouds-in-the-sky-31713-large.mp4" type="video/mp4">
 </video>
 
 <header>
-  <h1>🌸 Bloom & Bright(SGC) 🌸</h1>
-  <p>Your Daily Dose of Sunshine and Flowers!</p>
+  <h1>🦩 SGC Vibes 🦩</h1>
+  <p style="font-size: 1.5em;">Stay Pink • Stay Bright • Stay Preppy</p>
 </header>
 
 <div class="container">
   
   <section>
-    <h2>📽️ Fun Flower Clips</h2>
+    <h2 style="color: #ff85a1; text-align: center;">📽️ Preppy Mood Board</h2>
     <div style="text-align: center;">
-      <p>Watch these flowers grow in 3, 2, 1...</p>
-      <div style="background: #ddd; height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
-        <p><i>[Insert Flower Time-Lapse Video Here]</i></p>
+      <p>Current Aesthetic: Pink Sunsets & Flowers</p>
+      <div class="video-frame">
+        <video autoplay muted loop style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-pink-cherry-blossoms-1144-large.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </section>
 
-  <hr>
-
   <div class="card-grid">
     <section class="box">
-      <h2>✨ Flower Facts</h2>
+      <h2 style="color: #ff85a1;">✨ Flower Power</h2>
       <ul>
-        <li>Sunflowers move their heads to follow the sun!</li>
-        <li>Some flowers, like broccoli, are actually vegetables!</li>
-        <li>The world's smallest flower is the size of a grain of rice.</li>
+        <li>Sunflowers follow the sun! 🌻</li>
+        <li>Roses are super preppy. 🌹</li>
+        <li>Tulips mean "perfect love". 🌷</li>
       </ul>
     </section>
 
-    <section class="box">
-      <h2>🎮 Mini Games</h2>
-      <p><b>Flower Matcher:</b> Can you find the matching petals?</p>
-      <button onclick="alert('Game Loading... Get ready!')">Play Now!</button>
+    <section class="box" style="text-align: center;">
+      <h2 style="color: #ff85a1;">🎮 Fun Zone</h2>
+      <p><b>Flower Matcher:</b> <br> Find the matching petals!</p>
+      <button onclick="alert('🌸 Game Loading... ✨')">PLAY NOW</button>
     </section>
   </div>
 
