@@ -65,6 +65,7 @@
     border: 3px solid #ffe4e1;
     transition: transform 0.3s ease;
     text-align: center;
+    position: relative;
   }
 
   .box:hover {
@@ -95,16 +96,59 @@
 
   button:active { transform: scale(0.95); }
 
-  #score-display {
+  #score-display, #flamingo-score {
     font-size: 2em;
     color: #ff4d6d;
     margin: 10px 0;
+  }
+
+  /* Music Player Style */
+  .music-player {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: white;
+    padding: 10px;
+    border-radius: 50px;
+    border: 3px solid #ffb7d5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Game Area Style */
+  #game-canvas {
+    width: 100%;
+    height: 150px;
+    background: #fff0f5;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+    border: 2px dashed #ffb7d5;
+  }
+
+  #flamingo-target {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
   }
 
   ul { list-style-type: '🌸 '; text-align: left; display: inline-block; }
 </style>
 </head>
 <body>
+
+<div class="music-player">
+  <span>🎵</span>
+  <audio id="bg-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+  <button onclick="toggleMusic()" id="music-btn" style="padding: 5px 15px; font-size: 0.8em; margin: 0;">Play Music</button>
+</div>
 
 <video autoplay muted loop class="video-bg">
   <source src="https://assets.mixkit.co/videos/preview/mixkit-clouds-sailing-past-a-bright-sun-4131-large.mp4" type="video/mp4">
@@ -135,57 +179,88 @@
 
   <div class="card-grid">
     <section class="box">
-      <h2 style="color: #ff85a1;">✨ Flower Power</h2>
-      <ul>
-        <li>Sunflowers follow the sun! 🌻</li>
-        <li>Roses are super preppy. 🌹</li>
-        <li>Tulips mean "perfect love". 🌷</li>
-      </ul>
-      <p><i>Did you know? Pink flowers represent happiness and grace!</i></p>
+      <h2 style="color: #ff85a1;">🎀 Bow Clicker 🎀</h2>
+      <p>Collect bows!</p>
+      <div id="score-display">0</div>
+      <button onclick="addPoint()">COLLECT BOW 🎀</button>
     </section>
 
     <section class="box">
-      <h2 style="color: #ff85a1;">🎀 Bow Clicker 🎀</h2>
-      <p>How many pink bows can you collect?</p>
-      <div id="score-display">0</div>
-      <button onclick="addPoint()">COLLECT BOW 🎀</button>
-      <p style="font-size: 0.8em; margin-top: 10px;">Click the button to stay aesthetic!</p>
+      <h2 style="color: #ff85a1;">🦩 Catch Me!</h2>
+      <p>Score: <span id="flamingo-score">0</span></p>
+      <div id="game-canvas">
+        <div id="flamingo-target" onclick="catchFlamingo()">🦩</div>
+      </div>
+      <button onclick="startGame()" id="start-game-btn">Start Game</button>
     </section>
   </div>
 
   <section class="box" style="margin-top: 25px;">
-     <h2 style="color: #ff85a1;">🧊 Relaxing Zone</h2>
-     <p>Need a break? Watch the aesthetic waves below.</p>
-     <div class="video-frame" style="height: 200px;">
+      <h2 style="color: #ff85a1;">🧊 Relaxing Zone</h2>
+      <p>Need a break? Watch the aesthetic waves below.</p>
+      <div class="video-frame" style="height: 200px;">
         <video autoplay muted loop style="width: 100%; height: 100%; object-fit: cover;">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-shore-at-sunset-22080-large.mp4" type="video/mp4">
         </video>
-     </div>
+      </div>
   </section>
 
 </div>
 
 <script>
-  // Game Logic
+  // --- Music Logic ---
+  const music = document.getElementById('bg-music');
+  const musicBtn = document.getElementById('music-btn');
+  
+  function toggleMusic() {
+    if (music.paused) {
+      music.play();
+      musicBtn.innerText = "Pause";
+    } else {
+      music.pause();
+      musicBtn.innerText = "Play Music";
+    }
+  }
+
+  // --- Bow Clicker Logic ---
   let score = 0;
   function addPoint() {
     score++;
     document.getElementById('score-display').innerText = score;
-    
-    // Add a little celebratory message
     if(score === 10) {
       alert("✨ 10 Bows! You're officially Preppy! ✨");
     }
+  }
+
+  // --- Catch the Flamingo Logic ---
+  let fScore = 0;
+  let gameInterval;
+  const flamingo = document.getElementById('flamingo-target');
+  const canvas = document.getElementById('game-canvas');
+
+  function moveFlamingo() {
+    const maxX = canvas.clientWidth - 40;
+    const maxY = canvas.clientHeight - 40;
+    const newX = Math.floor(Math.random() * maxX);
+    const newY = Math.floor(Math.random() * maxY);
+    
+    flamingo.style.left = newX + 'px';
+    flamingo.style.top = newY + 'px';
+  }
+
+  function catchFlamingo() {
+    fScore++;
+    document.getElementById('flamingo-score').innerText = fScore;
+    moveFlamingo();
+  }
+
+  function startGame() {
+    document.getElementById('start-game-btn').style.display = 'none';
+    moveFlamingo();
+    // Move flamingo every 1.5 seconds if not caught
+    gameInterval = setInterval(moveFlamingo, 1500);
   }
 </script>
 
 </body>
 </html>
-What's New:
-The Bow Clicker: I added a simple JavaScript snippet at the bottom. It tracks a score and updates the page every time you click the button.
-
-Aesthetic Video Grid: Instead of one big video, I put two smaller "mood board" videos side-by-side using your .card-grid style.
-
-Mixkit Links: I used high-quality, free video links from Mixkit (Cherry blossoms, ink clouds, and sunsets) so you can see them working immediately.
-
-Would you like me to show you how to add a "Store" to the game where you can spend your bow points on different background colors?
