@@ -1,6 +1,4 @@
-
-
-<!DOCTYPE html>
+!DOCTYPE html>
 <html>
 <head>
 <title>✨ SGC | by:Annabelle ✨</title>
@@ -141,16 +139,38 @@
     top: 50%;
   }
 
+  /* New Game Links Styling */
   .links-section {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 30px;
+    border: 3px solid #ffb7d5;
   }
   
-  .links-section a {
-    margin: 0 10px;
+  .game-link-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 25px;
+    background: #fff5f8;
     color: #ff85a1;
     text-decoration: none;
+    border-radius: 20px;
+    border: 2px solid #ffc2d1;
     font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .game-link-btn:hover {
+    background: #ffecf2;
+    border-color: #ff85a1;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #ff85a1;
   }
 </style>
 </head>
@@ -159,7 +179,7 @@
 <div class="music-player">
   <span>🎵</span>
   <audio id="bg-music" loop>
-    <source src="https://www.google.com/search?q=fate+of+ophelia+lyrics&rlz=1CAEVJI_enUS944US944&sca_esv=c90f348048ef67a9&ei=z4dhaYGyJZKi5NoP0rT9kAE&oq=fate+of+ophelia+karaoke&gs_lp=Egxnd3Mtd2l6LXNlcnAiF2ZhdGUgb2Ygb3BoZWxpYSBrYXJhb2tlKgIIBDIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYRzIKEAAYsAMY1gQYR0jvE1AAWABwAXgBkAEAmAEAoAEAqgEAuAEByAEAmAIBoAIJmAMAiAYBkAYIkgcBMaAHALIHALgHAMIHAzItMcgHB4AIAA&sclient=gws-wiz-serp#fpstate=ive&vld=cid:6a104c19,vid:WNmsURkR2-w,st:0audio/mpeg">
+    <source src="https://www.google.com/search?q=fate+of+ophelia+lyrics">
   </audio>
   <button onclick="toggleMusic()" id="music-btn" style="padding: 5px 15px; font-size: 0.8em; margin: 0;">Play Music</button>
 </div>
@@ -207,6 +227,18 @@
     </section>
   </div>
 
+  <section class="links-section">
+    <h2 style="color: #ff85a1;">🎮 School-Safe Games 🎮</h2>
+    <p>These usually work on school Chromebooks!</p>
+    <div class="links-grid">
+      <a href="https://pbskids.org/games" target="_blank" class="game-link-btn">🎨 PBS Kids Games</a>
+      <a href="https://www.google.com/logos/2010/pacman10-i.html" target="_blank" class="game-link-btn">🍕 Google Pacman</a>
+      <a href="https://spaceplace.nasa.gov/menu/play/" target="_blank" class="game-link-btn">🚀 NASA Space Games</a>
+      <a href="https://www.coolmathgames.com" target="_blank" class="game-link-btn">🧠 Cool Math Games</a>
+      <a href="https://quickdraw.withgoogle.com/" target="_blank" class="game-link-btn">✏️ Quick, Draw!</a>
+    </div>
+  </section>
+
   <section class="box" style="margin-top: 25px;">
       <h2 style="color: #ff85a1;">🧊 Relaxing Zone</h2>
       <p>Need a break? Watch the aesthetic waves below.</p>
@@ -215,13 +247,11 @@
       </div>
   </section>
 
-  <div class="links-section">
-    <a href="https://flappybird.io" target="_blank">Flappy Bird</a>
-    <a href="https://youtubeeducation.com" target="_blank">YouTube Education</a>
-    <a href="https://tetris.com" target="_blank">Tetris</a>
-  </div>
-
 </div>
+
+<footer>
+  <h3>Still under construction • Copyright 2026 Annabelle</h3>
+</footer>
 
 <script>
   // --- Music Logic ---
@@ -275,8 +305,8 @@
     moveFlamingo();
     gameInterval = setInterval(moveFlamingo, 1500);
   }
-  <h1>Still under construction copyright 2026 Annabelle</h1>
 </script>
 
 </body>
 </html>
+
