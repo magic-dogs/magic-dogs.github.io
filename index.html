@@ -3,233 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dreamscape | Bakery & Digital Wonders</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <title>Dreamscape | The Ultimate Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS: THE MAGIC SPARKLES thing it makes the site better and more moddern */
-        /* the code for the password box is SNOWDAY2026*/     
+        :root {
+            --magic-purple: #8a2be2;
+            --dream-gold: #ffd700;
+            --ocean-blue: #4ca1af;
+            --mail-pink: #ff69b4;
+        }
+
         body {
             background-color: #0d0d2b;
             color: white;
             font-family: 'Quicksand', sans-serif;
-            text-align: center;
             margin: 0;
-            transition: background 2s ease; /* Smooth transition for the secret key */
+            transition: background 2s ease;
+            overflow-x: hidden;
         }
 
+        /* --- UI ELEMENTS --- */
         .snow-banner {
             background: linear-gradient(90deg, #4ca1af, #c4e0e5, #4ca1af);
             color: #003366;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header { padding: 30px; text-align: center; }
+        .main-logo { max-height: 120px; filter: drop-shadow(0 0 10px var(--magic-purple)); }
+
+        /* --- SEARCH ENGINE --- */
+        .search-container { margin: 20px auto; max-width: 400px; text-align: center; }
+        #siteSearch {
             padding: 12px;
-            font-weight: bold;
-            font-family: 'Montserrat', sans-serif;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-radius: 25px;
+            border: 2px solid var(--ocean-blue);
+            width: 70%;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
         }
-
-        header {
-            padding: 20px;
-        }
-
-        .main-logo {
-            max-height: 150px;
-            filter: drop-shadow(0 0 15px #8a2be2);
-            transition: transform 0.3s ease;
-        }
-
-        .main-logo:hover {
-            transform: rotate(5deg) scale(1.05);
-        }
-
-        nav a {
-            color: #b39ddb;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .hero {
-            padding: 60px 20px;
-        }
-
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #b39ddb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dream-button {
-            background: #8a2be2;
+        .search-btn {
+            padding: 12px 20px;
+            border-radius: 25px;
             border: none;
-            padding: 15px 40px;
+            background: var(--ocean-blue);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- BUTTONS --- */
+        .dream-button {
+            background: var(--magic-purple);
+            border: none;
+            padding: 15px 35px;
             color: white;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 0 15px #bf40bf;
             transition: 0.3s;
-            margin-top: 20px;
+            margin: 10px;
         }
+        .dream-button:hover { transform: scale(1.1); box-shadow: 0 0 30px #ff00ff; }
 
-        .dream-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px #ff00ff;
-        }
-
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 50px 20px;
-        }
-
+        /* --- CONTENT CARDS --- */
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
         .card {
             background: rgba(255, 255, 255, 0.05);
             padding: 20px;
-            border-radius: 25px;
-            width: 250px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.4s;
-        }
-
-        .card:hover {
-            background: rgba(138, 43, 226, 0.15);
-            transform: translateY(-15px);
-            border-color: #8a2be2;
-        }
-
-        .card img {
-            width: 100%;
             border-radius: 20px;
-            margin-bottom: 15px;
+            width: 220px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
         }
 
+        /* --- SECRET CLUBHOUSE --- */
         .secret-section {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 50px 20px;
-            margin: 40px auto;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 40px;
-            border: 2px dashed #4ca1af;
-        }
-
-        #guestPass {
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            width: 200px;
-            margin-bottom: 10px;
-        }
-
-        #secretMessage {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 20px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid gold;
-        }
-
-        footer {
+            background: rgba(0, 0, 0, 0.6);
             padding: 40px;
-            font-size: 0.9rem;
-            color: #666;
+            margin: 50px auto;
+            width: 85%;
+            max-width: 800px;
+            border-radius: 40px;
+            border: 3px dashed var(--magic-purple);
+            display: none;
+            text-align: center;
         }
+
+        /* --- FEEDBACK BOX --- */
+        .feedback-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--ocean-blue);
+            border-radius: 30px;
+            padding: 40px;
+            margin: 50px auto;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .feedback-container input, .feedback-container textarea {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 15px;
+            border: 1px solid var(--magic-purple);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        footer { padding: 40px; text-align: center; color: #666; font-size: 0.9rem; }
+
+        /* --- ARCADE GAME --- */
+        #game-area {
+            height: 300px;
+            background: #000;
+            position: relative;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--ocean-blue);
+            overflow: hidden;
+        }
+        #game-lola { width: 60px; position: absolute; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="snow-banner">❄️ Dreamscape Winter Update: Baking Magic in the Blizzard! ❄️</div>
+    <div class="snow-banner">❄️ Dreamscape Blizzard Hub | Active Coding Session ❄️</div>
 
     <header>
         <img src="logo.png" alt="Dreamscape Logo" class="main-logo">
-        <nav>
-            <a href="#treats">The Menu</a>
-            <a href="#art">Dream Art</a>
-            <a href="#club">Secret Club</a>
-        </nav>
+        <div class="search-container">
+            <input type="text" id="siteSearch" placeholder="Search for treats or art...">
+            <button class="search-btn" onclick="runSearch()">Go</button>
+        </div>
     </header>
 
-    <section class="hero">
-        <h1>A Portal to Another World</h1>
-        <p>Where imagination meets a sugar rush. Welcome to the kingdom.</p>
-        <button class="dream-button" onclick="celebrate()">Start Your Journey</button>
-    </section>
+    <div style="text-align: center; padding: 20px;">
+        <h1>Your Portal to Ever-water</h1>
+        <p id="search-result-text">Explore the magic. Find your flavor.</p>
+    </div>
 
-    <section id="treats" class="gallery">
-        <div class="card">
-            <img src="lola-cupcake.png" alt="Lola the Turtle">
-            <h3>Lola the Turtle</h3>
-            <p>Vanilla bean treats with golden stardust shells.</p>
+    <section class="gallery" id="main-gallery">
+        <div class="card" data-name="lola turtle cupcake">
+            <h3>Lola Turtle</h3>
+            <p>Vanilla & Gold</p>
         </div>
-        <div class="card">
-            <img src="rosie-cupcake.png" alt="Rosie the Bear">
-            <h3>Rosie the Bear</h3>
-            <p>Berry-burst frosting from the enchanted forest.</p>
+        <div class="card" data-name="rosie bear cupcake">
+            <h3>Rosie Bear</h3>
+            <p>Berry Forest</p>
         </div>
-        <div class="card">
-            <img src="lilly-cupcake.png" alt="Lilly the Bunny">
-            <h3>Lilly the Bunny</h3>
-            <p>Cloud-spun marshmallow fluff for dreamers.</p>
+        <div class="card" data-name="digital art club">
+            <h3>Dream Art</h3>
+            <p>AI Wonders</p>
         </div>
     </section>
 
-    <section id="club" class="secret-section">
-        <h3>✨ Dreamer's Club Entrance</h3>
-        <p>Have a secret key? Enter it below:</p>
-        <input type="text" id="guestPass" placeholder="Enter Key...">
-        <br>
-        <button class="dream-button" onclick="checkSecretKey()">Unlock the Portal</button>
-        
-        <div id="secretMessage" style="display:none;">
-            <h2 style="color:gold;">✨ ACCESS GRANTED ✨</h2>
-            <p>You’ve unlocked the <b>Blizzard Special</b>! Show this screen for 1 free stardust topping on Saturday!</p>
-            <p><i>Your current status: Legend 🏆</i></p>
-        </div>
+    <section class="feedback-container">
+        <h3>📬 Message the CEO</h3>
+        <p>Send a secret note or a new idea!</p>
+        <form onsubmit="sendMailMagic(event)">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Write your secret message..." rows="4" required></textarea>
+            <br>
+            <button type="submit" class="dream-button">Send to HQ 🚀</button>
+        </form>
     </section>
+
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h3>🔑 Member Login</h3>
+        <input type="text" id="guestPass" style="padding:10px; border-radius:10px;" placeholder="Secret Key...">
+        <button class="dream-button" onclick="checkSecretKey()">Unlock Arcade</button>
+    </div>
+
+    <div id="secretMessage" class="secret-section">
+        <h2 style="color:var(--dream-gold)">🎮 DREAMER'S ARCADE</h2>
+        <p>Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></p>
+        <div id="game-area">
+            <img src="lola-cupcake.png" id="game-lola" onclick="scorePoint()">
+        </div>
+        <button class="dream-button" onclick="playSound('https://www.soundjay.com/buttons/sounds/button-37.mp3')">✨ Magic Sound</button>
+    </div>
 
     <footer>
-        <p>&copy; 2026 Dreamscape Magic & Flour Co. | Designed by the CEO</p>
+        <p>&copy; 2026 Dreamscape Magic & Flour Co. | Coded by the CEO</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        function checkSecretKey() {
-            let userInput = document.getElementById("guestPass").value.toUpperCase();
-            let secretCode = "SNOWDAY2026"; 
-            let messageDiv = document.getElementById("secretMessage");
-
-            if (userInput === secretCode) {
-                // Confetti blast!
-                confetti({
-                    particleCount: 150,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#8a2be2', '#ff00ff', '#ffffff', '#ffd700']
-                });
-                
-                messageDiv.style.display = "block";
-                document.body.style.background = "linear-gradient(to bottom, #1a1a2e, #4b0082, #000000)";
-                alert("The Portal is Open!");
-            } else {
-                alert("Invalid Key. Are you a hacker  ? 🐢 Try again you have 5 chances left for the day!");
-                {
+        // --- SEARCH ENGINE ---
+        function runSearch() {
+            let input = document.getElementById('siteSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let card of cards) {
+                card.style.display = card.getAttribute('data-name').includes(input) ? "block" : "none";
+            }
         }
 
-        function celebrate() {
+        // --- MAIL MAGIC ANIMATION ---
+        function sendMailMagic(event) {
+            event.preventDefault();
+            const scalar = 2;
+            const mail = confetti.shapeFromText({ text: '✉️', scalar });
+
             confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
+                shapes: [mail],
+                particleCount: 20,
+                spread: 50,
+                origin: { y: 0.8 },
+                colors: ['#ff69b4', '#ffffff']
             });
-        }
-    </script>
 
+            alert("Message sent through the portal! 🚀");
+        }
+
+        // --- SECRET ARCADE ---
+        let score = 0;
+        let highScore = localStorage.getItem('dreamHighScore') || 0;
+        document.getElementById('highScore').innerText = highScore;
+
+        function checkSecretKey() {
+            if (document.getElementById('guestPass').value.toUpperCase() === "SNOWDAY2026") {
+                confetti({ particleCount: 150, spread: 70 });
+                document.getElementById('secretMessage').style.display = "block";
+                setInterval(moveLola, 1200);
+            } else { alert("Wrong key are you a hacker! 🐢"); }
+        }
+
+        function moveLola() {
+            const area = document.getElementById('game-area');
+            const lola = document.getElementById('game-lola');
+            lola.style.left = Math.random() * (area.clientWidth - 60) + 'px';
+            lola.style.top = Math.random() * (area.clientHeight - 60) + 'px';
+        }
+
+        function scorePoint() {
+            score++;
+            document.getElementById('score').innerText = score;
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('dreamHighScore', highScore);
+                document.getElementById('highScore').innerText = highScore;
+            }
+            moveLola();
+        }
+
+        function playSound(url) { new Audio(url).play(); }
+    </script>
 </body>
 </html>
