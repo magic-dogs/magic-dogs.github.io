@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dreamscape Empire | Luxury & Games</title>
+    <title>Dreamscape Empire | The CEO's Masterpiece</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -19,151 +19,188 @@
             color: white;
             font-family: 'Quicksand', sans-serif;
             margin: 0;
-            text-align: center;
+            padding-bottom: 50px; /* Space for the news ticker */
             overflow-x: hidden;
         }
 
-        /* --- UI ELEMENTS --- */
+        /* --- MAGIC SNOW --- */
         #snow-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99; }
-        .header-brand { padding: 60px 20px; background: linear-gradient(to bottom, #1a1a40, var(--deep-space)); }
-        h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; margin: 0; background: linear-gradient(to right, #fff, var(--magic-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* --- SHOPPING CART --- */
-        .cart-status { position: fixed; top: 20px; right: 20px; background: rgba(138, 43, 226, 0.8); padding: 15px; border-radius: 20px; backdrop-filter: blur(5px); z-index: 1000; border: 1px solid white; }
+        /* --- NEWS TICKER --- */
+        .news-ticker {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(138, 43, 226, 0.9);
+            color: white;
+            padding: 10px 0;
+            font-weight: bold;
+            z-index: 1000;
+            border-top: 2px solid var(--dream-gold);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 25s linear infinite;
+            font-size: 1.1rem;
+        }
+        @keyframes ticker {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
 
-        /* --- NEW GAME: CUPCAKE RAIN --- */
+        /* --- HEADER & CART --- */
+        header { padding: 40px; text-align: center; background: linear-gradient(to bottom, #1a1a40, var(--deep-space)); }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 4rem; margin: 0; background: linear-gradient(to right, #fff, var(--magic-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cart-status { position: fixed; top: 20px; right: 20px; background: var(--magic-purple); padding: 15px; border-radius: 20px; z-index: 1001; box-shadow: 0 0 15px var(--dream-gold); }
+
+        /* --- SEARCH & SHOP --- */
+        .search-area { margin: 20px; text-align: center; }
+        .shop-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; padding: 40px; }
+        .card { background: rgba(255,255,255,0.05); border-radius: 25px; padding: 20px; width: 250px; border: 1px solid var(--ocean-blue); text-align: center; }
+
+        /* --- GAMES --- */
         .arcade-box { background: #000; margin: 40px auto; width: 90%; max-width: 600px; border-radius: 30px; padding: 20px; border: 3px solid var(--ocean-blue); position: relative; }
-        #rain-game { width: 100%; height: 400px; background: #050515; position: relative; overflow: hidden; border-radius: 20px; touch-action: none; }
-        #player { width: 80px; height: 20px; background: var(--dream-gold); position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; box-shadow: 0 0 15px var(--dream-gold); }
-        .falling-cupcake { position: absolute; font-size: 30px; }
+        #rain-game { width: 100%; height: 350px; background: #050515; position: relative; overflow: hidden; border-radius: 20px; touch-action: none; cursor: crosshair; }
+        #player { width: 80px; height: 15px; background: var(--dream-gold); position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; }
 
-        /* --- REAL MESSAGING BOX --- */
-        /* --- code for key thing is SNOWDAY2026 ---*/
-        .contact-section { background: rgba(255,255,255,0.05); padding: 40px; margin: 40px auto; width: 80%; max-width: 500px; border-radius: 30px; border: 2px solid var(--magic-purple); }
-        .contact-section input, .contact-section textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 15px; border: none; background: #1a1a2e; color: white; }
-        
-        .btn { background: var(--magic-purple); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff00ff; }
+        /* --- CONTACT --- */
+        .contact-box { background: rgba(0,0,0,0.5); padding: 30px; margin: 40px auto; width: 80%; max-width: 500px; border-radius: 30px; border: 2px solid var(--magic-purple); }
+        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 10px; background: #1a1a2e; color: white; border: 1px solid var(--ocean-blue); }
+
+        .btn { background: var(--magic-purple); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        .btn:hover { transform: scale(1.1); background: #ff00ff; }
     </style>
 </head>
 <body>
 
     <canvas id="snow-canvas"></canvas>
 
-    <div class="cart-status">
-        🛒 Cart: <span id="cart-count">0</span> | Total: $<span id="cart-total">0</span>
+    <div class="news-ticker">
+        <div class="ticker-text">
+            ❄️ BLIZZARD UPDATE: Dreamscape HQ is now accepting stardust orders! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            🏆 NEW HIGH SCORE: CEO just hit 999 in Cupcake Rain! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            🧁 RESTOCK: Lola the Turtle cupcakes are back in the bakery! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            ✨ JOIN THE CLUB: Digital Membership is now open for $15!
+        </div>
     </div>
 
-    <section class="header-brand">
+    <div class="cart-status">🛒 Cart: <span id="cart-count">0</span> | $<span id="cart-total">0</span></div>
+
+    <header>
         <h1>DREAMSCAPE</h1>
-        <p>Luxury treats, falling stars, and digital wonders.</p>
+        <p>A Portal to Ever-water | Established 2026</p>
+    </header>
+
+    <div class="search-area">
+        <input type="text" id="siteSearch" placeholder="Search the empire..." style="width: 250px;">
+        <button class="btn" onclick="runSearch()">Go</button>
+    </div>
+
+    <section class="shop-grid">
+        <div class="card" data-name="lola turtle cupcake">
+            <h3>Lola the Turtle</h3>
+            <p>Signature Vanilla</p>
+            <p style="color:var(--dream-gold)">$6.00</p>
+            <button class="btn" onclick="addToCart(6)">Add to Cart</button>
+        </div>
+        <div class="card" data-name="art club membership">
+            <h3>Art Club</h3>
+            <p>Digital Membership</p>
+            <p style="color:var(--dream-gold)">$15.00</p>
+            <button class="btn" onclick="addToCart(15)">Join Now</button>
+        </div>
     </section>
 
     <section class="arcade-box">
-        <h2>🌧️ MINI-GAME: Cupcake Rain</h2>
-        <p>Use your mouse/finger to move the Golden Plate!</p>
-        <div id="rain-game">
-            <div id="player"></div>
-        </div>
-        <h3>Catch Score: <span id="rain-score">0</span></h3>
-        <button class="btn" onclick="startRainGame()">Start Catching</button>
+        <h2>🌧️ CATCH THE RAIN</h2>
+        <div id="rain-game"><div id="player"></div></div>
+        <p>Score: <span id="rain-score">0</span></p>
+        <button class="btn" onclick="startRainGame()">Start Game</button>
     </section>
 
-    <section class="contact-section">
-        <h2>📧 Message HQ</h2>
-        <p>These messages go straight to the CEO's desk!</p>
-        
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="_replyto" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Type your secret idea here..." required></textarea>
-            <input type="hidden" name="_subject" value="New Dreamscape Suggestion!">
+    <section class="contact-box">
+        <h3>📧 Message the CEO</h3>
+        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" onsubmit="mailBlast()">
+            <input type="text" name="name" placeholder="Name" required>
+            <textarea name="message" placeholder="Your secret idea..." required></textarea>
             <button type="submit" class="btn">Send Message 🚀</button>
         </form>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Dreamscape Empire | Coded in a Blizzard</p>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // --- CUPCAKE RAIN GAME LOGIC ---
-        let rainScore = 0;
-        const gameContainer = document.getElementById('rain-game');
-        const player = document.getElementById('player');
-        let gameActive = false;
+        // --- CART ---
+        let items = 0, money = 0;
+        function addToCart(p) {
+            items++; money += p;
+            document.getElementById('cart-count').innerText = items;
+            document.getElementById('cart-total').innerText = money;
+            confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
+        }
 
-        // Move player with mouse or touch
+        // --- SEARCH ---
+        function runSearch() {
+            let input = document.getElementById('siteSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let card of cards) {
+                card.style.display = card.getAttribute('data-name').includes(input) ? "block" : "none";
+            }
+        }
+
+        // --- GAME ---
+        let rainScore = 0, gameActive = false;
+        const gameContainer = document.getElementById('rain-game'), player = document.getElementById('player');
         gameContainer.addEventListener('mousemove', (e) => {
             let rect = gameContainer.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            player.style.left = x + 'px';
+            player.style.left = (e.clientX - rect.left) + 'px';
         });
 
         function startRainGame() {
-            if(gameActive) return;
-            gameActive = true;
-            rainScore = 0;
-            document.getElementById('rain-score').innerText = rainScore;
+            if(gameActive) return; gameActive = true; rainScore = 0;
             spawnCupcake();
         }
 
         function spawnCupcake() {
             if(!gameActive) return;
             const cupcake = document.createElement('div');
-            cupcake.className = 'falling-cupcake';
+            cupcake.style.position = 'absolute';
             cupcake.innerText = '🧁';
             cupcake.style.left = Math.random() * (gameContainer.clientWidth - 30) + 'px';
             cupcake.style.top = '0px';
+            cupcake.style.fontSize = '25px';
             gameContainer.appendChild(cupcake);
 
-            let fallInterval = setInterval(() => {
+            let fall = setInterval(() => {
                 let top = parseInt(cupcake.style.top);
                 cupcake.style.top = (top + 5) + 'px';
-
-                // Check for collision
-                let cRect = cupcake.getBoundingClientRect();
-                let pRect = player.getBoundingClientRect();
+                let cRect = cupcake.getBoundingClientRect(), pRect = player.getBoundingClientRect();
 
                 if (cRect.bottom >= pRect.top && cRect.left < pRect.right && cRect.right > pRect.left) {
-                    rainScore++;
-                    document.getElementById('rain-score').innerText = rainScore;
-                    cupcake.remove();
-                    clearInterval(fallInterval);
-                    confetti({ particleCount: 10, ticks: 20, origin: { y: 0.7 } });
+                    rainScore++; document.getElementById('rain-score').innerText = rainScore;
+                    cupcake.remove(); clearInterval(fall);
                 }
-
-                if (top > gameContainer.clientHeight) {
-                    cupcake.remove();
-                    clearInterval(fallInterval);
-                }
+                if (top > gameContainer.clientHeight) { cupcake.remove(); clearInterval(fall); }
             }, 20);
-
             setTimeout(spawnCupcake, 1000);
         }
 
-        // --- SNOW SYSTEM (Same as before) ---
-        const canvas = document.getElementById('snow-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // --- SNOW ---
+        const canvas = document.getElementById('snow-canvas'), ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let flakes = [];
         for(let i=0; i<100; i++) flakes.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, d: Math.random()+0.5});
         function drawSnow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "white";
-            ctx.beginPath();
-            flakes.forEach(f => {
-                ctx.moveTo(f.x, f.y);
-                ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-                f.y += f.d;
-                if(f.y > canvas.height) f.y = -10;
-            });
-            ctx.fill();
-            requestAnimationFrame(drawSnow);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "white"; ctx.beginPath();
+            flakes.forEach(f => { ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); f.y += f.d; if(f.y > canvas.height) f.y = -10; });
+            ctx.fill(); requestAnimationFrame(drawSnow);
         }
         drawSnow();
+
+        function mailBlast() { confetti({ shapes: ['circle'], particleCount: 15, colors: ['#ff69b4'] }); }
     </script>
 </body>
-</html>
+</html>    
+        
