@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamscape | Bakery & Digital Wonders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        .stardust-text {
+            background: linear-gradient(90deg, #ffd700, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10">
 
+    <!-- Header/Nav -->
+    <nav class="flex justify-between items-center mb-16">
+        <h1 class="text-3xl font-bold tracking-tighter">DREAM<span class="stardust-text">SCAPE</span></h1>
+        <div class="space-x-6 hidden md:block">
+            <a href="#" class="hover:text-yellow-400 transition">Treats</a>
+            <a href="#" class="hover:text-yellow-400 transition">Digital Art</a>
+            <a href="#" class="bg-white text-blue-900 px-6 py-2 rounded-full font-bold">Join the Club</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="max-w-4xl mx-auto text-center py-20">
+        <h2 class="text-5xl md:text-7xl font-extrabold mb-6">Your portal to <span class="stardust-text">Ever-water</span>.</h2>
+        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+            Dreamscape is more than just a bakery; it is a portal to another world where imagination meets a sugar rush. 
+            Every bite should feel like a lovely vacation.
+        </p>
+        <button class="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-black font-bold text-lg hover:scale-105 transition-transform">
+            Start Your Journey
+        </button>
+    </header>
+
+    <!-- Features Grid -->
+    <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <!-- Bakery Card -->
+        <div class="glass p-8 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)] transition">
+            <h3 class="text-2xl font-bold mb-4">Handcrafted Treats</h3>
+            <p class="text-gray-400 mb-6">Try our signature <strong>Lola the Turtle</strong> cupcakes, delicately dusted with golden stardust.</p>
+            <span class="text-yellow-400">Order for Pickup →</span>
+        </div>
+
+        <!-- Digital Card -->
+        <div class="glass p-8 hover:shadow-[0_0_30px_rgba(0,191,255,0.2)] transition">
+            <h3 class="text-2xl font-bold mb-4">Digital Wonders</h3>
+            <p class="text-gray-400 mb-6">Exclusive <strong>Dreamer’s Club</strong> memberships that turn your own dreams into custom AI art.</p>
+            <span class="text-blue-400">Enter the Gallery →</span>
+        </div>
+    </div>
+
+    <!-- Footer Quote -->
+    <footer class="mt-32 text-center border-t border-gray-800 pt-10">
+        <p class="italic text-gray-500">"You’re never too young to build a kingdom."</p>
+        <p class="mt-4 opacity-50">© 2024 Dreamscape Magic & Flour Co.</p>
+    </footer>
+
+</body>
+</html>
