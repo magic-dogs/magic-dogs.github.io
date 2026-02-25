@@ -4,73 +4,231 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dreamscape | Bakery & Digital Wonders</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    
     <style>
+        /* CSS: THE MAGIC SPARKLES thing it makes the site better and more moddern */
         body {
-            background: background: #800080;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d2b;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            margin: 0;
+            transition: background 2s ease; /* Smooth transition for the secret key */
         }
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+
+        .snow-banner {
+            background: linear-gradient(90deg, #4ca1af, #c4e0e5, #4ca1af);
+            color: #003366;
+            padding: 12px;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .stardust-text {
-            background: linear-gradient(90deg, #ffd700, #fff);
+
+        header {
+            padding: 20px;
+        }
+
+        .main-logo {
+            max-height: 150px;
+            filter: drop-shadow(0 0 15px #8a2be2);
+            transition: transform 0.3s ease;
+        }
+
+        .main-logo:hover {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        nav a {
+            color: #b39ddb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .hero {
+            padding: 60px 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #b39ddb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .dream-button {
+            background: #8a2be2;
+            border: none;
+            padding: 15px 40px;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 0 15px #bf40bf;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .dream-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #ff00ff;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 25px;
+            width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            background: rgba(138, 43, 226, 0.15);
+            transform: translateY(-15px);
+            border-color: #8a2be2;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .secret-section {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 50px 20px;
+            margin: 40px auto;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 40px;
+            border: 2px dashed #4ca1af;
+        }
+
+        #guestPass {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            width: 200px;
+            margin-bottom: 10px;
+        }
+
+        #secretMessage {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid gold;
+        }
+
+        footer {
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #666;
         }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body>
 
-    <!-- Header/Nav -->
-    <nav class="flex justify-between items-center mb-16">
-        <h1 class="text-3xl font-bold tracking-tighter">DREAM<span class="stardust-text">SCAPE</span></h1>
-        <div class="space-x-6 hidden md:block">
-            <a href="#" class="hover:text-yellow-400 transition">Treats</a>
-            <a href="#" class="hover:text-yellow-400 transition">Digital Art</a>
-            <a href="#" class="bg-white text-blue-900 px-6 py-2 rounded-full font-bold">Join the Club</a>
-        </div>
-    </nav>
+    <div class="snow-banner">❄️ Dreamscape Winter Update: Baking Magic in the Blizzard! ❄️</div>
 
-    <!-- Hero Section -->
-    <header class="max-w-4xl mx-auto text-center py-20">
-        <h2 class="text-5xl md:text-7xl font-extrabold mb-6">Your portal to <span class="stardust-text">Ever-water</span>.</h2>
-        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
-            Dreamscape is more than just a bakery; it is a portal to another world where imagination meets a sugar rush. 
-            Every bite should feel like a lovely vacation.
-        </p>
-        <button class="px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-black font-bold text-lg hover:scale-105 transition-transform">
-            Start Your Journey
-        </button>
+    <header>
+        <img src="logo.png" alt="Dreamscape Logo" class="main-logo">
+        <nav>
+            <a href="#treats">The Menu</a>
+            <a href="#art">Dream Art</a>
+            <a href="#club">Secret Club</a>
+        </nav>
     </header>
 
-    <!-- Features Grid -->
-    <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        <!-- Bakery Card -->
-        <div class="glass p-8 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)] transition">
-            <h3 class="text-2xl font-bold mb-4">Handcrafted Treats</h3>
-            <p class="text-gray-400 mb-6">Try our signature <strong>Lola the Turtle</strong> cupcakes, delicately dusted with golden stardust.</p>
-            <span class="text-yellow-400">Order for Pickup →</span>
-        </div>
+    <section class="hero">
+        <h1>A Portal to Another World</h1>
+        <p>Where imagination meets a sugar rush. Welcome to the kingdom.</p>
+        <button class="dream-button" onclick="celebrate()">Start Your Journey</button>
+    </section>
 
-        <!-- Digital Card -->
-        <div class="glass p-8 hover:shadow-[0_0_30px_rgba(0,191,255,0.2)] transition">
-            <h3 class="text-2xl font-bold mb-4">Digital Wonders</h3>
-            <p class="text-gray-400 mb-6">Exclusive <strong>Dreamer’s Club</strong> memberships that turn your own dreams into custom AI art.</p>
-            <span class="text-blue-400">Enter the Gallery →</span>
+    <section id="treats" class="gallery">
+        <div class="card">
+            <img src="lola-cupcake.png" alt="Lola the Turtle">
+            <h3>Lola the Turtle</h3>
+            <p>Vanilla bean treats with golden stardust shells.</p>
         </div>
-    </div>
+        <div class="card">
+            <img src="rosie-cupcake.png" alt="Rosie the Bear">
+            <h3>Rosie the Bear</h3>
+            <p>Berry-burst frosting from the enchanted forest.</p>
+        </div>
+        <div class="card">
+            <img src="lilly-cupcake.png" alt="Lilly the Bunny">
+            <h3>Lilly the Bunny</h3>
+            <p>Cloud-spun marshmallow fluff for dreamers.</p>
+        </div>
+    </section>
 
-    <!-- Footer Quote -->
-    <footer class="mt-32 text-center border-t border-gray-800 pt-10">
-        <p class="italic text-gray-500">"You’re never too young to build a kingdom."</p>
-        <p class="mt-4 opacity-50">copywrite 2026 Dreamscape Magic & Flour Co.</p>
+    <section id="club" class="secret-section">
+        <h3>✨ Dreamer's Club Entrance</h3>
+        <p>Have a secret key? Enter it below:</p>
+        <input type="text" id="guestPass" placeholder="Enter Key...">
+        <br>
+        <button class="dream-button" onclick="checkSecretKey()">Unlock the Portal</button>
+        
+        <div id="secretMessage" style="display:none;">
+            <h2 style="color:gold;">✨ ACCESS GRANTED ✨</h2>
+            <p>You’ve unlocked the <b>Blizzard Special</b>! Show this screen for 1 free stardust topping on Saturday!</p>
+            <p><i>Your current status: Legend 🏆</i></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Dreamscape Magic & Flour Co. | Designed by the CEO</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        function checkSecretKey() {
+            let userInput = document.getElementById("guestPass").value.toUpperCase();
+            let secretCode = "SNOWDAY2026"; 
+            let messageDiv = document.getElementById("secretMessage");
+
+            if (userInput === secretCode) {
+                // Confetti blast!
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#8a2be2', '#ff00ff', '#ffffff', '#ffd700']
+                });
+                
+                messageDiv.style.display = "block";
+                document.body.style.background = "linear-gradient(to bottom, #1a1a2e, #4b0082, #000000)";
+                alert("The Portal is Open!");
+            } else {
+                alert("Invalid Key. Are you a spy? 🐢 Try again!");
+            }
+        }
+
+        function celebrate() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    </script>
 
 </body>
 </html>
