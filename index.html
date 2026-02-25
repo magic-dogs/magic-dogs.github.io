@@ -1,265 +1,168 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dreamscape  | Magic & Flour Co.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamscape Empire | Luxury & Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --magic-purple: #8a2be2;
+            --dream-gold: #ffd700;
+            --ocean-blue: #4ca1af;
+            --deep-space: #0d0d2b;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+        body {
+            background-color: var(--deep-space);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+        }
 
-<style>
-:root {
-    --magic-purple:#8a2be2;
-    --dream-gold:#ffd700;
-    --ocean-blue:#4ca1af;
-    --dark-bg:#0d0d2b;
-}
+        /* --- UI ELEMENTS --- */
+        #snow-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99; }
+        .header-brand { padding: 60px 20px; background: linear-gradient(to bottom, #1a1a40, var(--deep-space)); }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; margin: 0; background: linear-gradient(to right, #fff, var(--magic-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-*{box-sizing:border-box;margin:0;padding:0;}
+        /* --- SHOPPING CART --- */
+        .cart-status { position: fixed; top: 20px; right: 20px; background: rgba(138, 43, 226, 0.8); padding: 15px; border-radius: 20px; backdrop-filter: blur(5px); z-index: 1000; border: 1px solid white; }
 
-body{
-    font-family:'Quicksand',sans-serif;
-    background:radial-gradient(circle at top,#1a1a5a,#0d0d2b);
-    color:white;
-    overflow-x:hidden;
-}
+        /* --- NEW GAME: CUPCAKE RAIN --- */
+        .arcade-box { background: #000; margin: 40px auto; width: 90%; max-width: 600px; border-radius: 30px; padding: 20px; border: 3px solid var(--ocean-blue); position: relative; }
+        #rain-game { width: 100%; height: 400px; background: #050515; position: relative; overflow: hidden; border-radius: 20px; touch-action: none; }
+        #player { width: 80px; height: 20px; background: var(--dream-gold); position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; box-shadow: 0 0 15px var(--dream-gold); }
+        .falling-cupcake { position: absolute; font-size: 30px; }
 
-/* HERO */
-.hero{
-    text-align:center;
-    padding:100px 20px;
-}
-
-.hero h1{
-    font-family:'Montserrat',sans-serif;
-    font-size:3rem;
-    background:linear-gradient(90deg,#fff,var(--dream-gold));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.cta{
-    background:var(--magic-purple);
-    border:none;
-    padding:15px 35px;
-    border-radius:50px;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:25px;
-    transition:0.3s;
-}
-
-.cta:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 30px #ff00ff;
-}
-
-/* PRODUCTS */
-.products{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:30px;
-    padding:60px 20px;
-}
-
-.card{
-    background:rgba(255,255,255,0.05);
-    padding:25px;
-    border-radius:20px;
-    width:250px;
-    text-align:center;
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 25px var(--magic-purple);
-}
-
-/* ARCADE */
-.arcade{
-    text-align:center;
-    padding:60px 20px;
-}
-
-#game-area{
-    width:100%;
-    max-width:500px;
-    height:300px;
-    background:black;
-    margin:auto;
-    border-radius:20px;
-    position:relative;
-    overflow:hidden;
-    border:2px solid var(--ocean-blue);
-}
-
-#target{
-    width:60px;
-    position:absolute;
-    cursor:pointer;
-}
-
-.score-board{
-    margin:15px;
-}
-
-/* CONTACT */
-.contact{
-    padding:60px 20px;
-    text-align:center;
-}
-
-.contact input,.contact textarea{
-    width:90%;
-    max-width:400px;
-    padding:12px;
-    margin:10px 0;
-    border-radius:15px;
-    border:1px solid var(--magic-purple);
-    background:rgba(0,0,0,0.4);
-    color:white;
-}
-
-footer{
-    text-align:center;
-    padding:40px;
-    color:#777;
-}
-</style>
+        /* --- REAL MESSAGING BOX --- */
+        .contact-section { background: rgba(255,255,255,0.05); padding: 40px; margin: 40px auto; width: 80%; max-width: 500px; border-radius: 30px; border: 2px solid var(--magic-purple); }
+        .contact-section input, .contact-section textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 15px; border: none; background: #1a1a2e; color: white; }
+        
+        .btn { background: var(--magic-purple); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff00ff; }
+    </style>
 </head>
-
 <body>
 
-<section class="hero">
-<h1>Dreamscape Empire</h1>
-<p>Luxury cupcakes. Interactive magic. Built for dreamers.</p>
-<button class="cta" onclick="scrollToProducts()">Explore ✨</button>
-</section>
+    <canvas id="snow-canvas"></canvas>
 
-<section class="products" id="products">
-<div class="card">
-<h3>Lola Turtle</h3>
-<p>Vanilla & Gold</p>
-<button class="cta" onclick="redirectToStripe()">Buy - $6</button>
-</div>
+    <div class="cart-status">
+        🛒 Cart: <span id="cart-count">0</span> | Total: $<span id="cart-total">0</span>
+    </div>
 
-<div class="card">
-<h3>Rosie Bear</h3>
-<p>Berry Forest</p>
-<button class="cta" onclick="redirectToStripe()">Buy - $6</button>
-</div>
+    <section class="header-brand">
+        <h1>DREAMSCAPE</h1>
+        <p>Luxury treats, falling stars, and digital wonders.</p>
+    </section>
 
-<div class="card">
-<h3>Dream Art Club</h3>
-<p>Digital Membership</p>
-<button class="cta" onclick="redirectToStripe()">Join - $15</button>
-</div>
-</section>
+    <section class="arcade-box">
+        <h2>🌧️ MINI-GAME: Cupcake Rain</h2>
+        <p>Use your mouse/finger to move the Golden Plate!</p>
+        <div id="rain-game">
+            <div id="player"></div>
+        </div>
+        <h3>Catch Score: <span id="rain-score">0</span></h3>
+        <button class="btn" onclick="startRainGame()">Start Catching</button>
+    </section>
 
-<section class="arcade">
-<h2>🎮 Dreamer’s Arcade</h2>
-<div class="score-board">
-Score: <span id="score">0</span> |
-High Score: <span id="highScore">0</span> |
-Time: <span id="timer">30</span>
-</div>
-<button class="cta" onclick="startGame()">Start Game</button>
+    <section class="contact-section">
+        <h2>📧 Message HQ</h2>
+        <p>These messages go straight to the CEO's desk!</p>
+        
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="_replyto" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Type your secret idea here..." required></textarea>
+            <input type="hidden" name="_subject" value="New Dreamscape Suggestion!">
+            <button type="submit" class="btn">Send Message 🚀</button>
+        </form>
+    </section>
 
-<div id="game-area">
-<img src="https://i.imgur.com/6X12KxR.png" id="target" onclick="scorePoint()">
-</div>
-</section>
+    <footer>
+        <p>&copy; 2026 Dreamscape Empire | Coded in a Blizzard</p>
+    </footer>
 
-<section class="contact">
-<h2>📧 Message the CEO</h2>
-<form onsubmit="sendEmail(event)">
-<input type="text" name="user_name" placeholder="Your Name" required><br>
-<input type="email" name="user_email" placeholder="Your Email" required><br>
-<textarea name="message" rows="4" placeholder="Your Message" required></textarea><br>
-<button class="cta">Send 🚀</button>
-</form>
-</section>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // --- CUPCAKE RAIN GAME LOGIC ---
+        let rainScore = 0;
+        const gameContainer = document.getElementById('rain-game');
+        const player = document.getElementById('player');
+        let gameActive = false;
 
-<footer>
-© 2026 Dreamscape Empire
-</footer>
+        // Move player with mouse or touch
+        gameContainer.addEventListener('mousemove', (e) => {
+            let rect = gameContainer.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            player.style.left = x + 'px';
+        });
 
-<script>
-/* Smooth Scroll */
-function scrollToProducts(){
-document.getElementById("products").scrollIntoView({behavior:"smooth"});
-}
+        function startRainGame() {
+            if(gameActive) return;
+            gameActive = true;
+            rainScore = 0;
+            document.getElementById('rain-score').innerText = rainScore;
+            spawnCupcake();
+        }
 
-/* Stripe Placeholder */
-function redirectToStripe(){
-alert("Replace with your Stripe Checkout Link 💳");
-}
+        function spawnCupcake() {
+            if(!gameActive) return;
+            const cupcake = document.createElement('div');
+            cupcake.className = 'falling-cupcake';
+            cupcake.innerText = '🧁';
+            cupcake.style.left = Math.random() * (gameContainer.clientWidth - 30) + 'px';
+            cupcake.style.top = '0px';
+            gameContainer.appendChild(cupcake);
 
-/* Arcade Game */
-let score=0;
-let highScore=localStorage.getItem("dreamHighScore")||0;
-let timeLeft=30;
-let gameInterval;
-document.getElementById("highScore").innerText=highScore;
+            let fallInterval = setInterval(() => {
+                let top = parseInt(cupcake.style.top);
+                cupcake.style.top = (top + 5) + 'px';
 
-const target=document.getElementById("target");
-const area=document.getElementById("game-area");
+                // Check for collision
+                let cRect = cupcake.getBoundingClientRect();
+                let pRect = player.getBoundingClientRect();
 
-function moveTarget(){
-target.style.left=Math.random()*(area.clientWidth-60)+"px";
-target.style.top=Math.random()*(area.clientHeight-60)+"px";
-}
+                if (cRect.bottom >= pRect.top && cRect.left < pRect.right && cRect.right > pRect.left) {
+                    rainScore++;
+                    document.getElementById('rain-score').innerText = rainScore;
+                    cupcake.remove();
+                    clearInterval(fallInterval);
+                    confetti({ particleCount: 10, ticks: 20, origin: { y: 0.7 } });
+                }
 
-function startGame(){
-score=0;
-timeLeft=30;
-document.getElementById("score").innerText=0;
-document.getElementById("timer").innerText=30;
+                if (top > gameContainer.clientHeight) {
+                    cupcake.remove();
+                    clearInterval(fallInterval);
+                }
+            }, 20);
 
-clearInterval(gameInterval);
-gameInterval=setInterval(()=>{
-timeLeft--;
-document.getElementById("timer").innerText=timeLeft;
-moveTarget();
-if(timeLeft<=0){
-clearInterval(gameInterval);
-if(score>highScore){
-highScore=score;
-localStorage.setItem("dreamHighScore",highScore);
-document.getElementById("highScore").innerText=highScore;
-}
-confetti({particleCount:150,spread:70});
-alert("Game Over! Final Score: "+score);
-}
-},1000);
-}
+            setTimeout(spawnCupcake, 1000);
+        }
 
-function scorePoint(){
-score++;
-document.getElementById("score").innerText=score;
-confetti({particleCount:10,spread:40});
-}
-
-/* EmailJS */
-emailjs.init("YOUR_PUBLIC_KEY");
-
-function sendEmail(e){
-e.preventDefault();
-emailjs.sendForm("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",e.target)
-.then(()=>{
-alert("Message Sent! ✨");
-confetti({particleCount:80,spread:60});
-},()=>{
-alert("Email failed. Check your EmailJS keys.");
-});
-}
-</script>
-
+        // --- SNOW SYSTEM (Same as before) ---
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let flakes = [];
+        for(let i=0; i<100; i++) flakes.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*3+1, d: Math.random()+0.5});
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            flakes.forEach(f => {
+                ctx.moveTo(f.x, f.y);
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+                f.y += f.d;
+                if(f.y > canvas.height) f.y = -10;
+            });
+            ctx.fill();
+            requestAnimationFrame(drawSnow);
+        }
+        drawSnow();
+    </script>
 </body>
 </html>
