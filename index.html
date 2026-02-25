@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dreamscape  | The CEO's Masterpiece</title>
+    <title>Dreamscape Empire | The CEO's Masterpiece</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -19,21 +20,22 @@
             color: white;
             font-family: 'Quicksand', sans-serif;
             margin: 0;
-            padding-bottom: 50px; /* Space for the news ticker */
+            padding-bottom: 60px;
             overflow-x: hidden;
+            transition: background 1s;
         }
 
-        /* ---  this is for the MAGIC SNOW --- */
+        /* --- MAGIC SNOW --- */
         #snow-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99; }
 
-        /* --- NEWS TICKER update thing --- */
+        /* --- NEWS TICKER --- */
         .news-ticker {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background: rgba(138, 43, 226, 0.9);
+            background: rgba(138, 43, 226, 0.95);
             color: white;
-            padding: 10px 0;
+            padding: 12px 0;
             font-weight: bold;
             z-index: 1000;
             border-top: 2px solid var(--dream-gold);
@@ -43,8 +45,7 @@
         .ticker-text {
             display: inline-block;
             padding-left: 100%;
-            animation: ticker 25s linear infinite;
-            font-size: 1.1rem;
+            animation: ticker 30s linear infinite;
         }
         @keyframes ticker {
             0% { transform: translate(0, 0); }
@@ -53,100 +54,127 @@
 
         /* --- HEADER & CART --- */
         header { padding: 40px; text-align: center; background: linear-gradient(to bottom, #1a1a40, var(--deep-space)); }
-        h1 { font-family: 'Montserrat', sans-serif; font-size: 4rem; margin: 0; background: linear-gradient(to right, #fff, var(--magic-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .cart-status { position: fixed; top: 20px; right: 20px; background: var(--magic-purple); padding: 15px; border-radius: 20px; z-index: 1001; box-shadow: 0 0 15px var(--dream-gold); }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; margin: 0; background: linear-gradient(to right, #fff, var(--dream-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cart-status { position: fixed; top: 20px; right: 20px; background: var(--magic-purple); padding: 12px 20px; border-radius: 50px; z-index: 1001; border: 1px solid white; font-weight: bold; }
 
-        /* --- SEARCH & SHOP --- */
-        .search-area { margin: 20px; text-align: center; }
-        .shop-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; padding: 40px; }
-        .card { background: rgba(255,255,255,0.05); border-radius: 25px; padding: 20px; width: 250px; border: 1px solid var(--ocean-blue); text-align: center; }
+        /* --- SHOP --- */
+        .shop-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 40px; }
+        .card { background: rgba(255,255,255,0.05); border-radius: 25px; padding: 25px; width: 240px; border: 1px solid var(--ocean-blue); transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); background: rgba(138, 43, 226, 0.1); }
 
-        /* --- GAMES --- */
-        .arcade-box { background: #000; margin: 40px auto; width: 90%; max-width: 600px; border-radius: 30px; padding: 20px; border: 3px solid var(--ocean-blue); position: relative; }
-        #rain-game { width: 100%; height: 350px; background: #050515; position: relative; overflow: hidden; border-radius: 20px; touch-action: none; cursor: crosshair; }
-        #player { width: 80px; height: 15px; background: var(--dream-gold); position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; }
+        /* --- GAME --- */
+        .arcade-box { background: #000; margin: 40px auto; width: 90%; max-width: 500px; border-radius: 30px; padding: 20px; border: 3px solid var(--magic-purple); }
+        #rain-game { width: 100%; height: 300px; background: #050515; position: relative; overflow: hidden; border-radius: 20px; }
+        #player { width: 70px; height: 12px; background: var(--dream-gold); position: absolute; bottom: 10px; left: 50%; border-radius: 10px; }
 
-        /* --- CONTACT --- */
-        .contact-box { background: rgba(0,0,0,0.5); padding: 30px; margin: 40px auto; width: 80%; max-width: 500px; border-radius: 30px; border: 2px solid var(--magic-purple); }
-        input, textarea { width: 90%; padding: 10px; margin: 10px 0; border-radius: 10px; background: #1a1a2e; color: white; border: 1px solid var(--ocean-blue); }
+        /* --- CEO INBOX --- */
+        .contact-box { background: rgba(255,255,255,0.05); padding: 30px; margin: 40px auto; width: 85%; max-width: 450px; border-radius: 30px; border: 2px solid var(--ocean-blue); }
+        input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 12px; background: #1a1a2e; color: white; border: 1px solid #333; font-family: inherit; }
+        #ceoInbox { background: #000; padding: 15px; border-radius: 15px; margin-top: 20px; text-align: left; border: 1px solid var(--dream-gold); display: none; }
 
-        .btn { background: var(--magic-purple); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
-        .btn:hover { transform: scale(1.1); background: #ff00ff; }
+        .btn { background: var(--magic-purple); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn:hover { transform: scale(1.05); background: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
     </style>
 </head>
-<body>
+<body onload="initSite()">
 
     <canvas id="snow-canvas"></canvas>
 
     <div class="news-ticker">
         <div class="ticker-text">
-            ❄️ BLIZZARD UPDATE: Dreamscape HQ is now accepting stardust orders! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            🏆 NEW HIGH SCORE: CEO just hit 999 in Cupcake Rain! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            🧁 RESTOCK: Lola the Turtle cupcakes are back in the bakery! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            ✨ JOIN THE CLUB: Digital Membership is now open for $15!
+            ✨ WELCOME TO THE EMPIRE &nbsp;&nbsp;&nbsp; 🧁 LOLA THE TURTLE CUPCAKES NOW $6 &nbsp;&nbsp;&nbsp; ❄️ BLIZZARD WARNING: STAY WARM AND CODE ON! &nbsp;&nbsp;&nbsp; 🏆 BEAT THE HIGH SCORE!
         </div>
     </div>
 
-    <div class="cart-status">🛒 Cart: <span id="cart-count">0</span> | $<span id="cart-total">0</span></div>
+    <div class="cart-status">🛒 $<span id="cart-total">0</span></div>
 
     <header>
         <h1>DREAMSCAPE</h1>
-        <p>A Portal to Ever-water | Established 2026</p>
+        <p>Luxury Bakery & Digital Wonders</p>
     </header>
 
-    <div class="search-area">
-        <input type="text" id="siteSearch" placeholder="Search the empire..." style="width: 250px;">
-        <button class="btn" onclick="runSearch()">Go</button>
-    </div>
-
     <section class="shop-grid">
-        <div class="card" data-name="lola turtle cupcake">
+        <div class="card">
             <h3>Lola the Turtle</h3>
-            <p>Signature Vanilla</p>
+            <p>Vanilla & Gold Dust</p>
             <p style="color:var(--dream-gold)">$6.00</p>
             <button class="btn" onclick="addToCart(6)">Add to Cart</button>
         </div>
-        <div class="card" data-name="art club membership">
+        <div class="card">
             <h3>Art Club</h3>
-            <p>Digital Membership</p>
+            <p>Membership</p>
             <p style="color:var(--dream-gold)">$15.00</p>
-            <button class="btn" onclick="addToCart(15)">Join Now</button>
+            <button class="btn" onclick="addToCart(15)">Join Club</button>
         </div>
     </section>
 
     <section class="arcade-box">
-        <h2>🌧️ CATCH THE RAIN</h2>
+        <h3>🌧️ CUPCAKE RAIN</h3>
         <div id="rain-game"><div id="player"></div></div>
         <p>Score: <span id="rain-score">0</span></p>
-        <button class="btn" onclick="startRainGame()">Start Game</button>
+        <button class="btn" onclick="startRainGame()">Play</button>
     </section>
 
     <section class="contact-box">
-        <h3>📧 Message the CEO</h3>
-        <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" onsubmit="mailBlast()">
-            <input type="text" name="name" placeholder="Name" required>
-            <textarea name="message" placeholder="Your secret idea..." required></textarea>
-            <button type="submit" class="btn">Send Message 🚀</button>
-        </form>
+        <h3>📬 Message the CEO</h3>
+        <input type="text" id="senderName" placeholder="Your Name">
+        <textarea id="senderMessage" placeholder="Your idea..."></textarea>
+        <button class="btn" onclick="saveSecretMessage()">Send 🚀</button>
+
+        <div id="ceoInbox">
+            <h4 style="color:var(--dream-gold)">CEO PRIVATE MESSAGES:</h4>
+            <div id="messageList" style="font-size: 0.8rem;"></div>
+            <button onclick="clearInbox()" style="background:none; color:red; border:none; cursor:pointer; font-size: 10px;">Clear All</button>
+        </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // --- CART ---
-        let items = 0, money = 0;
-        function addToCart(p) {
-            items++; money += p;
-            document.getElementById('cart-count').innerText = items;
-            document.getElementById('cart-total').innerText = money;
-            confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
+        // --- INITIALIZE ---
+        function initSite() {
+            drawSnow();
+            displayMessages();
         }
 
-        // --- SEARCH ---
-        function runSearch() {
-            let input = document.getElementById('siteSearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('card');
-            for (let card of cards) {
-                card.style.display = card.getAttribute('data-name').includes(input) ? "block" : "none";
+        // --- CART ---
+        let money = 0;
+        function addToCart(p) {
+            money += p;
+            document.getElementById('cart-total').innerText = money;
+            confetti({ particleCount: 40, spread: 60, origin: { y: 0.8 } });
+        }
+
+        // --- INBOX LOGIC ---
+        function saveSecretMessage() {
+            let name = document.getElementById('senderName').value;
+            let note = document.getElementById('senderMessage').value;
+            if (name && note) {
+                let messages = JSON.parse(localStorage.getItem('dreamMessages')) || [];
+                messages.push({ name: name, text: note });
+                localStorage.setItem('dreamMessages', JSON.stringify(messages));
+                
+                confetti({ particleCount: 100, spread: 70, shapes: ['circle'] });
+                alert("Message locked in the bottle! 🍾");
+                
+                document.getElementById('senderName').value = "";
+                document.getElementById('senderMessage').value = "";
+                displayMessages();
+            }
+        }
+
+        function displayMessages() {
+            let list = document.getElementById('messageList');
+            let messages = JSON.parse(localStorage.getItem('dreamMessages')) || [];
+            if (messages.length > 0) {
+                document.getElementById('ceoInbox').style.display = "block";
+                list.innerHTML = messages.map(m => `<p><strong>${m.name}:</strong> ${m.text}</p><hr style="border:0.1px solid #222">`).join('');
+            }
+        }
+
+        function clearInbox() {
+            if(confirm("CEO: Delete all messages?")) {
+                localStorage.removeItem('dreamMessages');
+                document.getElementById('ceoInbox').style.display = "none";
             }
         }
 
@@ -155,7 +183,7 @@
         const gameContainer = document.getElementById('rain-game'), player = document.getElementById('player');
         gameContainer.addEventListener('mousemove', (e) => {
             let rect = gameContainer.getBoundingClientRect();
-            player.style.left = (e.clientX - rect.left) + 'px';
+            player.style.left = (e.clientX - rect.left - 35) + 'px';
         });
 
         function startRainGame() {
@@ -177,12 +205,11 @@
                 let top = parseInt(cupcake.style.top);
                 cupcake.style.top = (top + 5) + 'px';
                 let cRect = cupcake.getBoundingClientRect(), pRect = player.getBoundingClientRect();
-
                 if (cRect.bottom >= pRect.top && cRect.left < pRect.right && cRect.right > pRect.left) {
                     rainScore++; document.getElementById('rain-score').innerText = rainScore;
                     cupcake.remove(); clearInterval(fall);
                 }
-                if (top > gameContainer.clientHeight) { cupcake.remove(); clearInterval(fall); }
+                if (top > 300) { cupcake.remove(); clearInterval(fall); }
             }, 20);
             setTimeout(spawnCupcake, 1000);
         }
@@ -197,10 +224,8 @@
             flakes.forEach(f => { ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); f.y += f.d; if(f.y > canvas.height) f.y = -10; });
             ctx.fill(); requestAnimationFrame(drawSnow);
         }
-        drawSnow();
-
-        function mailBlast() { confetti({ shapes: ['circle'], particleCount: 15, colors: ['#ff69b4'] }); }
     </script>
 </body>
-</html>    
-        
+</html
+
+         
